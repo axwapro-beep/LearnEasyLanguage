@@ -13,6 +13,8 @@
 
 - Logo: flauschiges Alpaka mit Sprechblase (App-Icon, Anmeldung, Begrüßung).
 
+- Einsteigerfreundliches Lernsystem: Lernstufen pro Wort (kennenlernen → 2 Antworten → 3 → 4 → tippen → frei), Aufgaben passen sich während der Lektion an, Fehler kommen leichter wieder, „Nochmal versuchen“, Tippfehler-Toleranz, Akzent-Tasten pro Sprache, Herzen nur im Abschlusstest, „Als Nächstes“-Karte, Übersicht „Deine Wörter“. Details: LERNSYSTEM.md
+
 ## Offen
 - Abschnitte 3–6 (bis C1) für alle neuen Sprachen, Wortschatz deutlich erweitern.
 - C2 für alle Sprachen (auch Portugiesisch).

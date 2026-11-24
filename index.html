@@ -459,6 +459,31 @@ body.playing nav#tabs,body.playing header{visibility:hidden}
 .gap{display:inline-block;min-width:60px;border-bottom:3px solid var(--accent);color:var(--accent);text-align:center;padding:0 4px}
 .opts{display:grid;gap:10px}
 .opts.row2{grid-template-columns:1fr 1fr}
+.opts.two .opt{padding:20px 16px;font-size:19px}
+.match{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mcol{display:grid;gap:10px;align-content:start}
+.opt.mt{min-height:58px;font-weight:700}
+.opt.mt:disabled{opacity:.75}
+.ic-emo{font-size:52px;line-height:1;margin:4px 0 2px}
+.ic-slow{border:0;background:var(--group);border-radius:99px;padding:6px 12px;font-size:14px;margin-top:10px;color:inherit}
+.hint-row{text-align:center;margin-top:10px}
+.hint-btn{border:0;background:none;color:var(--accent);font-weight:700;font-size:15px;padding:8px}
+.btn3d.warm{--b:#E08A1E}
+.next-card{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:2px solid var(--line);background:#fff;border-radius:18px;padding:12px 14px;margin:-6px 0 18px;box-shadow:0 4px 0 var(--line);color:inherit;font:inherit}
+.next-card:active{transform:translateY(2px);box-shadow:0 2px 0 var(--line)}
+.nc-e{font-size:28px}
+.nc-t{flex:1;min-width:0}.nc-t small{display:block;color:var(--muted,#6C6C72);font-size:13px}.nc-t b{display:block;font-size:16px}
+.nc-go{background:var(--c);color:#fff;font-weight:800;border-radius:12px;padding:9px 12px;font-size:14px;white-space:nowrap}
+.ws-bar{display:flex;height:14px;border-radius:99px;background:var(--group);overflow:hidden;margin:8px 0 10px}
+.ws-bar i{display:block;height:100%}.ws-s{background:var(--green)}.ws-l{background:#FFB800}
+.ws-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:14px;margin-bottom:12px}
+.ws-legend .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:middle}
+.dot.s{background:var(--green)}.dot.l{background:#FFB800}.dot.n{background:var(--line)}
+.wstats h4{margin:16px 0 6px}
+.wl-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line)}
+.wl-w{min-width:0}.wl-w b{display:block}.wl-w small{color:var(--muted,#6C6C72)}
+.wl-st{text-align:right;flex-shrink:0}.wl-st small{display:block;font-size:12px;color:var(--muted,#6C6C72)}
+.dots{display:inline-flex;gap:3px}.dots i{width:9px;height:9px;border-radius:50%;background:var(--line)}.dots i.on{background:var(--green)}
 .opt{border:2px solid var(--line);background:#fff;border-radius:16px;padding:14px;font-size:17px;font-weight:800;text-align:left;box-shadow:0 4px 0 var(--line);transition:transform .06s}
 .opt:active{transform:translateY(2px);box-shadow:0 2px 0 var(--line)}
 .opt.sel{border-color:#9CB9FF;background:var(--accent-soft);color:var(--accent-press);box-shadow:0 4px 0 #9CB9FF}
@@ -501,12 +526,12 @@ body.playing nav#tabs,body.playing header{visibility:hidden}
 .st-b small{display:block;color:var(--muted);font-size:13px;font-weight:700;margin-top:2px}
 .pl-foot{padding:14px 18px calc(16px + env(safe-area-inset-bottom));border-top:2px solid var(--line)}
 .pl-foot.fb-ok{background:var(--ok-soft);border-top-color:transparent;animation:up .22s ease-out}
-.pl-foot.fb-bad{background:var(--bad-soft);border-top-color:transparent;animation:up .22s ease-out}
+.pl-foot.fb-bad{background:#FFF4E5;border-top-color:transparent;animation:up .22s ease-out}
 .fb-head{display:flex;align-items:center;gap:10px;font-size:21px;margin-bottom:6px}
 .fb-head svg{width:30px;height:30px;flex:none}
-.fb-ok .fb-head{color:var(--green-d)}.fb-bad .fb-head{color:var(--red-d)}
+.fb-ok .fb-head{color:var(--green-d)}.fb-bad .fb-head{color:#B25E00}
 .fb-sol{font-size:16px;margin:4px 0;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.fb-ok .fb-sol{color:#0B5E3F}.fb-bad .fb-sol{color:#8A1F26}
+.fb-ok .fb-sol{color:#0B5E3F}.fb-bad .fb-sol{color:#6B3A00}
 .fb-exp{font-size:14.5px;color:var(--ink);margin:6px 0;font-weight:600}
 .fb-exp:empty{display:none}
 .fb-exp p{margin:0 0 4px}
@@ -8452,7 +8477,7 @@ function mcOptions(right, field, pool, n){
 }
 
 /* ---------- Aufgaben bauen ---------- */
-function itMC(w, pool, dir){ return {type:"mc", w, dir, opts:mcOptions(w, dir === "pt2de" ? "de" : "pt", pool)}; }
+function itMC(w, pool, dir, n){ return {type:"mc", w, dir, opts:mcOptions(w, dir === "pt2de" ? "de" : "pt", pool, n || 4)}; }
 function itWrite(w){ return {type:"write", w}; }
 function itBuild(s, listen){
   const toks = s.pt.split(" ");
@@ -8465,7 +8490,7 @@ function itBankDE(s){
   return {type:"bankde", s, bank:shuf(toks.concat(pickN(uniqBy(pool, x => x.toLowerCase()), 3)).map((w, i) => ({w, i})))};
 }
 function itTypePT(s){ return {type:"typept", s}; }
-function itCloze(s){
+function itCloze(s, n){
   const toks = s.pt.split(" ");
   let cand = toks.map((t, i) => ({t, i, c:cleanW(t)})).filter(x => x.c.length >= 2 && !/^[A-Z]/.test(x.c));
   if(!cand.length) cand = toks.map((t, i) => ({t, i, c:cleanW(t)})).filter(x => x.c.length >= 1);
@@ -8474,12 +8499,78 @@ function itCloze(s){
   const isF = FUNC.includes(b.c.toLowerCase());
   let pool = isF ? FUNC.slice() : sentsUpTo(s.u + 1).flatMap(x => x.pt.split(" ").map(cleanW)).filter(x => x.length >= 3 && !/^[A-Z]/.test(x));
   pool = uniqBy(pool.filter(x => x.toLowerCase() !== b.c.toLowerCase() && !toks.map(t => cleanW(t).toLowerCase()).includes(x.toLowerCase())), x => x.toLowerCase());
-  return {type:"cloze", s, idx:b.i, answer:b.c, opts:shuf(pickN(pool, 3).concat([b.c]))};
+  return {type:"cloze", s, idx:b.i, answer:b.c, opts:shuf(pickN(pool, (n || 4) - 1).concat([b.c]))};
 }
-function itListen(s){ const pool = sentsUpTo(Math.max(s.u, 3)).filter(x => x.de !== s.de); return {type:"listen", s, opts:shuf(pickN(pool, 3).map(x => x.de).concat([s.de]))}; }
+function itListen(s, n){ const pool = uniqBy(sentsUpTo(Math.max(s.u, 3)).filter(x => x.de !== s.de), x => x.de); return {type:"listen", s, opts:shuf(pickN(pool, (n || 4) - 1).map(x => x.de).concat([s.de]))}; }
 function itListenType(w){ return {type:"listentype", w}; }
 function itSpeak(s){ return {type:"speak", s}; }
 function itDialog(d){ return {type:"dialog", d, opts:shuf([d.ok].concat(d.wrong))}; }
+
+/* ---------- Lernstufen pro Wort ----------
+   0 neu · 1 kennengelernt · 2 wiedererkannt · 3 verstanden · 4 gefestigt (ab hier wird getippt) · 5 sicher */
+const STAGE_NAMES = ["Neu","Kennengelernt","Wiedererkannt","Verstanden","Gefestigt","Sicher"];
+const STAGE_NEED = [0, 1, 2, 2, 2, 99];
+function vocabOf(w){ const k = w.pt.toLowerCase(); return state.vocab.find(x => x.pt.toLowerCase() === k); }
+function stageOfV(v){
+  if(!v) return 0;
+  if(v.st == null){ const r = v.reps || 0; v.st = r >= 6 ? 5 : r >= 4 ? 4 : r >= 2 ? 3 : r >= 1 ? 2 : (v.box && (v.right || v.wrong)) ? 1 : 0; v.sk = 0; }
+  return v.st;
+}
+const stageOf = w => stageOfV(vocabOf(w));
+function unitStage(u){ const U = UNITS.find(x => x.num === u); if(!U || !U.W.length) return 0; return U.W.reduce((a, w) => a + stageOf(w), 0) / U.W.length; }
+const seenW = a => { const f = a.filter(w => stageOf(w) >= 1); return f.length >= 3 ? f : a; };
+function itMatch(w, pool){
+  const k = x => x.pt.toLowerCase();
+  let others = shuf(pool.filter(x => k(x) !== k(w) && x.de.toLowerCase() !== w.de.toLowerCase() && stageOf(x) >= 1));
+  others = uniqBy(uniqBy(others, k), x => x.de.toLowerCase()).slice(0, 3);
+  if(others.length < 3) return null;
+  const pairs = shuf([w].concat(others));
+  const idx = pairs.map((_, i) => i);
+  return {type:"match", w, pairs, left:shuf(idx), right:shuf(idx)};
+}
+/* Wortaufgabe passend zur Lernstufe; "ease" macht sie leichter, eine Serie richtiger Antworten etwas schwerer */
+function wordItem(w, mode, bonus){
+  const st = Math.max(1, stageOf(w));
+  const ease = (SES ? SES.ease || 0 : 0) + (bonus || 0);
+  let e = Math.max(1, st - ease);
+  if(SES && (SES.streak || 0) >= 4 && ease === 0 && e === 1) e = 2;
+  const pool = wordsUpTo(Math.max(w.u || 1, 2));
+  const flip = Math.random() < .5;
+  if(mode === "listen"){
+    if(e >= 4) return itListenType(w);
+    const it = itMC(w, pool, "pt2de", e <= 1 ? 2 : e === 2 ? 3 : 4); it.audio = true; it.prompt = "Was bedeutet dieses Wort?"; return it;
+  }
+  if(e <= 1) return itMC(w, pool, "pt2de", 2);
+  if(e === 2){ if(Math.random() < .3){ const m = itMatch(w, pool); if(m) return m; } return itMC(w, pool, flip ? "de2pt" : "pt2de", 3); }
+  if(e === 3){ if(Math.random() < .3){ const m = itMatch(w, pool); if(m) return m; } return itMC(w, pool, flip ? "de2pt" : "pt2de", 4); }
+  if(e === 4) return Math.random() < .65 ? itWrite(w) : itMC(w, pool, "de2pt", 4);
+  return Math.random() < .55 ? itWrite(w) : itListenType(w);
+}
+/* Satzaufgabe passend zum Stand der Einheit: erst verstehen, dann ergänzen, dann bauen, zuletzt selbst schreiben */
+function sentItem(s, mode, bonus){
+  const ease = (SES ? SES.ease || 0 : 0) + (bonus || 0);
+  let L = unitStage(s.u) - ease;
+  if(SES && (SES.streak || 0) >= 4 && ease === 0) L += 0.5;
+  const len = s.pt.split(" ").length, r = Math.random();
+  const read = n => { const it = itListen(s, n); it.show = true; it.prompt = "Was bedeutet der Satz?"; return it; };
+  if(mode === "listen"){
+    if(L < 2) return read(3);
+    if(L < 3.5) return itListen(s, 3);
+    return r < .5 ? itListen(s, 4) : itBuild(s, true);
+  }
+  if(L < 1.5) return read(r < .5 ? 2 : 3);
+  if(L < 2.5) return r < .4 ? read(3) : r < .7 ? itCloze(s, 3) : itBankDE(s);
+  if(L < 3.5) return r < .35 ? itCloze(s, 4) : (r < .7 || len > 7) ? itBankDE(s) : itBuild(s);
+  if(L < 4.5) return r < .5 ? itBuild(s) : r < .75 ? itCloze(s, 4) : itListen(s, 4);
+  return r < .45 ? itTypePT(s) : r < .8 ? itBuild(s) : itListen(s, 4);
+}
+function resolveItem(x){
+  if(!x || !x.lazy) return x;
+  const it = x.lazy === "w" ? wordItem(x.w, x.mode, x.bonus) : sentItem(x.s, x.mode, x.bonus);
+  it.src = x; if(x._retry) it._retry = true;
+  return it;
+}
+const itemKey = it => it.type + ":" + (it.w ? it.w.pt : it.s ? it.s.pt : it.d ? it.d.a : "");
 
 function buildSession(kind, U, opt){
   opt = opt || {};
@@ -8489,20 +8580,28 @@ function buildSession(kind, U, opt){
     const half = Math.ceil(U.W.length / 2), ws = opt.k ? U.W.slice(half) : U.W.slice(0, half);
     const sh = Math.ceil(U.S.length / 2), ss = opt.k ? U.S.slice(sh) : U.S.slice(0, sh);
     const ps = pathState(); if(!ps.seen) ps.seen = {};
-    const seen = w => !!ps.seen[w.pt.toLowerCase()];
-    const intro = [], rest = [];
-    ws.forEach(w => { if(!seen(w)) intro.push({type:"intro", w}, itMC(w, U.W.concat(poolW), "pt2de")); else rest.push(itMC(w, U.W.concat(poolW), "pt2de")); });
-    pickN(ws, 2).forEach(w => rest.push(itMC(w, U.W.concat(poolW), "de2pt")));
-    pickN(ws, 2).forEach(w => rest.push(itWrite(w)));
-    ss.forEach((s, i) => rest.push([itBuild, itBankDE, itCloze, itListen][i % 4](s)));
-    const dl = DLG.filter(d => d.u <= n && d.u >= n - 3); if(dl.length) rest.push(itDialog(randOf(dl)));
-    return intro.concat(shuf(rest)).slice(0, 15);
+    const isNew = w => stageOf(w) === 0 && !ps.seen[w.pt.toLowerCase()];
+    const fresh = ws.filter(isNew), known = ws.filter(w => !isNew(w));
+    const head = [];
+    /* neue Wörter in Zweiergruppen: ansehen, anhören, dann sofort leicht wiedererkennen */
+    for(let i = 0; i < fresh.length; i += 2){
+      const g = fresh.slice(i, i + 2);
+      g.forEach(w => head.push({type:"intro", w}));
+      shuf(g).forEach(w => head.push({lazy:"w", w}));
+    }
+    const wq = shuf(known.concat(fresh).map(w => ({lazy:"w", w})));
+    const sq = ss.map(s => ({lazy:"s", s}));
+    const mix = [];
+    while(wq.length || sq.length){ if(wq.length) mix.push(wq.shift()); if(wq.length) mix.push(wq.shift()); if(sq.length) mix.push(sq.shift()); }
+    const dl = DLG.filter(d => d.u <= n && d.u >= n - 3);
+    if(opt.k && dl.length) mix.push(itDialog(randOf(dl)));
+    return head.concat(mix).slice(0, 18);
   }
   if(kind === "listen"){
     const ss = U ? U.S : sentsUpTo(n);
-    pickN(ss, 4).forEach(s => items.push(itListen(s)));
-    pickN(U ? U.W : poolW, 3).forEach(w => items.push(itListenType(w)));
-    pickN(ss, 2).forEach(s => items.push(itBuild(s, true)));
+    pickN(ss, 4).forEach(s => items.push({lazy:"s", s, mode:"listen"}));
+    pickN(seenW(U ? U.W : poolW), 3).forEach(w => items.push({lazy:"w", w, mode:"listen"}));
+    pickN(ss, 2).forEach(s => items.push({lazy:"s", s, mode:"listen"}));
     return shuf(items);
   }
   if(kind === "speak"){
@@ -8517,14 +8616,17 @@ function buildSession(kind, U, opt){
     return items;
   }
   if(kind === "review" || kind === "test"){
-    const ws = U ? U.W.concat(pickN(poolW, 4)) : poolW, ss = U ? U.S.concat(pickN(sentsUpTo(n), 3)) : sentsUpTo(n);
-    const hard = state.vocab.filter(v => (v.wrong || 0) > (v.right || 0) / 3 && v.wrong).map(v => ({pt:v.pt, de:v.de, u:n}));
-    const wpool = uniqBy(hard.concat(ws), x => x.pt);
+    /* Spaced Repetition: schwierige und fällige Wörter zuerst, leichte seltener */
+    const now = Date.now(), k = x => x.pt.toLowerCase();
+    const known = seenW(poolW);
+    const hard = known.filter(w => { const v = vocabOf(w); return v && v.wrong && v.wrong > (v.right || 0) / 3; }).sort((a, b) => (vocabOf(b).wrong || 0) - (vocabOf(a).wrong || 0));
+    const due = known.filter(w => { const v = vocabOf(w); return v && v.box >= 1 && (v.due || 0) <= now; });
+    const base = U ? U.W.concat(pickN(known, 4)) : known;
     const cnt = kind === "test" ? 12 : 10;
-    const mk = [w => itMC(w, wpool, "de2pt"), w => itWrite(w), w => itMC(w, wpool, "pt2de"), w => itListenType(w)];
-    pickN(wpool, Math.ceil(cnt / 2)).forEach((w, i) => items.push(mk[(i + (kind === "test" ? 1 : 0)) % mk.length](w)));
-    const ms = kind === "test" ? [itTypePT, itBuild, itCloze, itBankDE, itListen] : [itBuild, itCloze, itListen, itBankDE];
-    pickN(ss, Math.floor(cnt / 2)).forEach((s, i) => items.push(ms[i % ms.length](s.pt.split(" ").length > 7 && ms[i % ms.length] === itTypePT ? s : s)));
+    const ws = uniqBy(hard.slice(0, 3).concat(shuf(due).slice(0, 3), shuf(base)), k).slice(0, Math.ceil(cnt / 2));
+    const ss = U ? U.S.concat(pickN(sentsUpTo(n), 3)) : sentsUpTo(n);
+    ws.forEach(w => items.push({lazy:"w", w}));
+    pickN(ss, Math.floor(cnt / 2)).forEach(s => items.push({lazy:"s", s}));
     return shuf(items).slice(0, cnt);
   }
   if(kind === "mistakes"){
@@ -8534,14 +8636,14 @@ function buildSession(kind, U, opt){
   }
   if(kind === "hard"){
     const hard = state.vocab.filter(v => v.kind !== "fix" && (v.wrong || 0) > 0).sort((a, b) => (b.wrong || 0) - (a.wrong || 0)).slice(0, 10).map(v => ({pt:v.pt, de:v.de, u:n}));
-    hard.forEach((w, i) => items.push(i % 2 ? itWrite(w) : itMC(w, hard.concat(poolW), "de2pt")));
+    hard.forEach(w => items.push({lazy:"w", w}));
     return items;
   }
   if(kind === "grammar"){
     const weak = weakTopics().map(t => t.topic);
     let ss = sentsUpTo(n).filter(s => s.topic && (weak.length ? weak.includes(s.topic) : true));
     if(ss.length < 4) ss = sentsUpTo(n);
-    pickN(ss, 8).forEach((s, i) => items.push([itCloze, itBuild, itTypePT][i % 3](s)));
+    pickN(ss, 8).forEach(s => items.push({lazy:"s", s}));
     return items;
   }
   if(kind === "dialogs"){
@@ -8555,6 +8657,8 @@ function buildSession(kind, U, opt){
 }
 function rebuildItem(m){
   const w = m.w, s = m.s;
+  if(w && w.pt && m.type !== "intro") return {lazy:"w", w, mode:m.type === "listentype" || m.audio ? "listen" : undefined};
+  if(s && s.pt && m.type !== "speak") return {lazy:"s", s, mode:m.type === "listen" && !m.show ? "listen" : undefined};
   switch(m.type){
     case "mc": return itMC(w, wordsUpTo(Math.max(w.u || 1, 3)), m.dir || "pt2de");
     case "write": case "intro": return itWrite(w);
@@ -8618,8 +8722,11 @@ function noteWord(w, ok, isNew){
   let v = state.vocab.find(x => x.pt.toLowerCase() === w.pt.toLowerCase());
   if(!v){ v = {pt:w.pt, de:w.de, theme:"path", box:1, due:Date.now() + 60000, reps:0}; state.vocab.push(v); if(isNew) daily().newWords++; }
   else if(!v.box){ v.box = 1; v.due = Date.now() + 60000; if(isNew) daily().newWords++; }
-  if(ok === true){ v.right = (v.right || 0) + 1; v.reps = (v.reps || 0) + 1; v.due = Date.now() + repInterval(v.reps) / Math.max(1, (v.wrong || 0) - (v.right || 0) / 3 + 1); }
-  else if(ok === false){ v.wrong = (v.wrong || 0) + 1; v.due = Date.now() + 60000; }
+  const st = stageOfV(v);
+  if(ok === null && st < 1){ v.st = 1; v.sk = 0; }
+  if(ok === true){ v.right = (v.right || 0) + 1; v.reps = (v.reps || 0) + 1; v.due = Date.now() + repInterval(v.reps) / Math.max(1, (v.wrong || 0) - (v.right || 0) / 3 + 1);
+    v.sk = (v.sk || 0) + 1; if(v.st < 1) v.st = 1; if(v.st < 5 && v.sk >= STAGE_NEED[v.st]){ v.st++; v.sk = 0; } }
+  else if(ok === false){ v.wrong = (v.wrong || 0) + 1; v.due = Date.now() + 60000; v.st = Math.max(1, st - 1); v.sk = 0; }
   v.last = Date.now();
 }
 function logMistake(it){
@@ -8666,40 +8773,44 @@ function ensurePlayer(){
   p = document.createElement("div"); p.id = "player"; p.className = "player hidden"; p.setAttribute("role", "dialog"); p.setAttribute("aria-modal", "true");
   p.innerHTML = `<div class="pl-top"><button class="pl-x" id="plX" aria-label="Lektion beenden">✕</button><div class="pl-bar"><i id="plBar"></i></div><div class="pl-hearts" id="plHearts"></div></div><div class="pl-body" id="plBody"></div><div class="pl-foot" id="plFoot"></div>`;
   document.body.appendChild(p);
-  p.querySelector("#plX").onclick = () => confirmBox("Lektion beenden?", "Dein Fortschritt in dieser Lektion geht verloren.", "Beenden", closePlayer);
+  p.querySelector("#plX").onclick = () => (!SES || SES.i < 3) ? closePlayer() : confirmBox("Lektion beenden?", "Dein Fortschritt in dieser Lektion geht verloren.", "Beenden", closePlayer);
   return p;
 }
 function startSession(kind, U, opt){
   opt = opt || {};
   regenHearts();
-  const usesHearts = !!opt.station && opt.station.t !== "chest";
+  const usesHearts = !!opt.station && opt.station.t === "test";
   if(usesHearts && state.hearts <= 0){ outOfHearts(); return; }
   const items = buildSession(kind, U, opt);
   if(!items.length){ toast(kind === "mistakes" ? "Keine Fehler zum Üben – super!" : kind === "hard" ? "Noch keine schwierigen Wörter." : "Dafür gibt es noch keine Aufgaben."); return; }
-  SES = {kind, U, opt, items, i:0, ok:0, bad:0, retry:new Set(), start:Date.now(), usesHearts, answered:false, cur:null};
+  SES = {kind, U, opt, items, i:0, ok:0, bad:0, retry:new Set(), start:Date.now(), usesHearts, answered:false, cur:null, ease:0, streak:0, fails:0, wm:{}};
   const p = ensurePlayer(); p.classList.remove("hidden"); document.body.classList.add("playing");
   renderItem();
 }
 function closePlayer(){ const p = document.getElementById("player"); if(p) p.classList.add("hidden"); document.body.classList.remove("playing"); SES = null; try{ if(listening && dict) dict.stop(); }catch(e){} renderAllTabs(); }
 function plHearts(){ const h = document.getElementById("plHearts"); if(!h) return; h.innerHTML = SES && SES.usesHearts ? `${ICON.heart}<b>${state.hearts}</b>` : `<span class="pl-free">Übung</span>`; }
 function plBar(){ const b = document.getElementById("plBar"); if(b && SES) b.style.width = Math.round(SES.i / SES.items.length * 100) + "%"; }
-const PROMPTS = {intro:"Neues Wort", mc:"Wähle die richtige Übersetzung", write:"Schreib es auf " + LANG.inLang, build:"Bilde den Satz", bankde:"Übersetze " + LANG.nativeInto, typept:"Übersetze " + LANG.into, cloze:"Ergänze die Lücke", listen:"Was hörst du?", listentype:"Schreib, was du hörst", speak:"Sprich diesen Satz", dialog:"Was antwortest du?", story:"Geschichte", storyq:"Frage zur Geschichte"};
+const PROMPTS = {match:"Finde die Paare", intro:"Neues Wort", mc:"Wähle die richtige Übersetzung", write:"Schreib es auf " + LANG.inLang, build:"Bilde den Satz", bankde:"Übersetze " + LANG.nativeInto, typept:"Übersetze " + LANG.into, cloze:"Ergänze die Lücke", listen:"Was hörst du?", listentype:"Schreib, was du hörst", speak:"Sprich diesen Satz", dialog:"Was antwortest du?", story:"Geschichte", storyq:"Frage zur Geschichte"};
 function renderItem(){
-  const it = SES.items[SES.i]; SES.cur = it; SES.answered = false; SES.sel = null; SES.picked = []; SES.typed = "";
+  SES.items[SES.i] = resolveItem(SES.items[SES.i]);
+  const it = SES.items[SES.i]; SES.cur = it; SES.answered = false; SES.sel = null; SES.picked = []; SES.typed = ""; SES.why = ""; SES.matchErr = 0;
   plBar(); plHearts();
   const body = document.getElementById("plBody"), foot = document.getElementById("plFoot");
   foot.className = "pl-foot"; body.classList.remove("pop"); void body.offsetWidth; body.classList.add("pop");
-  let h = `<p class="pl-q">${PROMPTS[it.type]}</p>`;
+  let h = `<p class="pl-q">${it.type === "intro" && it.again ? "Schau es dir nochmal an" : it.prompt || PROMPTS[it.type]}</p>`;
   const tile = (txt, i, cls) => `<button class="opt ${cls || ""}" data-o="${i}">${esc(txt)}</button>`;
   switch(it.type){
     case "intro":
-      h += `<div class="intro-card"><div class="ic-new">Neu</div><div class="big-pt">${esc(it.w.pt)} ${sayBtn(it.w.pt)}</div><div class="big-de">${esc(it.w.de)}</div><div id="introX" class="intro-x"></div></div>`;
+      h += `<div class="intro-card"><div class="ic-new">${it.again ? "Nochmal" : "Neu"}</div>${emojiFor(it.w) ? `<div class="ic-emo" aria-hidden="true">${emojiFor(it.w)}</div>` : ""}<div class="big-pt">${esc(it.w.pt)} ${sayBtn(it.w.pt)}</div><div class="big-de">${esc(it.w.de)}</div><button class="ic-slow" data-play="${esc(it.w.pt)}" data-slow="1">🐢 Langsam anhören</button><div id="introX" class="intro-x"></div></div>`;
       break;
     case "mc":
-      h += `<div class="q-word">${it.dir === "pt2de" ? esc(it.w.pt) + " " + sayBtn(it.w.pt) : esc(it.w.de)}</div><div class="opts">${it.opts.map((o, i) => tile(o, i)).join("")}</div>`;
+      h += `${it.audio ? `<div class="listen-big">${bigPlay(it.w.pt)}</div>` : `<div class="q-word">${it.dir === "pt2de" ? esc(it.w.pt) + " " + sayBtn(it.w.pt) : esc(it.w.de)}</div>`}<div class="opts ${it.opts.length <= 2 ? "two" : ""}">${it.opts.map((o, i) => tile(o, i)).join("")}</div>`;
+      break;
+    case "match":
+      h += `<div class="match"><div class="mcol">${it.left.map(i => `<button class="opt mt" data-ml="${i}">${esc(it.pairs[i].pt)}</button>`).join("")}</div><div class="mcol">${it.right.map(i => `<button class="opt mt" data-mr="${i}">${esc(it.pairs[i].de)}</button>`).join("")}</div></div>`;
       break;
     case "write":
-      h += `<div class="q-word">${esc(it.w.de)}</div>${typeBox("Auf " + LANG.inLang + " …")}`;
+      h += `<div class="q-word">${esc(it.w.de)}</div>${typeBox(it._again ? hintOf(it.w.pt) : "Auf " + LANG.inLang + " …")}<div class="hint-row"><button class="hint-btn" id="hintBtn">💡 Tipp: ersten Buchstaben zeigen</button></div>`;
       break;
     case "listentype":
       h += `<div class="listen-big">${bigPlay(it.w.pt)}</div>${typeBox("Was hast du gehört?")}`;
@@ -8716,7 +8827,7 @@ function renderItem(){
       h += `<div class="q-sent cloze">${toks.join(" ")}</div><p class="q-hint">${esc(it.s.de)}</p><div class="opts row2">${it.opts.map((o, i) => tile(o, i)).join("")}</div>`;
       break; }
     case "listen":
-      h += `<div class="listen-big">${bigPlay(it.s.pt)}</div><div class="opts">${it.opts.map((o, i) => tile(o, i)).join("")}</div>`;
+      h += `${it.show ? `<div class="q-sent">${esc(it.s.pt)} ${sayBtn(it.s.pt)}</div>` : `<div class="listen-big">${bigPlay(it.s.pt)}</div>`}<div class="opts ${it.opts.length <= 2 ? "two" : ""}">${it.opts.map((o, i) => tile(o, i)).join("")}</div>`;
       break;
     case "speak":
       h += `<div class="q-sent">${esc(it.s.pt)} ${sayBtn(it.s.pt)}</div><p class="q-hint">${esc(it.s.de)}</p><div class="speak-area">${dict ? `<button class="mic-big" id="micGo" aria-label="Sprechen">${ICON.mic}</button><p class="q-hint" id="micTxt">Tippe aufs Mikrofon und sprich den Satz.</p>` : `<p class="q-hint">Hör dir den Satz an und sprich ihn laut nach. Die automatische Spracherkennung gibt es nur in Chrome oder der Claude-Desktop-App – hier bewertest du dich selbst.</p><div class="opts row2"><button class="opt" data-self="1">✅ Hat geklappt</button><button class="opt" data-self="0">🔁 Nochmal</button></div>`}</div>`;
@@ -8738,13 +8849,27 @@ function renderItem(){
   const check = foot.querySelector("#plCheck");
   const ready = v => { check.disabled = !v; };
   if(it.type === "intro" || it.type === "story"){
-    check.disabled = false; check.textContent = "Weiter";
+    check.disabled = false; check.textContent = it.type === "intro" ? "Verstanden" : "Weiter";
     if(it.type === "intro"){ noteWord(it.w, null, true); const ps = pathState(); if(!ps.seen) ps.seen = {}; ps.seen[it.w.pt.toLowerCase()] = 1; speakPT(it.w.pt); loadIntroExtra(it.w); }
     if(it.type === "story") runStory(it.st, check);
     check.onclick = () => { if(it.type === "story" && check.dataset.wait === "1") return; nextItem(); };
     return;
   }
-  if(it.type === "listen" || it.type === "listentype" || (it.type === "build" && it.listen)) setTimeout(() => speakPT(it.s ? it.s.pt : it.w.pt), 250);
+  if(it.type === "listen" || it.type === "listentype" || (it.type === "build" && it.listen) || (it.type === "mc" && it.audio)) setTimeout(() => speakPT(it.s ? it.s.pt : it.w.pt), 250);
+  if(it.type === "match"){
+    let selL = null, selR = null, done = 0;
+    const tryPair = () => {
+      if(selL == null || selR == null) return;
+      const a = body.querySelector(`[data-ml="${selL}"]`), b = body.querySelector(`[data-mr="${selR}"]`);
+      a.classList.remove("sel"); b.classList.remove("sel");
+      if(selL === selR){ a.classList.add("right"); b.classList.add("right"); a.disabled = b.disabled = true; done++; }
+      else { SES.matchErr++; [a, b].forEach(x => { x.classList.add("wrongc"); setTimeout(() => x.classList.remove("wrongc"), 450); }); }
+      selL = selR = null;
+      if(done === it.pairs.length){ SES.sel = "done"; ready(true); }
+    };
+    body.querySelectorAll("[data-ml]").forEach(b => b.onclick = () => { if(b.disabled || SES.answered) return; body.querySelectorAll("[data-ml]").forEach(x => x.classList.remove("sel")); b.classList.add("sel"); selL = +b.dataset.ml; speakPT(it.pairs[selL].pt); tryPair(); });
+    body.querySelectorAll("[data-mr]").forEach(b => b.onclick = () => { if(b.disabled || SES.answered) return; body.querySelectorAll("[data-mr]").forEach(x => x.classList.remove("sel")); b.classList.add("sel"); selR = +b.dataset.mr; tryPair(); });
+  }
   body.querySelectorAll("[data-o]").forEach(b => b.onclick = () => {
     if(SES.answered) return;
     body.querySelectorAll("[data-o]").forEach(x => x.classList.remove("sel")); b.classList.add("sel");
@@ -8771,20 +8896,31 @@ function renderItem(){
     inp.addEventListener("keydown", e => { if(e.key === "Enter" && !e.shiftKey){ e.preventDefault(); if(!check.disabled) check.click(); } });
     body.querySelectorAll("[data-acc]").forEach(x => x.onclick = () => { const a = inp.selectionStart ?? inp.value.length, b2 = inp.selectionEnd ?? inp.value.length; inp.value = inp.value.slice(0, a) + x.dataset.acc + inp.value.slice(b2); SES.typed = inp.value; ready(true); inp.focus(); inp.setSelectionRange(a + 1, a + 1); });
     setTimeout(() => inp.focus({preventScroll:true}), 200);
+    const hb = body.querySelector("#hintBtn");
+    if(hb && it.w) hb.onclick = () => { const t = it.w.pt, cur = inp.value; let n = 0; while(n < cur.length && n < t.length && cur[n].toLowerCase() === t[n].toLowerCase()) n++; inp.value = t.slice(0, Math.min(t.length, n + 1)); SES.typed = inp.value; SES.hints = (SES.hints || 0) + 1; ready(true); inp.focus(); hb.textContent = "💡 Noch ein Buchstabe"; };
   }
   const mic = body.querySelector("#micGo");
   if(mic) mic.onclick = () => speakListen(it, mic, ready);
   check.onclick = doCheck;
 }
+const ACC = {pt:["á","à","â","ã","é","ê","í","ó","ô","õ","ú","ç"], es:["á","é","í","ó","ú","ñ","ü","¿","¡"], fr:["é","è","ê","à","â","ç","î","ô","û","ù","ë","œ"], it:["à","è","é","ì","ò","ù"], pl:["ą","ć","ę","ł","ń","ó","ś","ź","ż"], tr:["ç","ğ","ı","İ","ö","ş","ü"], de:["ä","ö","ü","ß"], en:[]};
+const hintOf = t => { const n = Math.max(1, Math.ceil(t.length / 3)); return "Tipp: " + t.slice(0, n) + "…"; };
+const EMO = {haus:"🏠",wohnung:"🏢",wasser:"💧",brot:"🍞",wein:"🍷",bier:"🍺",fisch:"🐟",fleisch:"🥩",obst:"🍎",gemüse:"🥦",kaffee:"☕",tee:"🍵",milch:"🥛",familie:"👨‍👩‍👧",mutter:"👩",vater:"👨",eltern:"👫",bruder:"👦",schwester:"👧",sohn:"👦",tochter:"👧",großvater:"👴",großmutter:"👵",küche:"🍳",bad:"🛁",zimmer:"🚪",schlafzimmer:"🛏️",wohnzimmer:"🛋️",supermarkt:"🛒",laden:"🏪",rechnung:"🧾",miete:"🔑",nachbar:"🙋",mittag:"🕛",mitternacht:"🌙",morgens:"🌅",abends:"🌆",uhr:"🕐",hallo:"👋",tschüss:"👋","auf wiedersehen":"👋",danke:"🙏",bitte:"🙏",ja:"✅",nein:"❌","guten morgen":"🌅","gute nacht":"🌙","guten abend":"🌆","guten tag":"☀️",aufstehen:"⏰",duschen:"🚿",frühstücken:"🥐",arbeiten:"💼",früh:"🌄",spät:"🌙",teuer:"💸",billig:"🏷️",günstig:"🏷️",tüte:"🛍️","mit karte":"💳",bar:"💶",kaufen:"🛍️",bezahlen:"💳",groß:"🐘",klein:"🐭",deutschland:"🇩🇪",österreich:"🇦🇹",portugal:"🇵🇹",name:"📛",balkon:"🌇",mittagessen:"🍽️",abendessen:"🍝","ins bett gehen":"🛏️","schlafen gehen":"🛏️","jeden tag":"📅",auto:"🚗",bus:"🚌",zug:"🚆",katze:"🐈",hund:"🐕",buch:"📖",geld:"💶",telefon:"📱",schule:"🏫",arzt:"🩺",sonne:"☀️",regen:"🌧️"};
+function emojiFor(w){
+  const clean = t => String(t || "").toLowerCase().replace(/\([^)]*\)/g, "").split("/")[0].trim().replace(/^(der|die|das|ich|the|to|zu) /, "").replace(/[?!.]/g, "").trim();
+  return EMO[clean(w.de)] || EMO[clean(w.pt)] || "";
+}
 function typeBox(ph, area){
   return `${area ? `<textarea class="ans-in" rows="2" placeholder="${ph}" autocapitalize="sentences" autocorrect="off" spellcheck="false"></textarea>` : `<input class="ans-in" placeholder="${ph}" autocapitalize="off" autocorrect="off" spellcheck="false">`}
-    <div class="acc">${["á","à","â","ã","é","ê","í","ó","ô","õ","ú","ç"].map(c => `<button data-acc="${c}" tabindex="-1">${c}</button>`).join("")}</div>`;
+    ${(ACC[LANG.code] || []).length ? `<div class="acc">${ACC[LANG.code].map(c => `<button data-acc="${c}" tabindex="-1">${c}</button>`).join("")}</div>` : ""}`;
 }
 function bigPlay(t){ return `<button class="play-big" data-play="${esc(t)}" aria-label="Abspielen">${ICON.speaker}</button><button class="play-slow" data-play="${esc(t)}" data-slow="1" aria-label="Langsam abspielen">🐢</button>`; }
 function loadIntroExtra(w){
   const el = () => document.getElementById("introX");
-  const ex = UNITS.flatMap(u => u.S).find(s => cleanW(s.pt).toLowerCase().split(" ").includes(cleanW(w.pt).toLowerCase()));
-  if(ex && el()) el().innerHTML = `<div class="ix-ex"><b>${esc(ex.pt)}</b> ${sayBtn(ex.pt)}<br><span>${esc(ex.de)}</span></div>`;
+  const key = cleanW(w.pt).toLowerCase();
+  const exs = uniqBy(UNITS.flatMap(u => u.S).filter(s => (" " + cleanW(s.pt).toLowerCase() + " ").includes(" " + key + " ")), x => x.pt).sort((a, b) => a.pt.length - b.pt.length).slice(0, 2);
+  const ex = exs[0];
+  if(exs.length && el()){ el().innerHTML = exs.map(e => `<div class="ix-ex"><b>${esc(e.pt)}</b> ${sayBtn(e.pt)}<br><span>${esc(e.de)}</span></div>`).join(""); bindSay(el()); }
   if(!sample) return;
   lookup(w.pt).then(e => {
     const x = el(); if(!x || !SES || SES.cur.w !== w) return;
@@ -8826,12 +8962,27 @@ function speakListen(it, mic, ready){
 function renderSelfRate(){ const a = document.querySelector(".speak-area"); if(!a) return; a.insertAdjacentHTML("beforeend", `<div class="opts row2"><button class="opt" data-self="1">✅ Hat geklappt</button><button class="opt" data-self="0">🔁 Nochmal</button></div>`); a.querySelectorAll("[data-self]").forEach(b => b.onclick = () => { SES.sel = b.dataset.self === "1" ? "ok" : "no"; doCheck(); }); }
 
 /* ---------- Prüfen & Feedback ---------- */
+function editDist(a, b){
+  if(Math.abs(a.length - b.length) > 3) return 9;
+  let prev = Array.from({length:b.length + 1}, (_, j) => j);
+  for(let i = 1; i <= a.length; i++){ const cur = [i]; for(let j = 1; j <= b.length; j++) cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)); prev = cur; }
+  return prev[b.length];
+}
+const typoLimit = t => t.length >= 12 ? 2 : t.length >= 4 ? 1 : 0;
 function evaluate(it){
   const typed = SES.typed || "";
-  const sentOK = (ans, target) => { const a = normalize(ans), t = normalize(target); if(!a) return "bad"; if(a === t) return "ok"; if(stripAcc(a) === stripAcc(t)) return "mid"; return "bad"; };
+  const sentOK = (ans, target) => { const a = normalize(ans), t = normalize(target); if(!a) return "bad"; if(a === t) return "ok"; if(stripAcc(a) === stripAcc(t)){ SES.why = "accent"; return "mid"; } if(it.type === "typept" && editDist(stripAcc(a), stripAcc(t)) <= Math.max(1, Math.floor(t.length / 15))){ SES.why = "typo"; return "mid"; } return "bad"; };
   switch(it.type){
+    case "match": return SES.matchErr === 0 ? "ok" : SES.matchErr <= 2 ? "mid" : "bad";
     case "mc": return SES.sel === (it.dir === "pt2de" ? it.w.de : it.w.pt) ? "ok" : "bad";
-    case "write": case "listentype": { const r = checkAnswer(typed, it.w.pt); return r === "ok" ? "ok" : r === "wrong" ? "bad" : "mid"; }
+    case "write": case "listentype": {
+      const r = checkAnswer(typed, it.w.pt);
+      if(r === "ok") return "ok";
+      if(r !== "wrong"){ SES.why = r; return "mid"; }
+      const a = stripAcc(normalize(typed));
+      if(a && variants(it.w.pt).some(v => editDist(a, stripAcc(v)) <= typoLimit(v))){ SES.why = "typo"; return "mid"; }
+      return "bad";
+    }
     case "build": return sentOK(SES.picked.map(k => it.bank[k].w).join(" "), it.s.pt);
     case "bankde": return sentOK(SES.picked.map(k => it.bank[k].w).join(" "), it.s.de);
     case "typept": return sentOK(typed, it.s.pt);
@@ -8851,6 +9002,7 @@ function evaluate(it){
 }
 function solutionOf(it){
   switch(it.type){
+    case "match": return it.pairs.map(p => p.pt + " = " + p.de).join(" · ");
     case "mc": return it.dir === "pt2de" ? it.w.de : it.w.pt;
     case "write": case "listentype": return it.w.pt;
     case "build": case "typept": case "cloze": case "speak": return it.s.pt;
@@ -8870,17 +9022,32 @@ function doCheck(){
   const it = SES.cur; if(SES.answered) return;
   SES.answered = true;
   let r = evaluate(it);
-  const first = !SES.retry.has(SES.i + ":" + it.type) && !it._retry;
+  const again = !!it._again;
+  const first = !it._retry && !again;
   if(r === "ok" || r === "mid"){
     if(first) SES.ok++;
+    SES.streak++; SES.fails = 0;
+    if(SES.streak >= 3 && SES.ease > 0){ SES.ease--; SES.streak = 0; }
     sfx("ok"); if(SES.kind === "mistakes") clearMistake(it);
   } else {
     if(first) SES.bad++;
+    SES.streak = 0; SES.fails++;
+    if(SES.fails >= 2) SES.ease = Math.min(2, SES.ease + 1);
     sfx("bad"); logMistake(it);
-    if(SES.usesHearts){ state.hearts = Math.max(0, (state.hearts == null ? MAX_HEARTS : state.hearts) - 1); state.heartsTs = state.heartsTs || Date.now(); }
-    if(!it._retry){ const copy = rebuildItem({...it, w:it.w, s:it.s, d:it.d}) || it; copy._retry = true; SES.items.push(copy); }
+    if(SES.usesHearts && !again && !it._retry){ state.hearts = Math.max(0, (state.hearts == null ? MAX_HEARTS : state.hearts) - 1); state.heartsTs = state.heartsTs || Date.now(); }
+    if(!it._retry && !again){
+      const src = it.src || rebuildItem(it) || it;
+      const copy = {...src, bonus:(src.bonus || 0) + 1, _retry:true};
+      const at = Math.min(SES.items.length, SES.i + 3);
+      SES.items.splice(at, 0, copy);
+      if(it.w && it.type !== "match"){
+        const k = it.w.pt.toLowerCase(); SES.wm[k] = (SES.wm[k] || 0) + 1;
+        if(SES.wm[k] >= 2 || stageOf(it.w) <= 1) SES.items.splice(SES.i + 1, 0, {type:"intro", w:it.w, again:true});
+      }
+    }
   }
-  if(it.w) noteWord(it.w, r !== "bad");
+  if(it.w && !again && it.type !== "match") noteWord(it.w, r !== "bad");
+  if(it.type === "match" && !again) it.pairs.forEach(p => noteWord(p, r !== "bad"));
   if(it.s) noteTopic(it.s.topic, r !== "bad");
   if(["listen","listentype"].includes(it.type) || (it.type === "build" && it.listen)){ daily().listen++; state.stats.listenTotal = (state.stats.listenTotal || 0) + 1; }
   plHearts(); scheduleSave();
@@ -8889,9 +9056,9 @@ function doCheck(){
 function showFeedback(it, r){
   const foot = document.getElementById("plFoot");
   const sol = solutionOf(it), ok = r !== "bad";
-  const head = r === "ok" ? randOf(["Richtig!","Super!","Sehr gut!","Genau!","Perfeito!","Muito bem!"]) : r === "mid" ? (it.type === "speak" ? "Fast! Noch etwas deutlicher." : "Fast richtig! Achte auf die Akzente.") : "Nicht ganz.";
-  const showSol = r !== "ok" || ["build","typept","bankde"].includes(it.type);
-  const exp = r === "bad" || r === "mid" ? explainOf(it) : (it.s && it.s.note && Math.random() < .5 ? it.s.note : "");
+  const head = r === "ok" ? randOf(["Richtig!","Super!","Sehr gut!","Genau!","Klasse!","Stark!"]) : r === "mid" ? (it.type === "speak" ? "Fast! Noch etwas deutlicher." : it.type === "match" ? "Geschafft – mit kleinen Umwegen." : SES.why === "typo" ? "Fast richtig! Nur ein kleiner Tippfehler." : SES.why === "article" ? "Fast richtig! Achte auf den Artikel." : "Fast richtig! Achte auf die Sonderzeichen.") : randOf(["Nicht ganz – kein Problem.","Noch nicht ganz.","Das passiert jedem – schau mal."]);
+  const showSol = (r !== "ok" && !(it.type === "match" && r === "mid")) || ["build","typept","bankde"].includes(it.type);
+  const exp = it.type === "match" ? "" : r === "bad" || r === "mid" ? explainOf(it) : (it.s && it.s.note && Math.random() < .5 ? it.s.note : "");
   const ptSol = ["write","listentype","build","typept","cloze","speak","dialog"].includes(it.type) || (it.type === "mc" && it.dir === "de2pt");
   foot.className = "pl-foot fb-" + (ok ? "ok" : "bad");
   foot.innerHTML = `<div class="fb-sheet">
@@ -8903,12 +9070,15 @@ function showFeedback(it, r){
     <div class="fb-btns">
       ${r === "bad" && sample && ["typept","bankde","build","write"].includes(it.type) ? `<button class="btn3d ghost small" id="fbCheckAI">Meine Antwort prüfen lassen</button>` : ""}
       ${r !== "ok" && sample ? `<button class="btn3d ghost small" id="fbWhy">Warum?</button>` : ""}
-      <button class="btn3d ${ok ? "" : "red"}" id="fbNext">Weiter</button>
+      ${r === "bad" && !it._again && !["speak","story"].includes(it.type) ? `<button class="btn3d ghost small" id="fbAgain">↻ Nochmal versuchen</button>` : ""}
+      <button class="btn3d ${ok ? "" : "warm"}" id="fbNext">Weiter</button>
     </div></div>`;
   bindSay(foot);
   if(it.opts){ const body = document.getElementById("plBody"); body.querySelectorAll("[data-o]").forEach(b => { const o = it.opts[+b.dataset.o]; const right = it.type === "cloze" ? o.toLowerCase() === it.answer.toLowerCase() : o === sol; if(right) b.classList.add("right"); else if(b.classList.contains("sel")) b.classList.add("wrongc"); b.disabled = true; }); }
   if(ok && it.type !== "speak"){ const b = document.getElementById("plBody"); b.classList.add("good"); setTimeout(() => b.classList.remove("good"), 600); }
   foot.querySelector("#fbNext").onclick = () => { if(SES.usesHearts && state.hearts <= 0 && SES.i < SES.items.length - 1){ outOfHearts(true); return; } nextItem(); };
+  const ag = foot.querySelector("#fbAgain");
+  if(ag) ag.onclick = () => { it._again = true; if(it.bank) it.bank = shuf(it.bank); if(it.opts && it.type !== "match") it.opts = shuf(it.opts); if(it.type === "match"){ it.left = shuf(it.left); it.right = shuf(it.right); } renderItem(); };
   const why = foot.querySelector("#fbWhy");
   if(why) why.onclick = async () => {
     why.disabled = true; const box = document.getElementById("fbAI"); box.innerHTML = `<span class="typing">Der Lehrer erklärt </span>`;
@@ -9059,6 +9229,8 @@ function renderLearn(){
   let html = "";
   if(!doneToday && (state.stats.streak || 0) > 0 && hour >= 17) html += `<div class="warn-banner">${ICON.flame}<div><b>Deine Serie ist in Gefahr!</b><span>Mach heute noch eine Lektion, um deine ${state.stats.streak}-Tage-Serie zu halten.</span></div></div>`;
   html += `<div class="goal-strip"><div class="gs-txt"><b>Tagesziel</b><span>${Math.min(todayXP(), goalXP())} / ${goalXP()} XP</span></div><div class="gs-bar"><i style="width:${Math.min(100, todayXP() / goalXP() * 100)}%"></i></div></div>`;
+  const nx = ALL_STATIONS[cur];
+  if(nx) html += `<button class="next-card" id="goNext" style="--c:${nx.U.color}"><span class="nc-e">${nx.U.e}</span><span class="nc-t"><small>Als Nächstes · Einheit ${nx.U.num}</small><b>${ST_INFO[nx.t].label}${nx.t === "lesson" ? " " + (nx.k + 1) : ""}: ${esc(nx.U.title)}</b></span><span class="nc-go">${nx.t === "chest" ? "Öffnen" : "Weiter lernen"}</span></button>`;
   let gi = 0;
   PATH_SECTIONS.forEach((S, si) => {
     const sUnits = S.units, sDone = sUnits.filter(unitDone).length;
@@ -9090,6 +9262,8 @@ function renderLearn(){
   html += `<div class="path-end">🏁 Weitere Einheiten folgen – frag deinen Lehrer jederzeit nach neuen Themen!</div>`;
   v.innerHTML = html;
   v.querySelectorAll("[data-st]").forEach(b => b.onclick = () => openStationSheet(+b.dataset.st));
+  const gn = v.querySelector("#goNext");
+  if(gn) gn.onclick = () => { const st = ALL_STATIONS[currentStationIdx()]; if(!st) return; if(st.t === "chest") claimChest(st); else startSession(st.t, st.U, {k:st.k, station:st}); };
   if(!learnScrolled){
     learnScrolled = true;
     requestAnimationFrame(() => { const c = v.querySelector(".node.cur"); if(c){ const y = c.getBoundingClientRect().top - v.getBoundingClientRect().top + v.scrollTop - v.clientHeight / 2.4; v.scrollTop = y < 260 ? 0 : y; } });
@@ -9099,7 +9273,7 @@ function openStationSheet(idx){
   const st = ALL_STATIONS[idx], cur = currentStationIdx(), U = st.U, info = ST_INFO[st.t];
   const done = stDone(st.id), locked = idx > cur;
   const sh = ensureSheet();
-  const desc = {lesson:"Neue Wörter und Sätze mit verschiedenen Übungen.", listen:"Hör genau hin: Sätze verstehen und Wörter aufschreiben.", speak:"Sprich Sätze nach und übe deine Aussprache.", story:"Eine kurze Geschichte mit Fragen dazu.", review:"Wiederhole alles aus dieser und früheren Einheiten.", test:"Zeig, was du kannst: Ab 80 % ist die Einheit geschafft.", chest:"Deine Belohnung für die abgeschlossene Einheit."}[st.t];
+  const desc = {lesson:"Neue Wörter ansehen und anhören, dann Schritt für Schritt wiedererkennen und anwenden.", listen:"Hör genau hin: Sätze verstehen und Wörter aufschreiben.", speak:"Sprich Sätze nach und übe deine Aussprache.", story:"Eine kurze Geschichte mit Fragen dazu.", review:"Wiederhole alles aus dieser und früheren Einheiten.", test:"Zeig, was du kannst: Ab 80 % ist die Einheit geschafft. Nur hier kosten Fehler Herzen.", chest:"Deine Belohnung für die abgeschlossene Einheit."}[st.t];
   sh.querySelector(".sh-in").style.setProperty("--c", U.color);
   sh.querySelector(".sh-in").innerHTML = `<div class="sh-grab"></div>
     <div class="sh-top"><span class="sh-ic">${U.e}</span><div><small>Einheit ${U.num} · ${esc(U.title)}</small><h3>${info.label}${st.t === "lesson" ? " " + (st.k + 1) : ""}</h3></div></div>
@@ -9129,7 +9303,15 @@ function renderReview(){
   const due = dueCount() + Math.min(newLeft(), newCount());
   const weak = weakTopics();
   const hardList = state.vocab.filter(x => x.kind !== "fix" && (x.wrong || 0) > 0).sort((a, b) => (b.wrong || 0) - (a.wrong || 0)).slice(0, 5);
+  const ws = wordStats();
+  const pct = x => ws.words.length ? Math.round(x / ws.words.length * 100) : 0;
   v.innerHTML = `<h2 class="pg-title">Wiederholen</h2>
+    <div class="card2 wstats"><h3>Deine Wörter</h3>
+      ${ws.words.length ? `<div class="ws-bar" role="img" aria-label="${ws.sicher} sicher, ${ws.lernen} am Üben, ${ws.neu} neu"><i class="ws-s" style="width:${pct(ws.sicher)}%"></i><i class="ws-l" style="width:${pct(ws.lernen)}%"></i></div>
+      <div class="ws-legend"><span><i class="dot s"></i><b>${ws.sicher}</b> sicher</span><span><i class="dot l"></i><b>${ws.lernen}</b> am Üben</span><span><i class="dot n"></i><b>${ws.neu}</b> noch neu</span></div>
+      <button class="btn3d ghost small" id="rvWords">Alle Wörter ansehen</button>
+      <div id="wsList" hidden>${wordListHTML(ws)}</div>` : `<p class="muted">Sobald du die erste Lektion machst, siehst du hier jedes Wort mit seiner Lernstufe.</p>`}
+    </div>
     ${state.hearts < MAX_HEARTS ? `<div class="heart-banner">${ICON.heart}<div><b>${state.hearts} von ${MAX_HEARTS} Herzen</b><span>Jede abgeschlossene Wiederholung gibt dir ein Herz zurück.</span></div></div>` : ""}
     <div class="tiles">
       ${tileBtn("rvMist", "#FF6B4A", "🎯", "Fehler üben", mist ? `${mist} ${mist === 1 ? "Fehler" : "Fehler"} aus deinen Lektionen` : "Keine offenen Fehler")}
@@ -9150,6 +9332,7 @@ function renderReview(){
     </div>`;
   bindSay(v);
   const g = id => v.querySelector("#" + id);
+  const rw = g("rvWords"); if(rw) rw.onclick = () => { const l = g("wsList"); l.hidden = !l.hidden; rw.textContent = l.hidden ? "Alle Wörter ansehen" : "Weniger anzeigen"; };
   g("rvMist").onclick = () => startSession("mistakes", null, {});
   g("rvHard").onclick = () => startSession("hard", null, {});
   g("rvVocab").onclick = () => { vTab = "train"; openSub("vocab", "review"); };
@@ -9159,6 +9342,19 @@ function renderReview(){
   g("rvThemes").onclick = () => { vTab = "themes"; openSub("vocab", "review"); };
   g("rvGramRef").onclick = () => { lTab = "grammar"; openSub("lessons", "review"); };
   g("rvPractice").onclick = () => { lTab = "practice"; ex = null; openSub("lessons", "review"); };
+}
+function wordStats(){
+  const curN = Math.max(1, currentUnit().num);
+  const vm = new Map(state.vocab.map(x => [x.pt.toLowerCase(), x]));
+  const st = w => stageOfV(vm.get(w.pt.toLowerCase()));
+  const units = UNITS.filter(u => u.num <= curN);
+  const words = uniqBy(units.flatMap(u => u.W), w => w.pt.toLowerCase());
+  const g = {neu:0, lernen:0, sicher:0};
+  words.forEach(w => { const x = st(w); if(x === 0) g.neu++; else if(x >= 4) g.sicher++; else g.lernen++; });
+  return {words, units, st, ...g};
+}
+function wordListHTML(ws){
+  return ws.units.map(u => `<h4>${u.e} Einheit ${u.num} · ${esc(u.title)}</h4><div class="wl">${u.W.map(w => { const x = ws.st(w); return `<div class="wl-row"><span class="wl-w"><b>${esc(w.pt)}</b><small>${esc(w.de)}</small></span><span class="wl-st" title="${STAGE_NAMES[x]}"><span class="dots">${[1,2,3,4,5].map(i => `<i class="${i <= x ? "on" : ""}"></i>`).join("")}</span><small>${STAGE_NAMES[x]}</small></span></div>`; }).join("")}</div>`).join("");
 }
 function tileBtn(id, c, e, t, s){ return `<button class="tile" id="${id}" style="--c:${c}"><span class="tl-e">${e}</span><b>${t}</b><small>${s}</small></button>`; }
 
