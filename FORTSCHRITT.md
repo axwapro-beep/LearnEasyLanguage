@@ -8,11 +8,12 @@
   - 13 Übungsarten, Vokabeltrainer mit Spaced Repetition, Wörterbuch, Themen
   - 12–16 Verben in 3–4 Zeiten, 6–7 Grammatik-Spickzettel, Dialoge, Übungssätze
   - jede Sprache im Browser komplett durchgespielt (alle 42 Stationen)
+- 🇩🇪 **Deutsch als Fremdsprache**: A1-Abschnitt 1, Hilfssprache frei wählbar (Englisch, Türkisch, Polnisch, Spanisch, Französisch, Italienisch, Portugiesisch). Beim Wechsel der Hilfssprache werden die Vokabeln automatisch umgestellt.
 
 ## Offen
 - Abschnitte 2–6 (A1–C1) für die sechs neuen Sprachen, Wortschatz deutlich erweitern.
 - C2 für alle Sprachen (auch Portugiesisch).
 - KI-Lehrer und KI-Wörterbuch für die neuen Sprachen.
 - Eigene Übungsarten für Polnisch (Fallendungen) und Türkisch (Vokalharmonie, Endungen).
-- 🇩🇪 Deutsch: Ein Deutschkurs mit deutschen Erklärungen ergibt für deutsche Lernende keinen Sinn. Es braucht eine Entscheidung, für wen er ist (z. B. Erklärungen auf Portugiesisch, Englisch oder Türkisch).
+- 🇩🇪 Deutsch: Die Bedienoberfläche der App ist noch deutsch; Grammatik-Hinweise sind auf Englisch. Für echte Anfänger ohne Deutsch- oder Englischkenntnisse müsste die ganze Oberfläche übersetzt werden.
 - Inhalte der neuen Sprachen: noch nicht von Muttersprachlern gegengelesen.

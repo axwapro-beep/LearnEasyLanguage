@@ -39,5 +39,7 @@ Für jede Sprache steht hier, an welcher Norm sich Rechtschreibung, Grammatik un
 - Türk Dil Kurumu (TDK): Güncel Türkçe Sözlük, Yazım Kılavuzu.
 - Niveaus: Lehrwerke und Rahmenplan des Yunus Emre Enstitüsü (Yedi İklim Türkçe).
 
-## 🇩🇪 Deutsch (noch offen)
-- Duden, Goethe-Institut, Profile deutsch. Braucht eine andere Erklärsprache als Deutsch – siehe FORTSCHRITT.md.
+## 🇩🇪 Deutsch als Fremdsprache
+- Duden (Rechtschreibung, Grammatik), DWDS.
+- Niveaus: Goethe-Institut, Profile deutsch.
+- Übersetzungen in 7 Hilfssprachen; Grammatik-Hinweise und Spickzettel derzeit auf Englisch.
