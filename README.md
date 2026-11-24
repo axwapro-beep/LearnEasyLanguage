@@ -1,8 +1,11 @@
 # LearnEasyLanguage (LEL)
 
-Europäisches Portugiesisch lernen – auf Deutsch erklärt.
+Sprachen lernen – auf Deutsch erklärt. Portugiesisch (komplett), Spanisch (im Aufbau), weitere folgen.
 
 App: https://axwapro-beep.github.io/LearnEasyLanguage/
 
 - `index.html` – die komplette App
 - `supabase-setup.sql` – Datenbank (Konten mit Benutzername & Passwort)
+- `packs/` – Sprachpakete (Inhalte je Sprache)
+- `QUELLEN.md` – Normen und Quellen
+- `FORTSCHRITT.md` – was fertig ist und was noch offen ist

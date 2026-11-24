@@ -641,6 +641,21 @@ body.playing nav#tabs,body.playing header{visibility:hidden}
 .opt.wrongc{border-color:var(--red);background:var(--bad-soft);color:var(--red-d);box-shadow:0 4px 0 var(--red);animation:shake .35s}
 .opt:disabled{opacity:1}
 body.playing .toast{bottom:auto;top:calc(64px + env(safe-area-inset-top))}
+
+.tab-flag{font-style:normal;font-size:21px;line-height:1}
+.lang-lead{margin:0 16px 12px}
+.langs{display:grid;gap:10px;padding:0 16px}
+.lang-row{display:flex;align-items:center;gap:14px;width:100%;text-align:left;border:2px solid var(--line);border-radius:16px;background:#fff;padding:12px 14px}
+.lang-row .lf{font-size:34px;line-height:1;flex:none}
+.lang-row .lt{display:flex;flex-direction:column;gap:1px;min-width:0}
+.lang-row b{font-size:17px}
+.lang-row small{color:var(--muted);font-size:13px}
+.lang-row .ls{color:var(--ink);font-weight:700;font-size:12.5px;margin-top:2px}
+.lang-row.on{border-color:var(--accent);background:var(--accent-soft)}
+.lang-row .ck{margin-left:auto;font-weight:900;font-size:20px;color:var(--accent)}
+.lang-row:disabled{opacity:.5;cursor:default}
+.lang-row:disabled .ls{color:var(--muted)}
+.lang-hint{margin:14px 16px 24px}
 </style>
 </head>
 <body>
@@ -653,6 +668,7 @@ body.playing .toast{bottom:auto;top:calc(64px + env(safe-area-inset-top))}
     <section id="view-speak2" class="view"></section>
     <section id="view-awards" class="view"></section>
     <section id="view-profile" class="view"></section>
+    <section id="view-lang" class="view"></section>
     <section id="view-home" class="view"></section>
     <section id="view-chat" class="view">
       <div class="backbar"><button class="back" data-back aria-label="Zurück">‹</button><b>Dein Lehrer</b></div>
@@ -674,6 +690,7 @@ body.playing .toast{bottom:auto;top:calc(64px + env(safe-area-inset-top))}
     <button data-view="review"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.3-4.9L4 8M4 4v4h4M4 13a8 8 0 0 0 14.3 4.9L20 16M20 20v-4h-4"/></svg></i>Wiederholen</button>
     <button data-view="speak2"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg></i>Sprechen</button>
     <button data-view="awards"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg></i>Erfolge</button>
+    <button data-view="lang"><i class="tab-flag" id="tabFlag" aria-hidden="true"></i>Sprache</button>
     <button data-view="profile"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></i>Profil</button>
   </nav>
 </div>
@@ -726,20 +743,31 @@ window.__acct = (function(){
 
   function signedIn(res){
     const prev = ls.get(U_KEY);
-    if(prev !== res.username) ls.del(STATE_KEY);   // anderer Benutzer: lokalen Stand nicht vermischen
+    if(prev !== res.username) clearStates();   // anderer Benutzer: lokalen Stand nicht vermischen
     ls.set(T_KEY, res.token); ls.set(U_KEY, res.username); ls.set(A_KEY, res.is_admin ? "1" : "0");
     ss.set(W_KEY, "1");
     location.reload();
   }
 
-  /* Speicher-Adapter im Format, das die App erwartet: get() / set() */
+  function clearStates(){
+    ls.del(STATE_KEY);
+    try{ Object.keys(localStorage).filter(k => k.indexOf("lel.state.") === 0).forEach(k => localStorage.removeItem(k)); }catch(e){}
+  }
+  const curLang = () => window.LEL_LANG || "pt";
+
+  /* Speicher-Adapter im Format, das die App erwartet: get() / set() – eigener Stand pro Sprache */
   const doc = {
     async get(){
-      const j = await rpc("app_load", {p_token: token()});
+      const L = curLang();
+      const j = L === "pt" ? await rpc("app_load", {p_token: token()}) : await rpc("app_load_lang", {p_token: token(), p_lang: L});
       if(j){ ls.set(A_KEY, j.is_admin ? "1" : "0"); ls.set(U_KEY, j.username); }
       return { exists: !!(j && j.state), data: () => j.state };
     },
-    async set(state){ await rpc("app_save", {p_token: token(), p_state: state}); }
+    async set(state){
+      const L = curLang();
+      if(L === "pt") await rpc("app_save", {p_token: token(), p_state: state});
+      else await rpc("app_save_lang", {p_token: token(), p_lang: L, p_state: state});
+    }
   };
 
   /* ---------- Oberflächen ---------- */
@@ -747,6 +775,7 @@ window.__acct = (function(){
   .lel-ov{position:fixed;inset:0;z-index:200;background:#fff;display:flex;align-items:center;justify-content:center;padding:24px;padding-top:calc(24px + env(safe-area-inset-top));overflow:auto}
   .lel-box{width:100%;max-width:380px}
   .lel-logo{font-size:44px;line-height:1;margin-bottom:10px}
+  .lel-flags{font-size:26px;letter-spacing:2px}
   .lel-box h1{font:800 28px/1.15 var(--font-d,-apple-system,sans-serif);margin:0 0 6px;letter-spacing:-.01em}
   .lel-box p{margin:0 0 18px;color:#6C6C72}
   .lel-seg{display:flex;background:#EFEFF4;border-radius:12px;padding:3px;margin-bottom:16px}
@@ -800,12 +829,16 @@ window.__acct = (function(){
     return d;
   }
 
+  function flagsLine(){
+    const L = (window.LEL_LANGS || []).map(x => x.flag);
+    return L.length ? `<span class="lel-flags">${L.join(" ")}</span>` : "🌍";
+  }
   function showLogin(){
     let mode = "login";
     const o = overlay("", `<div class="lel-box">
-      <div class="lel-logo" aria-hidden="true">🇵🇹</div>
+      <div class="lel-logo" aria-hidden="true">${flagsLine()}</div>
       <h1>LearnEasyLanguage</h1>
-      <p>Europäisches Portugiesisch lernen – auf Deutsch erklärt.</p>
+      <p>Sprachen lernen – auf Deutsch erklärt.</p>
       ${configured ? `
       <div class="lel-seg" role="tablist">
         <button type="button" data-m="login" class="on">Anmelden</button>
@@ -853,7 +886,7 @@ window.__acct = (function(){
   function showWelcome(){
     ss.del(W_KEY);
     const name = user();
-    const o = overlay("lel-welcome", `<div class="lel-logo" aria-hidden="true">🇵🇹</div>
+    const o = overlay("lel-welcome", `<div class="lel-logo" aria-hidden="true">${flagsLine()}</div>
       <h1>Herzlich willkommen bei LearnEasyLanguage</h1>
       <p>Schön, dass du da bist${name ? ", " + esc(name) : ""}.</p>
       <small>Tippen, um zu starten</small>`);
@@ -871,6 +904,12 @@ window.__acct = (function(){
     return d.toLocaleDateString("de-DE", {day: "2-digit", month: "2-digit", year: "numeric"}) + ", " + d.toLocaleTimeString("de-DE", {hour: "2-digit", minute: "2-digit"});
   }
 
+  function otherLangs(m){
+    const ks = Object.keys(m || {});
+    if(!ks.length) return "";
+    const fl = c => ((window.LEL_LANGS || []).find(x => x.code === c) || {flag: c}).flag;
+    return `<div class="meta">Weitere Sprachen: ${ks.map(k => fl(k) + " " + (m[k] | 0) + " XP").join(" · ")}</div>`;
+  }
   async function showAdmin(){
     const o = overlay("lel-admin", `<div class="lel-box">
       <div class="lel-top"><h1 style="margin:0">Admin-Bereich</h1><button type="button" id="lelClose">Schließen</button></div>
@@ -886,8 +925,9 @@ window.__acct = (function(){
         list.innerHTML = users.map(u => `<div class="lel-u" data-u="${esc(u.username)}">
           <b>${esc(u.username)}</b>${u.is_admin ? `<span class="tag">Admin</span>` : ""}
           <div class="meta">Registriert: ${fmt(u.created_at)} · Zuletzt da: ${fmt(u.last_login)}</div>
+          ${otherLangs(u.langs)}
           <div class="nums">
-            <div><b>${u.xp}</b><small>XP</small></div>
+            <div><b>${u.xp}</b><small>XP 🇵🇹</small></div>
             <div><b>${u.streak}</b><small>Serie</small></div>
             <div><b>${u.words}</b><small>Wörter</small></div>
             <div><b>${u.stations}</b><small>Stationen</small></div>
@@ -950,7 +990,7 @@ window.__acct = (function(){
 
   async function logout(){
     try{ await rpc("app_logout", {p_token: token()}); }catch(e){}
-    ls.del(T_KEY); ls.del(A_KEY); ls.del(STATE_KEY);
+    ls.del(T_KEY); ls.del(A_KEY); clearStates();
     location.reload();
   }
 
@@ -988,15 +1028,466 @@ window.__acct = (function(){
 
 </script>
 <script>
+window.LEL_PACKS = window.LEL_PACKS || {};
+</script>
+<script>
+/* ===== Sprachpaket: Spanisch (Spanien, castellano peninsular) =====
+   Norm: Real Academia Española / ASALE (Ortografía 2010), Niveaus nach dem
+   Plan Curricular des Instituto Cervantes (GER A1–C2). Siehe QUELLEN.md. */
+LEL_PACKS.es = {
+LANG: {code:"es", flag:"🇪🇸", name:"Spanisch", adj:"Spanisch (Spanien)", inLang:"Spanisch", into:"ins Spanische",
+  country:"Spanien", voiceFrom:"aus Spanien", tts:"es-ES", ttsRe:/^es[-_]ES/i, prefix:"es",
+  voicePath:"Spanisch → Spanien", status:"A1 · Abschnitt 1 von 6", tutor:false},
+ART_RE: /^(el|la|los|las|un|una|unos|unas|der|die|das|ein|eine|einen) /,
+F_RE: /m[oó]nica|paulina|marisol|luc[ií]a|elvira|helena|female|mujer|woman/i,
+M_RE: /jorge|juan|diego|pablo|[aá]lvaro|\bmale\b|hombre|\bman\b/i,
+FUNC: ["el","la","los","las","un","una","de","del","en","al","a","con","para","por","que","y","se","no","me","te","lo"],
+LEVEL_NAMES: {A1:"Absolute Grundlagen",A2:"Einfache Gespräche & Alltag",B1:"Selbstständig kommunizieren",B2:"Flüssiger sprechen",C1:"Fortgeschrittenes Spanisch"},
+CURRICULUM: {
+ A1:[
+  ["A1-01","Begrüßen & sich vorstellen","hola, buenos días, me llamo …, ¿qué tal?, tú vs. usted"],
+  ["A1-02","Aussprache in Spanien","c/z wie englisches „th“, j und g wie „ch“ in „Bach“, ll/y, ñ, stummes h, Betonung"],
+  ["A1-03","Artikel & Geschlecht","el / la / los / las, un / una, typische Endungen und Ausnahmen"],
+  ["A1-04","Personalpronomen & ser","yo, tú, él/ella/usted, nosotros, vosotros, ellos – soy, eres, es …"],
+  ["A1-05","Zahlen, Alter & Herkunft","0–100, tener … años, ser de, vivir en"],
+  ["A1-06","ser vs. estar","dauerhaft vs. Zustand und Ort: estoy cansado, está en Madrid"],
+  ["A1-07","Regelmäßige Verben auf -ar","hablar, trabajar, estudiar, llamarse"],
+  ["A1-08","Verben auf -er und -ir","comer, beber, vivir, escribir"],
+  ["A1-09","Familie & Possessivbegleiter","mi padre, tu madre, nuestros hermanos"],
+  ["A1-10","Im Café & Restaurant","un café con leche, la cuenta, quería …"],
+  ["A1-11","Uhrzeit, Tage & Monate","¿qué hora es?, el lunes, por la mañana"],
+  ["A1-12","tener, ir, hacer & querer","die wichtigsten unregelmäßigen Verben im Präsens"],
+  ["A1-13","hay / está","Existenz (hay un bar) und Ort (el bar está aquí)"],
+  ["A1-14","Fragewörter & Verneinung","dónde, cuándo, cuánto, por qué – no … nada"],
+  ["A1-15","gustar","me gusta / me gustan, a mí también, a mí tampoco"],
+  ["A1-T","A1-Abschlusstest","Prüfung über alle A1-Themen"]],
+ A2:[
+  ["A2-01","Pretérito perfecto","he comido – was heute oder in dieser Woche passiert ist"],
+  ["A2-02","Pretérito indefinido","ayer comí – abgeschlossene Vergangenheit"],
+  ["A2-03","Pretérito imperfecto","Gewohnheiten und Beschreibungen in der Vergangenheit"],
+  ["A2-04","ir a + Infinitiv","Pläne: voy a viajar"],
+  ["A2-05","Reflexive Verben","levantarse, ducharse, acostarse"],
+  ["A2-06","Objektpronomen","lo, la, le, se lo"],
+  ["A2-07","Vergleiche","más … que, menos … que, tan … como"],
+  ["A2-T","A2-Abschlusstest","Prüfung über alle A2-Themen"]],
+ B1:[
+  ["B1-01","Indefinido vs. imperfecto","erzählen: Handlung und Hintergrund"],
+  ["B1-02","Subjuntivo presente","Wünsche und Gefühle: quiero que vengas"],
+  ["B1-03","Imperativ","bejaht und verneint, mit Pronomen"],
+  ["B1-04","Futuro & condicional","Vermutungen und höfliche Bitten"],
+  ["B1-T","B1-Abschlusstest","Prüfung über alle B1-Themen"]],
+ B2:[
+  ["B2-01","Subjuntivo imperfecto","si tuviera tiempo …"],
+  ["B2-02","Bedingungssätze","reale und irreale Bedingungen"],
+  ["B2-03","Indirekte Rede","dijo que vendría"],
+  ["B2-T","B2-Abschlusstest","Prüfung über alle B2-Themen"]],
+ C1:[
+  ["C1-01","Stil & Register","formell, umgangssprachlich, regionale Unterschiede"],
+  ["C1-02","Komplexe Satzgefüge","Konnektoren, Nominalstil"],
+  ["C1-T","C1-Abschlusstest","Prüfung über alle C1-Themen"]]
+},
+SCENARIOS: [
+  ["☕","En la cafetería","Bestelle einen Kaffee und etwas zu essen"],
+  ["🛒","En el supermercado","Frag nach Produkten, Preisen und bezahle"],
+  ["📞","Por teléfono","Reserviere einen Tisch im Restaurant"],
+  ["🍻","Con amigos","Verabrede dich für den Abend"],
+  ["👨‍👩‍👧","Con la familia","Lerne die Familie eines Freundes kennen"],
+  ["🧭","En la calle","Frag nach dem Weg zur U-Bahn"],
+  ["💊","En la farmacia","Beschreibe Beschwerden und kauf etwas"],
+  ["🏨","En el hotel","Check-in und Fragen an der Rezeption"],
+  ["🏠","Con el vecino","Smalltalk mit dem Nachbarn"],
+  ["🎲","Conversación libre","Freies Gespräch auf deinem Niveau"]
+],
+SCEN_DE: ["Im Café","Im Supermarkt","Am Telefon","Mit Freunden","Mit der Familie","Auf der Straße","In der Apotheke","Im Hotel","Mit dem Nachbarn","Freies Gespräch"],
+STARTER_VOCAB: [
+  ["hola","hallo"],["buenos días","guten Morgen"],["buenas tardes","guten Tag (nachmittags)"],["buenas noches","guten Abend / gute Nacht"],
+  ["me llamo …","ich heiße …"],["¿qué tal?","wie geht's?"],["gracias","danke"],["por favor","bitte"],
+  ["perdón","Entschuldigung"],["sí","ja"],["no","nein"],["adiós","tschüss / auf Wiedersehen"],["hasta luego","bis später"]
+],
+INITIAL_CHAT: [
+  {role:"assistant", content:"¡Hola! Hier lernst du Spanisch, wie es in Spanien gesprochen wird 🇪🇸\n\nFang einfach mit der ersten Lektion im Lernpfad an."}
+],
+THEMES: [
+ {id:"gruss",e:"👋",name:"Begrüßung & Höflichkeit",level:"A1",w:`hola|hallo
+buenos días|guten Morgen
+buenas tardes|guten Tag (nachmittags)
+buenas noches|guten Abend / gute Nacht
+adiós|tschüss / auf Wiedersehen
+hasta luego|bis später
+hasta mañana|bis morgen
+hasta pronto|bis bald
+¿qué tal?|wie geht's?
+¿cómo estás?|wie geht es dir?
+¿cómo está usted?|wie geht es Ihnen?
+muy bien|sehr gut
+gracias|danke
+muchas gracias|vielen Dank
+de nada|gern geschehen
+por favor|bitte
+perdón|Entschuldigung
+lo siento|es tut mir leid
+encantado|freut mich (sagt ein Mann)
+encantada|freut mich (sagt eine Frau)
+mucho gusto|freut mich
+bienvenido|willkommen`},
+ {id:"ichdu",e:"🙋",name:"Personen & Vorstellen",level:"A1",w:`yo|ich
+tú|du
+él|er
+ella|sie (Singular)
+usted|Sie (höflich, Singular)
+nosotros|wir
+vosotros|ihr (in Spanien)
+ellos|sie (Plural)
+ustedes|Sie (höflich, Plural)
+me llamo|ich heiße
+el nombre|der Name
+el apellido|der Nachname
+el señor|der Herr
+la señora|die Frau (Anrede)
+alemán|deutsch / der Deutsche
+alemana|deutsch / die Deutsche
+español|spanisch / der Spanier
+Alemania|Deutschland
+España|Spanien`},
+ {id:"fragen",e:"❓",name:"Fragewörter",level:"A1",w:`¿qué?|was?
+¿quién?|wer?
+¿dónde?|wo?
+¿adónde?|wohin?
+¿de dónde?|woher?
+¿cuándo?|wann?
+¿cómo?|wie?
+¿cuánto?|wie viel?
+¿cuántos?|wie viele?
+¿por qué?|warum?
+porque|weil
+¿cuál?|welcher / welche / welches?`},
+ {id:"zahlen",e:"🔢",name:"Zahlen",level:"A1",w:`cero|null
+uno|eins
+dos|zwei
+tres|drei
+cuatro|vier
+cinco|fünf
+seis|sechs
+siete|sieben
+ocho|acht
+nueve|neun
+diez|zehn
+once|elf
+doce|zwölf
+trece|dreizehn
+catorce|vierzehn
+quince|fünfzehn
+dieciséis|sechzehn
+diecisiete|siebzehn
+dieciocho|achtzehn
+diecinueve|neunzehn
+veinte|zwanzig
+veintiuno|einundzwanzig
+treinta|dreißig
+cuarenta|vierzig
+cincuenta|fünfzig
+sesenta|sechzig
+setenta|siebzig
+ochenta|achtzig
+noventa|neunzig
+cien|hundert
+mil|tausend
+el euro|der Euro`},
+ {id:"verben",e:"⚙️",name:"Erste Verben",level:"A1",w:`ser|sein (Wesen, Herkunft)
+estar|sein (Zustand, Ort)
+tener|haben
+ir|gehen / fahren
+hacer|machen
+poder|können
+querer|wollen / mögen
+hablar|sprechen
+trabajar|arbeiten
+estudiar|lernen / studieren
+vivir|leben / wohnen
+comer|essen
+beber|trinken
+llamarse|heißen
+venir|kommen
+saber|wissen
+ver|sehen
+dar|geben
+decir|sagen
+poner|legen / stellen`},
+ {id:"alltag",e:"☀️",name:"Erste Alltagswörter",level:"A1",w:`sí|ja
+no|nein
+claro|klar
+vale|okay (in Spanien)
+también|auch
+tampoco|auch nicht
+nada|nichts
+nunca|nie
+hoy|heute
+mañana|morgen
+ayer|gestern
+aquí|hier
+allí|dort
+mucho|viel
+poco|wenig
+muy|sehr
+bien|gut
+mal|schlecht
+el café|der Kaffee
+el agua|das Wasser
+la cerveza|das Bier
+el pan|das Brot
+la casa|das Haus
+la calle|die Straße
+el baño|die Toilette / das Bad
+la estación|der Bahnhof
+el hermano|der Bruder
+la hermana|die Schwester
+el amigo|der Freund
+la amiga|die Freundin`}
+],
+PATH_SECTIONS: [
+ {id:"s1", title:"Erste Schritte", pt:"Primeros pasos", level:"A1", color:"#2F6BFF", units:[
+  {id:"u1", e:"👋", title:"Begrüßungen", pt:"¡Hola!", desc:"Hallo sagen, danke und bitte.",
+   words:`hola|hallo
+buenos días|guten Morgen
+buenas tardes|guten Tag (nachmittags)
+buenas noches|guten Abend / gute Nacht
+adiós|tschüss / auf Wiedersehen
+hasta luego|bis später
+gracias|danke
+por favor|bitte
+de nada|gern geschehen
+¿qué tal?|wie geht's?`,
+   sents:`¡Hola, buenos días!|Hallo, guten Morgen!|Begrüßung|„Buenos días“ sagt man in Spanien bis zum Mittagessen, also oft bis etwa 14 Uhr.
+Buenas tardes, ¿qué tal?|Guten Tag, wie geht's?|Begrüßung|„Buenas tardes“ gilt nach dem Mittagessen, bis es dunkel wird.
+Muy bien, gracias.|Sehr gut, danke.|Begrüßung|
+¡Buenas noches y hasta mañana!|Gute Nacht und bis morgen!|Begrüßung|„Buenas noches“ heißt sowohl „guten Abend“ als auch „gute Nacht“.
+Adiós, ¡hasta luego!|Tschüss, bis später!|Begrüßung|„Hasta luego“ sagt man in Spanien auch, wenn man sich nicht am selben Tag wiedersieht.
+Un café, por favor.|Einen Kaffee, bitte.|Höflichkeit|`},
+  {id:"u2", e:"🙋", title:"Sich vorstellen", pt:"Me llamo…", desc:"Name, Herkunft und Wohnort.",
+   words:`me llamo|ich heiße
+soy|ich bin
+¿cómo te llamas?|wie heißt du?
+¿de dónde eres?|woher kommst du?
+soy de Alemania|ich komme aus Deutschland
+vivo en|ich wohne in
+encantado|freut mich (sagt ein Mann)
+encantada|freut mich (sagt eine Frau)
+el nombre|der Name
+alemán|deutsch / Deutscher`,
+   sents:`Me llamo Daniel.|Ich heiße Daniel.|Reflexive Verben|„Me llamo“ heißt wörtlich „ich nenne mich“ – llamarse ist ein reflexives Verb.
+¿Cómo te llamas?|Wie heißt du?|Fragen|Fragen stehen im Spanischen zwischen ¿ und ?.
+Soy alemán.|Ich bin Deutscher.|ser/estar|Die Nationalität gehört zum Wesen – deshalb „ser“.
+Soy de Alemania.|Ich komme aus Deutschland.|Präpositionen|Herkunft: ser de + Land oder Stadt.
+Vivo en Berlín.|Ich wohne in Berlin.|Präpositionen|Vor Städtenamen steht kein Artikel.
+¡Encantada!|Freut mich!|Begrüßung|Frauen sagen „encantada“, Männer „encantado“. Für alle passt „mucho gusto“.
+¿De dónde eres?|Woher kommst du?|Fragen|`,
+   story:{title:"Im Sprachkurs", lines:`Lucía|¡Hola! ¿Cómo te llamas?|Hallo! Wie heißt du?
+Daniel|Me llamo Daniel. ¿Y tú?|Ich heiße Daniel. Und du?
+Lucía|Yo soy Lucía. ¿De dónde eres?|Ich bin Lucía. Woher kommst du?
+Daniel|Soy de Alemania, pero vivo en Madrid.|Ich komme aus Deutschland, aber ich wohne in Madrid.
+Lucía|¡Encantada, Daniel!|Freut mich, Daniel!`, qs:`Woher kommt Daniel?|Aus Deutschland|Aus Madrid|Aus Mexiko
+Wo wohnt Daniel?|In Madrid|In Berlin|In Sevilla
+Was sagt Lucía am Ende?|Freut mich|Bis morgen|Danke schön`}},
+  {id:"u3", e:"✅", title:"Ja und Nein", pt:"Sí o no", desc:"Zustimmen, ablehnen, verneinen.",
+   words:`sí|ja
+no|nein
+claro|klar
+vale|okay (in Spanien)
+también|auch
+tampoco|auch nicht
+nada|nichts
+nunca|nie
+no sé|ich weiß nicht
+de acuerdo|einverstanden`,
+   sents:`Sí, claro.|Ja, klar.|Zustimmung|
+No, gracias.|Nein, danke.|Verneinung|
+No sé.|Ich weiß nicht.|Verneinung|„no“ steht immer direkt vor dem Verb.
+Vale, de acuerdo.|Okay, einverstanden.|Zustimmung|„Vale“ hört man in Spanien ständig. In Lateinamerika sagt man eher „bueno“ oder „okey“.
+No quiero nada.|Ich will nichts.|Verneinung|Die doppelte Verneinung ist im Spanischen richtig: no … nada.
+Yo tampoco.|Ich auch nicht.|Verneinung|Auf einen verneinten Satz antwortet man mit „tampoco“, auf einen bejahten mit „también“.
+Yo también.|Ich auch.|Zustimmung|`},
+  {id:"u4", e:"❓", title:"Grundlegende Fragen", pt:"Preguntas", desc:"Wer, was, wo, wann und wie viel?",
+   words:`¿qué?|was?
+¿quién?|wer?
+¿dónde?|wo?
+¿cuándo?|wann?
+¿cómo?|wie?
+¿cuánto?|wie viel?
+¿por qué?|warum?
+porque|weil
+¿cuál?|welcher / welche / welches?
+¿adónde?|wohin?`,
+   sents:`¿Qué es esto?|Was ist das?|Fragen|Fragewörter tragen immer einen Akzent: qué, quién, dónde …
+¿Dónde está el baño?|Wo ist die Toilette?|ser/estar|Wo sich etwas befindet, sagt man mit „estar“.
+¿Cuánto cuesta?|Wie viel kostet das?|Fragen|
+¿Quién es?|Wer ist das?|Fragen|
+¿Por qué no vienes?|Warum kommst du nicht?|Fragen|„¿Por qué?“ (warum) wird getrennt und mit Akzent geschrieben, „porque“ (weil) zusammen und ohne.
+Porque estoy cansado.|Weil ich müde bin.|ser/estar|Ein vorübergehender Zustand – deshalb „estar“.
+¿Cuándo empieza la clase?|Wann fängt der Unterricht an?|Fragen|`},
+  {id:"u5", e:"🔢", title:"Zahlen", pt:"Números", desc:"Von eins bis hundert, Alter und Preise.",
+   words:`uno|eins
+dos|zwei
+tres|drei
+cuatro|vier
+cinco|fünf
+diez|zehn
+veinte|zwanzig
+cien|hundert
+el euro|der Euro
+¿cuántos años tienes?|wie alt bist du?`,
+   sents:`Tengo veinte años.|Ich bin zwanzig Jahre alt.|tener|Das Alter sagt man mit „tener“ (haben): tengo … años.
+¿Cuántos años tienes?|Wie alt bist du?|Fragen|
+Son cinco euros.|Das macht fünf Euro.|Zahlen|
+Uno, dos, tres, cuatro.|Eins, zwei, drei, vier.|Zahlen|
+Tengo dos hermanos.|Ich habe zwei Geschwister.|tener|„Hermanos“ heißt Brüder oder Geschwister.
+Cien euros es mucho dinero.|Hundert Euro sind viel Geld.|Zahlen|Genau 100 heißt „cien“, ab 101 „ciento“: ciento uno.`},
+  {id:"u6", e:"🧱", title:"Einfache Sätze", pt:"Frases simples", desc:"Ich, du, er, sie – die ersten Verben.",
+   words:`yo|ich
+tú|du
+él|er
+ella|sie (Singular)
+nosotros|wir
+vosotros|ihr (in Spanien)
+ellos|sie (Plural)
+usted|Sie (höflich)
+hablar|sprechen
+trabajar|arbeiten`,
+   sents:`Yo hablo alemán.|Ich spreche Deutsch.|Verben auf -ar|Das Pronomen lässt man meist weg: Hablo alemán.
+¿Hablas español?|Sprichst du Spanisch?|Verben auf -ar|
+Ella trabaja en Madrid.|Sie arbeitet in Madrid.|Verben auf -ar|
+Nosotros vivimos en Berlín.|Wir wohnen in Berlin.|Verben auf -ir|
+¿Vosotros sois de aquí?|Seid ihr von hier?|Anrede|„Vosotros“ (ihr) benutzt man nur in Spanien. In Lateinamerika sagt man „ustedes“.
+¿Usted habla inglés?|Sprechen Sie Englisch?|Anrede|„Usted“ (Sie) steht mit der Verbform der 3. Person: habla.
+Él no trabaja hoy.|Er arbeitet heute nicht.|Verneinung|`}
+ ]}
+],
+DIALOGS: `1|Hola, ¿qué tal?|Hallo, wie geht's?|Muy bien, gracias. ¿Y tú?|Son tres euros.|Vivo en Berlín.
+1|¡Gracias por la ayuda!|Danke für die Hilfe!|¡De nada!|No sé.|¿Cuánto cuesta?
+2|¿Cómo te llamas?|Wie heißt du?|Me llamo Daniel.|Tengo veinte años.|¡Hasta luego!
+2|¿De dónde eres?|Woher kommst du?|Soy de Alemania.|Me llamo Lucía.|A las ocho.
+3|¿Quieres un café?|Möchtest du einen Kaffee?|Sí, por favor.|Soy de Alemania.|Tengo dos hermanos.
+4|¿Dónde está el baño?|Wo ist die Toilette?|Allí, a la derecha.|Son cinco euros.|Me llamo Daniel.
+5|¿Cuántos años tienes?|Wie alt bist du?|Tengo treinta años.|Vivo en Madrid.|Muy bien, gracias.
+5|¿Cuánto cuesta el pan?|Wie viel kostet das Brot?|Un euro.|Hasta mañana.|Soy alemán.
+6|¿Hablas español?|Sprichst du Spanisch?|Sí, un poco.|Tengo veinte años.|De nada.`,
+SENTENCES: `A1|Me llamo Daniel y soy de Alemania.|Ich heiße Daniel und komme aus Deutschland.
+A1|Vivo en Madrid desde hace dos años.|Ich wohne seit zwei Jahren in Madrid.
+A1|Quería un café con leche, por favor.|Ich hätte gern einen Milchkaffee, bitte.
+A1|La cuenta, por favor.|Die Rechnung, bitte.
+A1|¿Dónde está la estación?|Wo ist der Bahnhof?
+A1|Hoy hace mucho calor.|Heute ist es sehr heiß.
+A1|Tengo hambre.|Ich habe Hunger.
+A1|No hablo muy bien español.|Ich spreche nicht sehr gut Spanisch.
+A1|¿Puedes repetir, por favor?|Kannst du das bitte wiederholen?
+A1|Mi hermana trabaja en un hospital.|Meine Schwester arbeitet in einem Krankenhaus.`,
+PERSONS: ["yo","tú","él / ella / usted","nosotros / nosotras","vosotros / vosotras","ellos / ellas / ustedes"],
+TENSES: [
+  ["pres","Presente","Was jetzt oder regelmäßig passiert: **hablo** = ich spreche."],
+  ["indef","Indefinido","Abgeschlossene Handlung zu einem vergangenen Zeitpunkt (ayer, el año pasado …): **fui** = ich war / ich ging. Für heute oder diese Woche sagt man in Spanien meist das Perfekt: **he hablado**."],
+  ["imp","Imperfecto","Gewohnheiten und Beschreibungen in der Vergangenheit (antes …). Höflich: **quería** = ich hätte gern."],
+  ["fut","Futuro","Zukunft oder Vermutung. Im Alltag oft **ir a** + Infinitiv: **voy a hablar** = ich werde sprechen."]
+],
+VERBS: {
+  ser:   ["sein (Wesen, Herkunft)", "soy,eres,es,somos,sois,son", "fui,fuiste,fue,fuimos,fuisteis,fueron", "era,eras,era,éramos,erais,eran", "seré,serás,será,seremos,seréis,serán"],
+  estar: ["sein (Zustand, Ort)", "estoy,estás,está,estamos,estáis,están", "estuve,estuviste,estuvo,estuvimos,estuvisteis,estuvieron", "estaba,estabas,estaba,estábamos,estabais,estaban", "estaré,estarás,estará,estaremos,estaréis,estarán"],
+  tener: ["haben", "tengo,tienes,tiene,tenemos,tenéis,tienen", "tuve,tuviste,tuvo,tuvimos,tuvisteis,tuvieron", "tenía,tenías,tenía,teníamos,teníais,tenían", "tendré,tendrás,tendrá,tendremos,tendréis,tendrán"],
+  ir:    ["gehen / fahren", "voy,vas,va,vamos,vais,van", "fui,fuiste,fue,fuimos,fuisteis,fueron", "iba,ibas,iba,íbamos,ibais,iban", "iré,irás,irá,iremos,iréis,irán"],
+  hacer: ["machen", "hago,haces,hace,hacemos,hacéis,hacen", "hice,hiciste,hizo,hicimos,hicisteis,hicieron", "hacía,hacías,hacía,hacíamos,hacíais,hacían", "haré,harás,hará,haremos,haréis,harán"],
+  poder: ["können / dürfen", "puedo,puedes,puede,podemos,podéis,pueden", "pude,pudiste,pudo,pudimos,pudisteis,pudieron", "podía,podías,podía,podíamos,podíais,podían", "podré,podrás,podrá,podremos,podréis,podrán"],
+  querer:["wollen / mögen", "quiero,quieres,quiere,queremos,queréis,quieren", "quise,quisiste,quiso,quisimos,quisisteis,quisieron", "quería,querías,quería,queríamos,queríais,querían", "querré,querrás,querrá,querremos,querréis,querrán"],
+  decir: ["sagen", "digo,dices,dice,decimos,decís,dicen", "dije,dijiste,dijo,dijimos,dijisteis,dijeron", "decía,decías,decía,decíamos,decíais,decían", "diré,dirás,dirá,diremos,diréis,dirán"],
+  venir: ["kommen", "vengo,vienes,viene,venimos,venís,vienen", "vine,viniste,vino,vinimos,vinisteis,vinieron", "venía,venías,venía,veníamos,veníais,venían", "vendré,vendrás,vendrá,vendremos,vendréis,vendrán"],
+  ver:   ["sehen", "veo,ves,ve,vemos,veis,ven", "vi,viste,vio,vimos,visteis,vieron", "veía,veías,veía,veíamos,veíais,veían", "veré,verás,verá,veremos,veréis,verán"],
+  dar:   ["geben", "doy,das,da,damos,dais,dan", "di,diste,dio,dimos,disteis,dieron", "daba,dabas,daba,dábamos,dabais,daban", "daré,darás,dará,daremos,daréis,darán"],
+  saber: ["wissen / können", "sé,sabes,sabe,sabemos,sabéis,saben", "supe,supiste,supo,supimos,supisteis,supieron", "sabía,sabías,sabía,sabíamos,sabíais,sabían", "sabré,sabrás,sabrá,sabremos,sabréis,sabrán"],
+  poner: ["legen / stellen", "pongo,pones,pone,ponemos,ponéis,ponen", "puse,pusiste,puso,pusimos,pusisteis,pusieron", "ponía,ponías,ponía,poníamos,poníais,ponían", "pondré,pondrás,pondrá,pondremos,pondréis,pondrán"],
+  hablar:["sprechen (Muster für -ar)", "hablo,hablas,habla,hablamos,habláis,hablan", "hablé,hablaste,habló,hablamos,hablasteis,hablaron", "hablaba,hablabas,hablaba,hablábamos,hablabais,hablaban", "hablaré,hablarás,hablará,hablaremos,hablaréis,hablarán"],
+  comer: ["essen (Muster für -er)", "como,comes,come,comemos,coméis,comen", "comí,comiste,comió,comimos,comisteis,comieron", "comía,comías,comía,comíamos,comíais,comían", "comeré,comerás,comerá,comeremos,comeréis,comerán"],
+  vivir: ["leben / wohnen (Muster für -ir)", "vivo,vives,vive,vivimos,vivís,viven", "viví,viviste,vivió,vivimos,vivisteis,vivieron", "vivía,vivías,vivía,vivíamos,vivíais,vivían", "viviré,vivirás,vivirá,viviremos,viviréis,vivirán"]
+},
+VERB_NOTES: {
+  ser: "Indefinido von **ser** und **ir** ist gleich: **fui** = ich war / ich ging. Der Zusammenhang entscheidet.",
+  ir: "Indefinido von **ir** und **ser** ist gleich: **fui** = ich ging / ich war.",
+  hablar: "Bei Verben auf -ar und -ir sind Präsens und Indefinido in der wir-Form gleich: **hablamos**, **vivimos**.",
+  ver: "**vi**, **vio**, **dio**, **fue** schreibt man ohne Akzent, weil sie nur eine Silbe haben."
+},
+CHEATS: [
+ ["Aussprache in Spanien", `- **c** vor e/i und **z** klingen in den meisten Teilen Spaniens wie das englische „th“: **gracias**, **cerveza**. In Lateinamerika und auf den Kanaren wie „s“.
+- **j** und **g** vor e/i klingen wie „ch“ in „Bach“: **jamón**, **gente**.
+- **ll** und **y** klingen wie das deutsche „j“: **llamo**, **yo**.
+- **ñ** klingt wie „nj“: **España**.
+- **h** spricht man nicht: **hola** [ola].
+- **b** und **v** klingen gleich: **vino**, **bien**.
+- **r** am Wortanfang und **rr** werden gerollt: **perro**. Ein einfaches **r** zwischen Vokalen wird nur kurz getippt: **pero**.
+- Vokale sind immer klar und kurz – auch unbetont.`],
+ ["Betonung & Akzent", `- Wörter auf Vokal, **-n** oder **-s** betont man auf der vorletzten Silbe: **casa**, **hablan**.
+- Wörter auf anderen Konsonanten betont man auf der letzten Silbe: **hablar**, **ciudad**.
+- Weicht die Betonung davon ab, steht ein Akzent: **café**, **teléfono**, **árbol**.
+- Der Akzent unterscheidet auch Wörter: **sí** (ja) – **si** (wenn), **tú** (du) – **tu** (dein), **él** (er) – **el** (der).`],
+ ["Artikel & Geschlecht", `- Bestimmt: **el** (m), **la** (f), **los**, **las** – unbestimmt: **un**, **una**, **unos**, **unas**.
+- Wörter auf **-o** sind meist männlich, auf **-a** meist weiblich.
+- Ausnahmen: **el día**, **el mapa**, **el problema**, **la mano**, **la foto**.
+- Weiblich: Endungen **-ción**, **-dad**, **-tad**: **la estación**, **la ciudad**.
+- Weibliche Wörter mit betontem a- am Anfang bekommen im Singular **el**: **el agua** (aber: **las aguas**, **el agua fría**).
+- **a** + **el** = **al**, **de** + **el** = **del**: **Voy al cine. Soy del norte.**`],
+ ["ser oder estar?", `**ser** – Wesen und Identität:
+- Name, Herkunft, Beruf: **Soy Daniel. Soy de Alemania. Soy profesor.**
+- Eigenschaften: **Ella es simpática.**
+- Uhrzeit und Datum: **Son las tres.**
+
+**estar** – Zustand und Ort:
+- Befinden: **Estoy cansado.**
+- Wo jemand oder etwas ist: **Estoy en casa. Madrid está en España.**
+- Gerade dabei sein: **Estoy comiendo.**
+
+Dass es etwas gibt, sagt man mit **hay**: **Hay un bar aquí.**`],
+ ["Du, Sie & ihr", `- **tú** (du): In Spanien sehr verbreitet – auch mit Kollegen oder im Geschäft.
+- **usted** (Sie): mit älteren Menschen, Behörden, in formellen Situationen. Verb in der 3. Person: **¿Cómo está usted?**
+- **vosotros** (ihr): nur in Spanien. **¿Qué queréis?**
+- **ustedes** (Sie, Plural): in Spanien höflich, in Lateinamerika auch für „ihr“.`],
+ ["Fragen & Verneinung", `- Fragen und Ausrufe haben am Anfang ein umgedrehtes Zeichen: **¿Qué tal? ¡Qué bien!**
+- Fragewörter tragen einen Akzent: **qué**, **quién**, **dónde**, **cuándo**, **cómo**, **cuánto**.
+- **no** steht direkt vor dem Verb: **No hablo francés.**
+- Doppelte Verneinung ist richtig: **No sé nada. No viene nadie.**`],
+ ["Gerade etwas tun: estar + Gerundium", `- **estar** + Gerundium: **Estoy trabajando.** (Ich arbeite gerade.)
+- Gerundium: **-ar → -ando** (**hablando**), **-er/-ir → -iendo** (**comiendo**, **viviendo**).
+- **¿Qué estás haciendo?** – Was machst du gerade?`]
+]
+};
+
+</script>
+<script>
+window.LEL_LANGS = [
+  {code:"pt", flag:"🇵🇹", name:"Portugiesisch", sub:"Europäisches Portugiesisch (Portugal)"},
+  {code:"es", flag:"🇪🇸", name:"Spanisch", sub:"Spanisch aus Spanien"},
+  {code:"fr", flag:"🇫🇷", name:"Französisch", sub:"Französisch aus Frankreich"},
+  {code:"it", flag:"🇮🇹", name:"Italienisch", sub:"Standarditalienisch"},
+  {code:"en", flag:"🇬🇧", name:"Englisch", sub:"Britisches Englisch"},
+  {code:"pl", flag:"🇵🇱", name:"Polnisch", sub:"Standardpolnisch"},
+  {code:"tr", flag:"🇹🇷", name:"Türkisch", sub:"Türkeitürkisch"},
+  {code:"de", flag:"🇩🇪", name:"Deutsch", sub:"Deutsch als Fremdsprache"}
+];
+(function(){
+  var c = "pt";
+  try{ c = localStorage.getItem("lel.lang") || "pt"; }catch(e){}
+  if(c !== "pt" && !window.LEL_PACKS[c]) c = "pt";
+  window.LEL_LANG = c;
+  window.LEL_PACK = c === "pt" ? null : window.LEL_PACKS[c];
+})();
+</script>
+<script>
 (() => {
 "use strict";
 const $ = s => document.querySelector(s);
-const LS_KEY = "ptlehrer.state.v1";
+const P = window.LEL_PACK || {};
+const LANG = Object.assign({code:"pt", flag:"🇵🇹", name:"Portugiesisch", adj:"europäisches Portugiesisch", inLang:"Portugiesisch", into:"ins Portugiesische",
+  country:"Portugal", voiceFrom:"aus Portugal", tts:"pt-PT", ttsRe:/^pt[-_]PT/i, prefix:"pt", voicePath:"Portugiesisch → Portugal", tutor:true}, P.LANG || {});
+const LS_KEY = LANG.code === "pt" ? "ptlehrer.state.v1" : "lel.state." + LANG.code;
 const DAY = 86400000;
 const LEVELS = ["A1","A2","B1","B2","C1"];
-const LEVEL_NAMES = {A1:"Absolute Grundlagen",A2:"Einfache Gespräche & Alltag",B1:"Selbstständig kommunizieren",B2:"Flüssiger sprechen",C1:"Fortgeschrittenes Portugiesisch"};
+const LEVEL_NAMES = P.LEVEL_NAMES || {A1:"Absolute Grundlagen",A2:"Einfache Gespräche & Alltag",B1:"Selbstständig kommunizieren",B2:"Flüssiger sprechen",C1:"Fortgeschrittenes Portugiesisch"};
 
-const CURRICULUM = {
+const CURRICULUM = P.CURRICULUM || {
  A1:[
   ["A1-01","Begrüßen & sich vorstellen","olá, bom dia, chamo-me …, como estás?, tu vs. você / o senhor"],
   ["A1-02","Aussprache in Portugal","verschluckte Vokale, s = „sch“, ão, lh, nh, Betonung & Akzente"],
@@ -1063,7 +1554,7 @@ const CURRICULUM = {
 const FLAT = [];
 LEVELS.forEach(l => CURRICULUM[l].forEach(([id,title,desc]) => FLAT.push({id,title,desc,level:l})));
 
-const SCENARIOS = [
+const SCENARIOS = P.SCENARIOS || [
   ["☕","Na pastelaria","Bestelle einen Kaffee und ein Pastel de Nata"],
   ["🛒","No supermercado","Frag nach Produkten, Preisen und bezahle"],
   ["📞","Ao telefone","Reserviere einen Tisch im Restaurant"],
@@ -1076,14 +1567,14 @@ const SCENARIOS = [
   ["🎲","Conversa livre","Freies Gespräch auf deinem Niveau"]
 ];
 
-const STARTER_VOCAB = [
+const STARTER_VOCAB = P.STARTER_VOCAB || [
   ["olá","hallo"],["bom dia","guten Morgen"],["boa tarde","guten Tag (nachmittags)"],["boa noite","guten Abend / gute Nacht"],
   ["chamo-me …","ich heiße …"],["como estás?","wie geht es dir?"],["tudo bem?","alles gut?"],["obrigado / obrigada","danke"],
   ["por favor","bitte"],["desculpe","Entschuldigung"],["sim","ja"],["não","nein"],["adeus","auf Wiedersehen"],["até logo","bis später"]
 ];
 
 /* Wortschatz: europäisches Portugiesisch (Portugal), Rechtschreibung nach AO90 */
-const THEMES = [
+const THEMES = P.THEMES || [
  {id:"gruss",e:"👋",name:"Begrüßung & Höflichkeit",level:"A1",w:`olá|hallo
 bom dia|guten Morgen
 boa tarde|guten Tag (nachmittags)
@@ -3001,7 +3492,7 @@ THEMES.forEach(t => t.w.trim().split("\n").forEach(line => {
   DICT.push({pt, de, theme:t.id});
 }));
 /* ===== Lernpfad: Abschnitte & Einheiten (europäisches Portugiesisch) ===== */
-const PATH_SECTIONS = [
+const PATH_SECTIONS = P.PATH_SECTIONS || [
  {id:"s1", title:"Erste Schritte", pt:"Primeiros passos", level:"A1", color:"#2F6BFF", units:[
   {id:"u1", e:"👋", title:"Begrüßungen", pt:"Olá!", desc:"Hallo sagen, danke und bitte.",
    words:`olá|hallo
@@ -3570,7 +4061,7 @@ Aliás, já te tinha dito isso.|Übrigens hatte ich dir das schon gesagt.|Pronom
 ];
 
 /* Dialog-Aufgaben: Was antwortest du? (ab Einheit u) */
-const DIALOGS = `1|Olá, tudo bem?|Hallo, alles gut?|Tudo bem, obrigado. E tu?|São três euros.|Moro em Berlim.
+const DIALOGS = P.DIALOGS || `1|Olá, tudo bem?|Hallo, alles gut?|Tudo bem, obrigado. E tu?|São três euros.|Moro em Berlim.
 2|Como te chamas?|Wie heißt du?|Chamo-me Daniel.|Tenho vinte anos.|Até logo!
 2|De onde és?|Woher kommst du?|Sou da Alemanha.|Chamo-me Ana.|Às oito.
 1|Obrigado pela ajuda!|Danke für die Hilfe!|De nada!|Não percebi.|Quanto custa?
@@ -3591,7 +4082,7 @@ const DIALOGS = `1|Olá, tudo bem?|Hallo, alles gut?|Tudo bem, obrigado. E tu?|S
 const themeName = id => id === "chat" ? "Aus dem Gespräch" : ((THEMES.find(t => t.id === id) || {}).name || "");
 
 /* Übungssätze (europäisches Portugiesisch) */
-const SENTENCES = `A1|Chamo-me Daniel e sou da Alemanha.|Ich heiße Daniel und komme aus Deutschland.
+const SENTENCES = (P.SENTENCES || `A1|Chamo-me Daniel e sou da Alemanha.|Ich heiße Daniel und komme aus Deutschland.
 A1|Moro em Berlim há dois anos.|Ich wohne seit zwei Jahren in Berlin.
 A1|Queria um café, se faz favor.|Ich hätte gern einen Kaffee, bitte.
 A1|A conta, se faz favor.|Die Rechnung, bitte.
@@ -3635,17 +4126,17 @@ A2|Já comeste?|Hast du schon gegessen?
 A2|Ainda não fiz os trabalhos de casa.|Ich habe die Hausaufgaben noch nicht gemacht.
 A2|Íamos à praia todos os verões.|Wir sind jeden Sommer an den Strand gefahren.
 A2|Estive em Lisboa no ano passado.|Ich war letztes Jahr in Lissabon.
-A2|Marquei uma consulta para amanhã.|Ich habe für morgen einen Arzttermin ausgemacht.`.trim().split("\n").map(l => { const [level, pt, de] = l.split("|"); return {level, pt, de}; });
+A2|Marquei uma consulta para amanhã.|Ich habe für morgen einen Arzttermin ausgemacht.`).trim().split("\n").map(l => { const [level, pt, de] = l.split("|"); return {level, pt, de}; });
 
 /* Konjugation: eu | tu | ele/ela/você | nós | eles/elas/vocês */
-const PERSONS = ["eu","tu","ele / ela / você","nós","eles / elas / vocês"];
-const TENSES = [
+const PERSONS = P.PERSONS || ["eu","tu","ele / ela / você","nós","eles / elas / vocês"];
+const TENSES = P.TENSES || [
   ["pres","Präsens","Was jetzt oder regelmäßig passiert: **falo** = ich spreche."],
   ["perf","Perfeito","Abgeschlossene Handlung in der Vergangenheit (ontem, no ano passado …): **fui** = ich bin gegangen / war."],
   ["imp","Imperfeito","Gewohnheiten und Hintergrund in der Vergangenheit (früher …). Auch höflich: **queria** = ich hätte gern."],
   ["fut","Futuro","Im Alltag selten. Meist sagt man **ir** + Infinitiv: **vou falar** = ich werde sprechen."]
 ];
-const VERBS = {
+const VERBS = P.VERBS || {
   ser:   ["sein (dauerhaft)", "sou,és,é,somos,são", "fui,foste,foi,fomos,foram", "era,eras,era,éramos,eram", "serei,serás,será,seremos,serão"],
   estar: ["sein (vorübergehend)", "estou,estás,está,estamos,estão", "estive,estiveste,esteve,estivemos,estiveram", "estava,estavas,estava,estávamos,estavam", "estarei,estarás,estará,estaremos,estarão"],
   ter:   ["haben", "tenho,tens,tem,temos,têm", "tive,tiveste,teve,tivemos,tiveram", "tinha,tinhas,tinha,tínhamos,tinham", "terei,terás,terá,teremos,terão"],
@@ -3663,7 +4154,7 @@ const VERBS = {
   comer: ["essen (Muster für -er)", "como,comes,come,comemos,comem", "comi,comeste,comeu,comemos,comeram", "comia,comias,comia,comíamos,comiam", "comerei,comerás,comerá,comeremos,comerão"],
   partir:["abfahren (Muster für -ir)", "parto,partes,parte,partimos,partem", "parti,partiste,partiu,partimos,partiram", "partia,partias,partia,partíamos,partiam", "partirei,partirás,partirá,partiremos,partirão"]
 };
-const VERB_NOTES = {
+const VERB_NOTES = P.VERB_NOTES || {
   falar: "In Portugal schreibt man im Perfeito **falámos** (mit Akzent), um es vom Präsens **falamos** zu unterscheiden.",
   dar: "Im Perfeito ist in Portugal auch **démos** üblich.",
   ser: "Perfeito von **ser** und **ir** ist gleich: **fui** = ich war / ich bin gegangen.",
@@ -3671,7 +4162,7 @@ const VERB_NOTES = {
 };
 
 /* Spickzettel */
-const CHEATS = [
+const CHEATS = P.CHEATS || [
  ["Aussprache in Portugal", `- Unbetontes **e** wird fast verschluckt: **telefone** klingt wie „tlfón“.
 - Unbetontes **o** klingt wie „u“: **obrigado** [o-bri-GA-du].
 - **s** oder **z** am Wortende oder vor einem Konsonanten klingt wie „sch“: **dois** [doisch], **estar** [schtar].
@@ -3730,7 +4221,7 @@ In Brasilien steht es fast immer davor – deshalb klingt **eu te amo** brasilia
 - Sehr typisch in Portugal: **é que** in Fragen: **Onde é que moras? O que é que queres?**`]
 ];
 
-const INITIAL_CHAT = [
+const INITIAL_CHAT = P.INITIAL_CHAT || [
   {role:"assistant",content:"Olá! Ich bin dein persönlicher Lehrer für europäisches Portugiesisch 🇵🇹\n\nWir starten mit einem kurzen Einstufungstest. Ich stelle eine Frage nach der anderen.\n\n**Frage 1:** Hast du schon einmal Portugiesisch gelernt? Und sprichst du andere romanische Sprachen?"},
   {role:"user",content:"Ja aber mein Stand ist noch sonweit"},
   {role:"assistant",content:"Alles klar, du stehst also noch am Anfang.\n\nFrage 2: Wie würdest du sagen: „Hallo, ich heiße Daniel. Wie geht es dir?“"},
@@ -3742,10 +4233,10 @@ function defaultState(){
   return {
     v:1, updatedAt:0, name:"Daniel", level:"A1", placementDone:false, completed:[], currentLesson:null,
     grammar:[], vocab: STARTER_VOCAB.map(([pt,de]) => ({pt,de,box:1,due:0})),
-    mistakes:["Name mit „tou“ (estar) statt „Chamo-me …“ gebildet","Akzent bei „Olá“ vergessen"],
-    strengths:["Kennt Begrüßungen und das umgangssprachliche „Tá tudo bem?“"],
-    weaknesses:["ser / estar / chamar-se beim Vorstellen"],
-    notes:"Einstufungstest läuft: Frage 1 und 2 beantwortet (hat schon etwas gelernt, Anfänger). Frage 3 ist gestellt.",
+    mistakes: LANG.code === "pt" ? ["Name mit „tou“ (estar) statt „Chamo-me …“ gebildet","Akzent bei „Olá“ vergessen"] : [],
+    strengths: LANG.code === "pt" ? ["Kennt Begrüßungen und das umgangssprachliche „Tá tudo bem?“"] : [],
+    weaknesses: LANG.code === "pt" ? ["ser / estar / chamar-se beim Vorstellen"] : [],
+    notes: LANG.code === "pt" ? "Einstufungstest läuft: Frage 1 und 2 beantwortet (hat schon etwas gelernt, Anfänger). Frage 3 ist gestellt." : "",
     chat: INITIAL_CHAT.map(m => ({...m})),
     settings:{newPerDay:10, goal:20, sfx:true}, dictCache:{}, dictOrder:[], fixSeeded:false, xp:0, xpDays:{}, hearts:5, heartsTs:0, path:{done:{}}, ach:{}, topics:{}, mistakeLog:[], daily:null,
     stats:{streak:0,lastDay:"",right:0,wrong:0,messages:0,newDay:"",newToday:0}
@@ -3881,12 +4372,12 @@ async function initCaps(){
   }
   const use = n => window.claude.use(n).catch(() => null);
   const [s, t, d, db, user] = await Promise.all([use("sample"), use("tts"), use("dictation"), use("db"), use("user")]);
-  sample = s; tts = t; dict = d; capsReady = true;
-  if(!sample) showNotice("Der KI-Lehrer ist in dieser Ansicht nicht verfügbar. Lektionsplan und Vokabeltrainer gehen trotzdem.");
+  sample = LANG.tutor ? s : null; tts = t; dict = d; capsReady = true;
+  if(!sample && LANG.tutor) showNotice("Der KI-Lehrer ist in dieser Ansicht nicht verfügbar. Lektionsplan und Vokabeltrainer gehen trotzdem.");
   if(dict) setupDictation();
   if(db && user){
     let id = null; try{ id = await user.id(); }catch(e){}
-    if(id){ try{ docRef = db.doc("data/users/" + id + "/state"); await loadRemote(); }catch(e){ docRef = null; } }
+    if(id){ try{ docRef = db.doc("data/users/" + id + "/" + (LANG.code === "pt" ? "state" : "state_" + LANG.code)); await loadRemote(); }catch(e){ docRef = null; } }
   }
 }
 
@@ -3897,10 +4388,10 @@ if("speechSynthesis" in window){
   loadVoices();
   try{ window.speechSynthesis.addEventListener("voiceschanged", () => { loadVoices(); const el = document.getElementById("voiceSet"); if(el) renderVoiceSettings(); }); }catch(e){}
 }
-const isPT = v => /^pt[-_]PT/i.test(v.lang);
-const ptVoices = () => { const pt = sysVoices.filter(isPT); return pt.length ? pt : sysVoices.filter(v => /^pt/i.test(v.lang)); };
-const F_RE = /joana|catarina|helia|in[eê]s|fernanda|female|feminin|mulher|woman|sfs|jfb/i;
-const M_RE = /duarte|cristiano|\bmale\b|masculin|homem|\bman\b|pmj|jmn/i;
+const isPT = v => LANG.ttsRe.test(v.lang);
+const ptVoices = () => { const pt = sysVoices.filter(isPT); return pt.length ? pt : sysVoices.filter(v => String(v.lang).toLowerCase().startsWith(LANG.prefix)); };
+const F_RE = P.F_RE || /joana|catarina|helia|in[eê]s|fernanda|female|feminin|mulher|woman|sfs|jfb/i;
+const M_RE = P.M_RE || /duarte|cristiano|\bmale\b|masculin|homem|\bman\b|pmj|jmn/i;
 const CLAUDE_VOICES = ["buttery","airy","glassy","rounded"];
 function vset(){ const st = settings(); return st; }
 function resolveVoice(g){
@@ -3945,7 +4436,7 @@ function speakSys(text, rate, gender, rv){
   const u = new SpeechSynthesisUtterance(text);
   let v = rv && rv.sys;
   if(!v){ loadVoices(); v = ptVoices()[0]; }
-  if(v){ try{ u.voice = v; }catch(e){} u.lang = v.lang; } else u.lang = "pt-PT";
+  if(v){ try{ u.voice = v; }catch(e){} u.lang = v.lang; } else u.lang = LANG.tts;
   const other = resolveVoice(gender === "f" ? "m" : "f");
   const same = !v || (other && other.sys === v);
   u.pitch = same ? (gender === "m" ? 0.7 : 1.25) : 1;
@@ -3966,7 +4457,7 @@ async function speakPT(text, rate, gender){
   if(rv && rv.sys && hasSys){ speakSys(text, rate, gender, rv); return; }
   if(tts){
     const voice = (rv && rv.claude) || (gender === "f" ? "airy" : "rounded");
-    for(const lang of ["pt-PT", "pt"]){
+    for(const lang of [LANG.tts, LANG.prefix]){
       try{ lastSpeak = {engine:"Claude-Stimme", ok:null, error:""}; await tts.speak(text, {language:lang, rate, voice}); lastSpeak.ok = true; return; }
       catch(e){
         const c = e && e.code; lastSpeak = {engine:"Claude-Stimme", ok:false, error:c || "Fehler"};
@@ -4000,7 +4491,7 @@ function openPop(btn, text){
   loadVoices();
   const note = p.querySelector(".sp-note");
   const noPT = !ptVoices().some(isPT) && !tts;
-  note.textContent = noPT ? "Auf diesem Gerät fehlt eine Stimme aus Portugal – es kann brasilianisch klingen." : "";
+  note.textContent = noPT ? "Auf diesem Gerät fehlt eine Stimme " + LANG.voiceFrom + (LANG.code === "pt" ? " – es kann brasilianisch klingen." : ".") : "";
   note.classList.toggle("hidden", !noPT);
   p.classList.remove("hidden");
   const r = btn.getBoundingClientRect(), w = p.offsetWidth, h = p.offsetHeight;
@@ -4021,7 +4512,7 @@ function voiceDiagHTML(){
   const hasSys = "speechSynthesis" in window;
   return `<div class="diag"><b>Ton testen</b>
     <ul>
-      <li>Stimmen aus Portugal auf diesem Gerät: <b>${ptpt.length ? esc(ptpt.join(", ")) : "keine"}</b></li>
+      <li>Stimmen ${LANG.voiceFrom} auf diesem Gerät: <b>${ptpt.length ? esc(ptpt.join(", ")) : "keine"}</b></li>
       <li>Stimmen aus Brasilien: ${ptbr.length ? esc(ptbr.join(", ")) : "keine"}</li>
       <li>Claude-Stimme: ${tts ? "verfügbar" : "nicht verfügbar"} · Gerätestimmen: ${hasSys ? "unterstützt" : "nicht unterstützt"}</li>
       ${lastSpeak.engine ? `<li>Zuletzt: ${esc(lastSpeak.engine)} – ${lastSpeak.ok === true ? "hat geklappt" : lastSpeak.ok === false ? "kein Ton (" + esc(lastSpeak.error) + ")" : "läuft …"}</li>` : ""}
@@ -4031,16 +4522,16 @@ function voiceDiagHTML(){
 }
 function voiceSettingsHTML(){
   const pv = ptVoices();
-  const opts = pv.map(v => ({id:"sys:" + v.voiceURI, label:v.name + (isPT(v) ? " · Portugal" : " · " + v.lang)}));
+  const opts = pv.map(v => ({id:"sys:" + v.voiceURI, label:v.name + (isPT(v) ? " · " + LANG.country : " · " + v.lang)}));
   if(tts) CLAUDE_VOICES.forEach((n, i) => opts.push({id:"claude:" + n, label:"Claude-Stimme " + (i + 1)}));
-  if(!opts.length) return voiceDiagHTML() + `<p class="empty">Auf diesem Gerät ist keine portugiesische Stimme verfügbar. iPhone: Einstellungen → Bedienungshilfen → Gesprochene Inhalte → Stimmen → Portugiesisch (Portugal) laden. Android: Einstellungen → Text-in-Sprache → Sprachdaten für Portugiesisch (Portugal) installieren.</p>`;
+  if(!opts.length) return voiceDiagHTML() + `<p class="empty">Auf diesem Gerät ist keine Stimme ${LANG.voiceFrom} verfügbar. iPhone: Einstellungen → Bedienungshilfen → Gesprochene Inhalte → Stimmen → ${LANG.voicePath} laden. Android: Einstellungen → Text-in-Sprache → Sprachdaten für ${LANG.voicePath} installieren.</p>`;
   const row = (g, label) => { const cur = vset()["voice_" + g] || ""; return `<div class="vrow"><b>${label}</b><select data-vsel="${g}"><option value="">Automatisch</option>${opts.map(o => `<option value="${esc(o.id)}" ${o.id === cur ? "selected" : ""}>${esc(o.label)}</option>`).join("")}</select><button class="mini" data-vtest="${g}" aria-label="Probehören">🔊</button></div>`; };
   const def = vset().voiceDefault || "f";
   return voiceDiagHTML() + `<div class="lvlhead" style="margin-top:14px"><small>Stimmen</small></div>${row("f","Frau")}${row("m","Mann")}
     <div class="lvlhead" style="margin-top:10px"><small>Stimme beim einfachen 🔊-Knopf</small></div>
     <div class="seg" style="margin:4px 0 6px">${[["f","Frau"],["m","Mann"]].map(([k,l]) => `<button data-vdef="${k}" class="${def === k ? "active" : ""}">${l}</button>`).join("")}</div>
-    ${pv.some(isPT) ? "" : `<p class="hint">Auf diesem Gerät ist keine Stimme aus Portugal installiert, deshalb kann es brasilianisch klingen. iPhone: Einstellungen → Bedienungshilfen → Gesprochene Inhalte → Stimmen → Portugiesisch (Portugal). Android: Einstellungen → Text-in-Sprache → Sprachdaten für Portugiesisch (Portugal) installieren.</p>`}
-    ${pv.filter(isPT).length === 1 && !tts ? `<p class="hint">Dein Gerät hat nur eine Stimme aus Portugal. Die Männerstimme ist deshalb dieselbe Stimme, nur tiefer.</p>` : ""}`;
+    ${pv.some(isPT) ? "" : `<p class="hint">Auf diesem Gerät ist keine Stimme ${LANG.voiceFrom} installiert${LANG.code === "pt" ? ", deshalb kann es brasilianisch klingen" : ""}. iPhone: Einstellungen → Bedienungshilfen → Gesprochene Inhalte → Stimmen → ${LANG.voicePath}. Android: Einstellungen → Text-in-Sprache → Sprachdaten für ${LANG.voicePath} installieren.</p>`}
+    ${pv.filter(isPT).length === 1 && !tts ? `<p class="hint">Dein Gerät hat nur eine Stimme ${LANG.voiceFrom}. Die Männerstimme ist deshalb dieselbe Stimme, nur tiefer.</p>` : ""}`;
 }
 function renderVoiceSettings(){
   const el = document.getElementById("voiceSet"); if(!el) return;
@@ -4219,7 +4710,7 @@ async function send(text, typed){
   text = String(text || "").trim();
   if(!text || busy) return;
   if(!capsReady){ toast("Einen Moment – der Lehrer wird verbunden …"); return; }
-  if(!sample){ if(window.__acct) window.__acct.openTutor(); else toast("Der KI-Lehrer ist hier nicht verfügbar. Öffne die App in Claude."); return; }
+  if(!sample){ if(!LANG.tutor) toast("Den KI-Lehrer gibt es vorerst nur für Portugiesisch."); else if(window.__acct) window.__acct.openTutor(); else toast("Der KI-Lehrer ist hier nicht verfügbar. Öffne die App in Claude."); return; }
   setBusy(true);
   state.chat.push({role:"user", content:text, typed:!!typed});
   if(typed) state.stats.talks = (state.stats.talks || 0) + 1;
@@ -4263,7 +4754,7 @@ function renderChat(){
     if(m.role === "assistant"){
       const segs = ptSegments(m.content);
       if(segs.length){
-        const b = document.createElement("button"); b.className = "speak"; b.textContent = "🔊 Portugiesisch anhören";
+        const b = document.createElement("button"); b.className = "speak"; b.textContent = "🔊 " + LANG.inLang + " anhören";
         b.onclick = () => speakPT(segs.join(". "));
         el.appendChild(b);
       }
@@ -4302,7 +4793,7 @@ function renderHeader(){
   const nl = nextLesson();
   $("#subtitle").textContent = !state.placementDone ? "Einstufungstest läuft"
     : state.currentLesson ? "Aktuell: " + (FLAT.find(x => x.id === state.currentLesson) || {}).title
-    : nl ? "Als Nächstes: " + nl.title : "Europäisches Portugiesisch";
+    : nl ? "Als Nächstes: " + nl.title : LANG.adj.charAt(0).toUpperCase() + LANG.adj.slice(1);
 }
 
 /* ---------- lessons ---------- */
@@ -4360,7 +4851,7 @@ function renderPractice(){
   const v = $("#lBody"); if(!v) return;
   const st = state.stats;
   if(!ex){
-    v.innerHTML = `${vhead("star","Üben")}<p class="lead">Kurze Übungen mit echten Sätzen aus dem Alltag in Portugal, passend zu deinem Niveau ${state.level}.</p>
+    v.innerHTML = `${vhead("star","Üben")}<p class="lead">Kurze Übungen mit echten Sätzen aus dem Alltag in ${LANG.country}, passend zu deinem Niveau ${state.level}.</p>
       <button class="exopt" id="exBuild"><span class="e">🧩</span><span><b>Sätze bauen</b><small>Bring die Wörter in die richtige Reihenfolge. Trainiert Satzbau und Grammatik.</small></span></button>
       <button class="exopt" id="exListen"><span class="e">🎧</span><span><b>Hören & schreiben</b><small>Hör dir einen Satz an und schreib auf, was du verstanden hast.</small></span></button>
       <p class="hint">Bisher ${st.exRight || 0} von ${(st.exRight || 0) + (st.exWrong || 0)} Übungen richtig.</p>`;
@@ -4371,7 +4862,7 @@ function renderPractice(){
   const s = ex.s, back = `<button class="link" id="exBack">← Alle Übungen</button>`;
   let html = back;
   if(ex.kind === "build"){
-    html += `<div class="card flash"><div class="dirlbl">Bau diesen Satz auf Portugiesisch</div><div class="exde">${esc(s.de)}</div>
+    html += `<div class="card flash"><div class="dirlbl">Bau diesen Satz auf ${LANG.inLang}</div><div class="exde">${esc(s.de)}</div>
       <div class="answer ${ex.result ? ex.result : ""}">${ex.picked.length ? ex.picked.map((t, k) => `<button class="tok" data-pk="${k}" ${ex.result ? "disabled" : ""}>${esc(t.w)}</button>`).join("") : `<span class="ph">Tippe unten auf die Wörter</span>`}</div>
       <div class="bank">${ex.bank.map((t, k) => `<button class="tok" data-bk="${k}" ${ex.result ? "disabled" : ""}>${esc(t.w)}</button>`).join("")}</div>`;
     if(!ex.result) html += `<div class="row"><button class="btn ghost" id="exReset">Neu anordnen</button><button class="btn" id="exCheck" ${ex.bank.length ? "disabled" : ""}>Prüfen</button></div>`;
@@ -4458,7 +4949,7 @@ let dictQuery = "", dictSel = null, dictState = null;
 function normalize(s){ return String(s).toLowerCase().replace(/\([^)]*\)/g," ").replace(/[.,!?¿¡;:"'«»„“…]/g,"").replace(/\s+/g," ").trim(); }
 function stripAcc(s){ return s.normalize("NFD").replace(/[̀-ͯ]/g,""); }
 function variants(s){ const base = String(s).replace(/\([^)]*\)/g," "); return base.split(/\s*[\/;,]\s*/).map(normalize).filter(Boolean).concat([normalize(base)]); }
-const noArt = x => x.replace(/^(o|a|os|as|um|uma|der|die|das|ein|eine|einen) /,"");
+const noArt = x => x.replace(P.ART_RE || /^(o|a|os|as|um|uma|der|die|das|ein|eine|einen) /,"");
 function checkAnswer(ans, target){
   const a = normalize(ans); if(!a) return "wrong";
   const vs = variants(target);
@@ -4626,7 +5117,7 @@ function renderTrainer(){
       <div class="row"><button class="btn ghost" id="vTip">Merkhilfe</button><button class="btn" id="vGot">Weiter</button></div></div>`;
   } else if(cardKind === "choice"){
     const q = cardDir === "de2pt" ? card.de : card.pt;
-    html += `<div class="card flash"><div class="dirlbl">${cardDir === "de2pt" ? "Was ist das auf Portugiesisch?" : "Was heißt das auf Deutsch?"} · Stufe ${card.box}</div>
+    html += `<div class="card flash"><div class="dirlbl">${cardDir === "de2pt" ? "Was ist das auf " + LANG.inLang + "?" : "Was heißt das auf Deutsch?"} · Stufe ${card.box}</div>
       <div class="word">${esc(q)} ${cardDir === "pt2de" ? sayBtn(card.pt) : ""}</div>
       <div class="choices">${choices.opts.map((o,i) => { let cls = ""; if(answered){ if(o === choices.right) cls = "right"; else if(o === answered.pick) cls = "wrongc"; } return `<button class="choice ${cls}" data-ch="${i}" ${answered ? "disabled" : ""}>${esc(o)}</button>`; }).join("")}</div>
       ${answered ? `<div class="fb ${answered.r === "ok" ? "ok" : "bad"}"><b>${answered.r === "ok" ? "✅ Richtig!" : "❌ Nicht ganz."}</b> <b>${esc(card.pt)}</b> = ${esc(card.de)} ${sayBtn(card.pt)}</div><div class="row"><button class="btn" id="vNext">Weiter →</button></div>` : ""}</div>`;
@@ -4646,9 +5137,9 @@ function renderTrainer(){
     html += `</div>`;
   } else {
     const q = cardDir === "de2pt" ? card.de : card.pt, target = cardDir === "de2pt" ? card.pt : card.de;
-    html += `<div class="card flash"><div class="dirlbl">${cardDir === "de2pt" ? "Schreib es auf Portugiesisch" : "Schreib es auf Deutsch"}</div>${repPill(card)}
+    html += `<div class="card flash"><div class="dirlbl">${cardDir === "de2pt" ? "Schreib es auf " + LANG.inLang : "Schreib es auf Deutsch"}</div>${repPill(card)}
       <div class="word">${esc(q)} ${cardDir === "pt2de" ? sayBtn(card.pt) : ""}</div>
-      <input id="vAns" placeholder="${cardDir === "de2pt" ? "auf Portugiesisch …" : "auf Deutsch …"}" ${answered ? "disabled" : ""} value="${answered ? esc(answered.ans) : ""}" autocapitalize="off" autocorrect="off" spellcheck="false">`;
+      <input id="vAns" placeholder="${cardDir === "de2pt" ? "auf " + LANG.inLang + " …" : "auf Deutsch …"}" ${answered ? "disabled" : ""} value="${answered ? esc(answered.ans) : ""}" autocapitalize="off" autocorrect="off" spellcheck="false">`;
     if(!answered){
       html += `${cardDir === "de2pt" ? `<div class="acc">${["á","à","â","ã","é","ê","í","ó","ô","õ","ú","ç"].map(c => `<button data-acc="${c}">${c}</button>`).join("")}</div>` : ""}
         <div class="row"><button class="btn ghost" id="vSkip">Weiß nicht</button><button class="btn" id="vCheck">Prüfen</button></div>`;
@@ -4668,7 +5159,7 @@ function renderTrainer(){
   <div class="card"><details id="myList"><summary>Meine Vokabeln (${state.vocab.length})</summary><ul class="vlist" style="margin-top:8px">
     ${state.vocab.slice().reverse().map(x => `<li><span class="pt">${x.kind === "fix" ? "✏️ " : ""}${esc(x.pt)}</span><span class="de">${esc(x.de)}</span><span class="dots">${!x.box ? "neu" : learned(x) ? "✓" : reps(x) + "/" + GOAL}</span>${sayBtn(x.pt)}</li>`).join("")}
   </ul>
-  <form class="addrow" id="vAdd"><input id="vAddPt" placeholder="Portugiesisch"><input id="vAddDe" placeholder="Deutsch"><button class="btn small">+</button></form>
+  <form class="addrow" id="vAdd"><input id="vAddPt" placeholder="${LANG.inLang}"><input id="vAddDe" placeholder="Deutsch"><button class="btn small">+</button></form>
   </details></div>`;
   const wasOpen = b.querySelector("#myList") && b.querySelector("#myList").open;
   const helpOpen = b.querySelector("#vHelp") && b.querySelector("#vHelp").open;
@@ -4773,7 +5264,7 @@ Antworte NUR mit JSON: {"woerter":[{"pt":"…","de":"…"}]}`;
   return n;
 }
 async function harvestHistory(btn){
-  if(!sample){ if(window.__acct) window.__acct.openTutor(); else toast("Das geht nur, wenn die App in Claude geöffnet ist."); return; }
+  if(!sample){ if(!LANG.tutor) toast("Den KI-Lehrer gibt es vorerst nur für Portugiesisch."); else if(window.__acct) window.__acct.openTutor(); else toast("Das geht nur, wenn die App in Claude geöffnet ist."); return; }
   const msgs = state.chat.slice(-40);
   btn.disabled = true;
   let total = 0;
@@ -4789,7 +5280,7 @@ function renderThemes(){
   const b = $("#vBody"), have = new Set(state.vocab.map(v => v.pt.toLowerCase()));
   let html = `<p class="lead">Wähle Themen aus. Die Wörter kommen in deinen Trainer, aber du lernst pro Tag nur so viele neue, wie du einstellst. So bleiben sie besser hängen.</p>
   <div class="card"><div class="lvlhead"><h3>Wörter aus Gesprächen</h3><button class="switch ${settings().autoCollect !== false ? "on" : ""}" id="autoSw" role="switch" aria-checked="${settings().autoCollect !== false}" aria-label="Automatisch sammeln"><i></i></button></div>
-    <p class="empty" style="margin-top:0">Jedes portugiesische Wort aus deinen Gesprächen mit dem Lehrer kommt automatisch in den Trainer. Deutsche Wörter, die du schreibst, werden übersetzt und kommen auch dazu. Alles korrekt geschrieben und ohne Doppelte. Bisher ${state.vocab.filter(v => v.theme === "chat").length} Wörter gesammelt.</p>
+    <p class="empty" style="margin-top:0">Jedes Wort aus deinen Gesprächen mit dem Lehrer kommt automatisch in den Trainer. Deutsche Wörter, die du schreibst, werden übersetzt und kommen auch dazu. Alles korrekt geschrieben und ohne Doppelte. Bisher ${state.vocab.filter(v => v.theme === "chat").length} Wörter gesammelt.</p>
     <button class="btn ghost small" id="histBtn" style="margin-top:10px">Bisherige Gespräche durchsuchen</button></div>
   <div class="card"><h3>Neue Wörter pro Tag</h3><div class="seg" style="margin:8px 0 0">${[5,10,15,20,30].map(n => `<button data-npd="${n}" class="${settings().newPerDay === n ? "active" : ""}">${n}</button>`).join("")}</div></div>`;
   LEVELS.forEach(l => {
@@ -4826,8 +5317,8 @@ function renderThemes(){
 }
 function renderDict(){
   const b = $("#vBody");
-  b.innerHTML = `<p class="lead">Suche auf Deutsch oder Portugiesisch. Tippe auf ein Wort für Aussprache, Beispiele und Konjugation. Steht es nicht drin, schlägt der KI-Lehrer es nach.</p>
-    <input id="dictInput" class="search" type="search" placeholder="z. B. Kühlschrank oder obrigado" value="${esc(dictQuery)}" autocapitalize="off" autocorrect="off" spellcheck="false">
+  b.innerHTML = `<p class="lead">Suche auf Deutsch oder ${LANG.inLang}. Tippe auf ein Wort für Aussprache, Beispiele und Konjugation. Steht es nicht drin, schlägt der KI-Lehrer es nach.</p>
+    <input id="dictInput" class="search" type="search" placeholder="z. B. Kühlschrank oder ${esc((DICT[2] || {}).pt || "")}" value="${esc(dictQuery)}" autocapitalize="off" autocorrect="off" spellcheck="false">
     <div id="dictOut"></div>`;
   const inp = $("#dictInput"); let t;
   inp.addEventListener("input", () => { dictQuery = inp.value; dictSel = null; dictState = null; clearTimeout(t); t = setTimeout(renderDictResults, 120); });
@@ -5044,7 +5535,7 @@ function renderProgress(){
   $("#pPlan").onclick = () => { if(busy) return; openSub("chat"); send("Zeig mir bitte kurz meinen persönlichen Lernplan: wo ich stehe, was als Nächstes kommt und worauf ich besonders achten sollte."); };
   $("#pReset").onclick = () => confirmBox("Fortschritt zurücksetzen?", "Lektionen, Vokabeln, Chatverlauf und Notizen werden gelöscht und der Einstufungstest beginnt von vorn. Das lässt sich nicht rückgängig machen.", "Zurücksetzen", () => {
     state = defaultState();
-    state.chat = [{role:"assistant", content:"Olá! Wir fangen neu an 🇵🇹 Zuerst ein kurzer Einstufungstest, eine Frage nach der anderen.\n\nFrage 1: Hast du schon einmal Portugiesisch gelernt? Und sprichst du andere romanische Sprachen?"}];
+    state.chat = LANG.code === "pt" ? [{role:"assistant", content:"Olá! Wir fangen neu an 🇵🇹 Zuerst ein kurzer Einstufungstest, eine Frage nach der anderen.\n\nFrage 1: Hast du schon einmal Portugiesisch gelernt? Und sprichst du andere romanische Sprachen?"}] : INITIAL_CHAT.map(x => ({...x}));
     state.fixSeeded = true; state.mistakes = []; state.strengths = []; state.weaknesses = []; state.notes = "Neustart: Einstufungstest bei Frage 1.";
     card = null; scheduleSave(); renderAll(); openSub("chat");
   });
@@ -5092,7 +5583,7 @@ const uniqBy = (a, f) => { const s = new Set(); return a.filter(x => { const k =
 const wordsUpTo = n => UNITS.filter(u => u.num <= n).flatMap(u => u.W);
 const sentsUpTo = n => UNITS.filter(u => u.num <= n).flatMap(u => u.S);
 const cleanW = w => w.replace(/[.,!?;:¿¡"«»„“]/g, "");
-const FUNC = ["o","a","os","as","um","uma","de","do","da","em","no","na","ao","à","às","com","para","por","que","e","se","não","me","te"];
+const FUNC = P.FUNC || ["o","a","os","as","um","uma","de","do","da","em","no","na","ao","à","às","com","para","por","que","e","se","não","me","te"];
 function mcOptions(right, field, pool, n){
   const opts = uniqBy(shuf(pool.filter(x => x[field] !== right[field] && x.pt !== right.pt)), x => x[field]).slice(0, (n || 4) - 1).map(x => x[field]);
   let guard = 0;
@@ -5244,7 +5735,7 @@ const QUESTS = [
 const ACHIEVEMENTS = [
   {id:"first", e:"🎉", t:"Erste Lektion", d:"Deine erste Lektion geschafft", ok:() => (state.stats.sessions || 0) >= 1},
   {id:"perfect", e:"💯", t:"Fehlerfrei", d:"Eine Lektion ohne einen Fehler", ok:() => (state.stats.perfect || 0) >= 1},
-  {id:"talk", e:"💬", t:"Erste Unterhaltung", d:"Dein erstes Gespräch auf Portugiesisch", ok:() => (state.stats.talks || 0) >= 1},
+  {id:"talk", e:"💬", t:"Erste Unterhaltung", d:"Dein erstes Gespräch auf " + LANG.inLang, ok:() => (state.stats.talks || 0) >= 1},
   {id:"unit1", e:"🏆", t:"Erste Einheit", d:"Eine ganze Einheit abgeschlossen", ok:() => unitsDone() >= 1},
   {id:"words100", e:"📚", t:"100 Wörter", d:"100 Wörter gelernt", ok:() => state.vocab.filter(v => v.box >= 1 && v.kind !== "fix").length >= 100},
   {id:"streak7", e:"🔥", t:"7 Tage am Stück", d:"7 Tage hintereinander gelernt", ok:() => (state.stats.streak || 0) >= 7},
@@ -5332,7 +5823,7 @@ function startSession(kind, U, opt){
 function closePlayer(){ const p = document.getElementById("player"); if(p) p.classList.add("hidden"); document.body.classList.remove("playing"); SES = null; try{ if(listening && dict) dict.stop(); }catch(e){} renderAllTabs(); }
 function plHearts(){ const h = document.getElementById("plHearts"); if(!h) return; h.innerHTML = SES && SES.usesHearts ? `${ICON.heart}<b>${state.hearts}</b>` : `<span class="pl-free">Übung</span>`; }
 function plBar(){ const b = document.getElementById("plBar"); if(b && SES) b.style.width = Math.round(SES.i / SES.items.length * 100) + "%"; }
-const PROMPTS = {intro:"Neues Wort", mc:"Wähle die richtige Übersetzung", write:"Schreib es auf Portugiesisch", build:"Bilde den Satz", bankde:"Übersetze ins Deutsche", typept:"Übersetze ins Portugiesische", cloze:"Ergänze die Lücke", listen:"Was hörst du?", listentype:"Schreib, was du hörst", speak:"Sprich diesen Satz", dialog:"Was antwortest du?", story:"Geschichte", storyq:"Frage zur Geschichte"};
+const PROMPTS = {intro:"Neues Wort", mc:"Wähle die richtige Übersetzung", write:"Schreib es auf " + LANG.inLang, build:"Bilde den Satz", bankde:"Übersetze ins Deutsche", typept:"Übersetze " + LANG.into, cloze:"Ergänze die Lücke", listen:"Was hörst du?", listentype:"Schreib, was du hörst", speak:"Sprich diesen Satz", dialog:"Was antwortest du?", story:"Geschichte", storyq:"Frage zur Geschichte"};
 function renderItem(){
   const it = SES.items[SES.i]; SES.cur = it; SES.answered = false; SES.sel = null; SES.picked = []; SES.typed = "";
   plBar(); plHearts();
@@ -5348,7 +5839,7 @@ function renderItem(){
       h += `<div class="q-word">${it.dir === "pt2de" ? esc(it.w.pt) + " " + sayBtn(it.w.pt) : esc(it.w.de)}</div><div class="opts">${it.opts.map((o, i) => tile(o, i)).join("")}</div>`;
       break;
     case "write":
-      h += `<div class="q-word">${esc(it.w.de)}</div>${typeBox("Auf Portugiesisch …")}`;
+      h += `<div class="q-word">${esc(it.w.de)}</div>${typeBox("Auf " + LANG.inLang + " …")}`;
       break;
     case "listentype":
       h += `<div class="listen-big">${bigPlay(it.w.pt)}</div>${typeBox("Was hast du gehört?")}`;
@@ -5358,7 +5849,7 @@ function renderItem(){
       h += `<div class="answer-line" id="ansLine"></div><div class="bank" id="bank">${it.bank.map((t, k) => `<button class="tok" data-k="${k}">${esc(t.w)}</button>`).join("")}</div>`;
       break;
     case "typept":
-      h += `<div class="q-sent">${esc(it.s.de)}</div>${typeBox("Auf Portugiesisch …", true)}`;
+      h += `<div class="q-sent">${esc(it.s.de)}</div>${typeBox("Auf " + LANG.inLang + " …", true)}`;
       break;
     case "cloze": {
       const toks = it.s.pt.split(" ").map((t, i) => i === it.idx ? `<span class="gap" id="gap">${t.replace(cleanW(t), "____")}</span>` : esc(t));
@@ -5685,7 +6176,7 @@ function renderHeader(){
   const bar = document.getElementById("topstats"); if(!bar) return;
   const st = state.stats.streak || 0, doneToday = state.stats.lastDay === dayKey(Date.now());
   bar.innerHTML = `
-    <button class="ts ts-lvl" data-goto="profile" aria-label="Niveau">🇵🇹 <b>${pathLevel()}</b></button>
+    <button class="ts ts-lvl" data-goto="profile" aria-label="Sprache und Niveau">${LANG.flag} <b>${pathLevel()}</b></button>
     <button class="ts ts-fire ${doneToday ? "" : "dim"}" data-goto="awards" aria-label="Serie: ${st} Tage">${ICON.flame}<b>${st}</b></button>
     <button class="ts ts-xp" data-goto="awards" aria-label="${state.xp || 0} XP">${ICON.bolt}<b>${state.xp || 0}</b></button>
     <button class="ts ts-heart" data-hearts aria-label="${state.hearts} Herzen">${ICON.heart}<b>${state.hearts == null ? 5 : state.hearts}</b></button>`;
@@ -5815,7 +6306,7 @@ function tileBtn(id, c, e, t, s){ return `<button class="tile" id="${id}" style=
 function renderSpeakHub(){
   const v = $("#view-speak2"); if(!v) return;
   v.innerHTML = `<h2 class="pg-title">Sprechen</h2>
-    <button class="teacher-card" id="spTeacher"><span class="tc-av">${FISH}</span><span class="tc-t"><b>Dein Lehrer</b><small>Fragen stellen, Grammatik erklären lassen, Fehler korrigieren, Übungen bekommen – auf Deutsch, mit europäischem Portugiesisch.</small></span><span class="tc-go">Chatten ›</span></button>
+    <button class="teacher-card" id="spTeacher"><span class="tc-av">${FISH}</span><span class="tc-t"><b>Dein Lehrer</b><small>Fragen stellen, Grammatik erklären lassen, Fehler korrigieren, Übungen bekommen – auf Deutsch erklärt.</small></span><span class="tc-go">Chatten ›</span></button>
     <div class="tiles">
       ${tileBtn("spPron", "#8B5CF6", "🎙️", "Aussprache", "Sätze nachsprechen")}
       ${tileBtn("spDlg", "#FF6B4A", "💬", "Dialoge", "Passend antworten")}
@@ -5834,7 +6325,7 @@ function renderSpeakHub(){
   g("spLessons").onclick = () => { lTab = "lessons"; openSub("lessons", "speak2"); };
   v.querySelectorAll("[data-sc]").forEach(b => b.onclick = () => { state.stats.talks = (state.stats.talks || 0) + 1; startScenario(+b.dataset.sc); });
 }
-const SCEN_DE = ["In der Konditorei","Im Supermarkt","Am Telefon","Mit Freunden","Mit der Familie","Auf der Straße","In der Apotheke","Im Hotel","Mit dem Nachbarn","Freies Gespräch"];
+const SCEN_DE = P.SCEN_DE || ["In der Konditorei","Im Supermarkt","Am Telefon","Mit Freunden","Mit der Familie","Auf der Straße","In der Apotheke","Im Hotel","Mit dem Nachbarn","Freies Gespräch"];
 
 /* ---------- ERFOLGE ---------- */
 function weekDays(){ const out = []; for(let i = 6; i >= 0; i--){ const d = new Date(Date.now() - i * DAY); out.push({k:dayKey(d.getTime()), l:["So","Mo","Di","Mi","Do","Fr","Sa"][d.getDay()], today:i === 0}); } return out; }
@@ -5869,7 +6360,7 @@ function renderProfile(){
   const words = state.vocab.filter(x => x.box >= 1 && x.kind !== "fix").length;
   const acc = state.stats.answers ? Math.round(state.stats.correct / state.stats.answers * 100) + " %" : "–";
   const mins = Math.round((state.stats.secondsTotal || 0) / 60);
-  v.innerHTML = `<div class="prof-head"><span class="prof-av">${FISH}</span><div><h2>${esc(state.name)}</h2><p>Lernt europäisches Portugiesisch · Niveau ${pathLevel()}</p></div></div>
+  v.innerHTML = `<div class="prof-head"><span class="prof-av">${FISH}</span><div><h2>${esc(state.name)}</h2><p>Lernt ${LANG.adj} · Niveau ${pathLevel()}</p></div></div>
     <div class="pstats">
       <div><b>${state.stats.streak || 0}</b><small>Tage Serie</small></div>
       <div><b>${state.xp || 0}</b><small>XP</small></div>
@@ -5910,16 +6401,59 @@ function renderProfile(){
   v.querySelector("#pfPlan").onclick = () => { if(busy) return; openSub("chat", "profile"); send("Zeig mir bitte kurz meinen persönlichen Lernplan: wo ich stehe, was als Nächstes kommt und worauf ich besonders achten sollte."); };
   v.querySelector("#pfReset").onclick = () => confirmBox("Fortschritt zurücksetzen?", "Lernpfad, XP, Serie, Vokabeln, Chatverlauf und Notizen werden gelöscht. Das lässt sich nicht rückgängig machen.", "Zurücksetzen", () => {
     state = defaultState(); state.fixSeeded = true; state.mistakes = []; state.strengths = []; state.weaknesses = []; state.notes = "Neustart.";
-    state.chat = [{role:"assistant", content:"Olá! Wir fangen neu an 🇵🇹 Möchtest du einen kurzen Einstufungstest machen? Dann stelle ich dir eine Frage nach der anderen."}];
+    state.chat = LANG.code === "pt" ? [{role:"assistant", content:"Olá! Wir fangen neu an 🇵🇹 Möchtest du einen kurzen Einstufungstest machen? Dann stelle ich dir eine Frage nach der anderen."}] : INITIAL_CHAT.map(x => ({...x}));
     card = null; learnScrolled = false; scheduleSave(); renderAll(); switchView("learn");
   });
 }
 
+
+/* ---------- Sprachauswahl ---------- */
+function langStoreKey(code){ return code === "pt" ? "ptlehrer.state.v1" : "lel.state." + code; }
+function langLocalInfo(code){
+  try{
+    const x = JSON.parse(localStorage.getItem(langStoreKey(code)) || "null");
+    if(!x) return null;
+    return {xp:x.xp || 0, st:Object.keys((x.path && x.path.done) || {}).length};
+  }catch(e){ return null; }
+}
+function renderLang(){
+  const fl = document.getElementById("tabFlag"); if(fl) fl.textContent = LANG.flag;
+  const v = $("#view-lang"); if(!v) return;
+  const langs = window.LEL_LANGS || [];
+  v.innerHTML = `<h2 class="pg-title">Sprache</h2>
+    <p class="lead lang-lead">Wähle, welche Sprache du lernst. Jede Sprache hat ihren eigenen Lernpfad und ihren eigenen Fortschritt.</p>
+    <div class="langs">${langs.map(L => {
+      const ready = L.code === "pt" || !!(window.LEL_PACKS || {})[L.code];
+      const on = L.code === LANG.code;
+      const pack = (window.LEL_PACKS || {})[L.code];
+      const info = on ? {xp:state.xp || 0, st:Object.keys(pathState().done).length} : langLocalInfo(L.code);
+      const status = !ready ? "In Vorbereitung"
+        : on ? `Lernst du gerade · ${info.xp} XP`
+        : info && (info.xp || info.st) ? `${info.xp} XP auf diesem Gerät`
+        : (L.code === "pt" ? "Vollständiger Kurs A1–C1" : (pack && pack.LANG && pack.LANG.status) || "Bereit");
+      return `<button class="lang-row${on ? " on" : ""}" data-lang="${L.code}" ${ready ? "" : "disabled"} aria-pressed="${on}">
+        <span class="lf" aria-hidden="true">${L.flag}</span>
+        <span class="lt"><b>${esc(L.name)}</b><small>${esc(L.sub)}</small><small class="ls">${esc(status)}</small></span>
+        ${on ? `<span class="ck" aria-hidden="true">✓</span>` : ""}</button>`;
+    }).join("")}</div>
+    <p class="hint lang-hint">Portugiesisch ist komplett. Spanisch startet mit dem ersten A1-Abschnitt. Die übrigen Sprachen kommen Schritt für Schritt dazu – jede mit eigener Grammatik und eigenem Wortschatz.</p>`;
+  v.querySelectorAll("[data-lang]").forEach(b => b.onclick = () => switchLang(b.dataset.lang));
+}
+async function switchLang(code){
+  if(code === LANG.code) return;
+  const target = (window.LEL_LANGS || []).find(L => L.code === code);
+  if(!target || (code !== "pt" && !(window.LEL_PACKS || {})[code])) return;
+  toast("Wechsle zu " + target.name + " …");
+  try{ clearTimeout(saveTimer); dirty = true; await flush(); }catch(e){}
+  try{ localStorage.setItem("lel.lang", code); localStorage.setItem("ptlehrer.view", "learn"); }catch(e){}
+  location.reload();
+}
+
 /* ---------- Navigation ---------- */
-const TABS = ["learn", "review", "speak2", "awards", "profile"];
+const TABS = ["learn", "review", "speak2", "awards", "lang", "profile"];
 let subParent = "learn";
 function openSub(name, parent){ subParent = parent || subParent; switchView(name); }
-function renderAllTabs(){ renderHeader(); renderLearn(); renderReview(); renderSpeakHub(); renderAwards(); renderProfile(); }
+function renderAllTabs(){ renderHeader(); renderLearn(); renderReview(); renderSpeakHub(); renderAwards(); renderLang(); renderProfile(); }
 
 /* ---------- navigation ---------- */
 function backbar(t){ return `<div class="backbar"><button class="back" data-back aria-label="Zurück">‹</button><b>${t}</b></div>`; }
@@ -5939,6 +6473,7 @@ function switchView(name){
   else if(name === "speak2") renderSpeakHub();
   else if(name === "awards") renderAwards();
   else if(name === "profile") renderProfile();
+  else if(name === "lang") renderLang();
   else if(name === "vocab"){ $("#view-vocab").innerHTML = ""; renderVocab(); }
   else if(name === "lessons") renderLessons();
   else if(name === "speak") renderSpeak();
