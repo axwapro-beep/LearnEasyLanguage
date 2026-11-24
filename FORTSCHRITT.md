@@ -15,8 +15,10 @@
 
 - Einsteigerfreundliches Lernsystem: Lernstufen pro Wort (kennenlernen → 2 Antworten → 3 → 4 → tippen → frei), Aufgaben passen sich während der Lektion an, Fehler kommen leichter wieder, „Nochmal versuchen“, Tippfehler-Toleranz, Akzent-Tasten pro Sprache, Herzen nur im Abschlusstest, „Als Nächstes“-Karte, Übersicht „Deine Wörter“. Details: LERNSYSTEM.md
 
+- Abschnitt 3 „Unterwegs“ (A2) für alle sieben neuen Sprachen: Verkehrsmittel, Wegbeschreibung, Wetter, Freizeit, Gesundheit, erste Vergangenheitsform – 42 weitere Stationen (jetzt 126 pro Sprache).
+
 ## Offen
-- Abschnitte 3–6 (bis C1) für alle neuen Sprachen, Wortschatz deutlich erweitern.
+- Abschnitte 4–6 (B1–C1) für alle neuen Sprachen, Wortschatz deutlich erweitern.
 - C2 für alle Sprachen (auch Portugiesisch).
 - KI-Lehrer und KI-Wörterbuch für die neuen Sprachen.
 - Eigene Übungsarten für Polnisch (Fallendungen) und Türkisch (Vokalharmonie, Endungen).

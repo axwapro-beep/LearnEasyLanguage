@@ -4337,6 +4337,759 @@ add("de", {id:"s2", title:"Mein Alltag", pt:"Mein Alltag", level:"A1–A2", colo
 })();
 
 </script>
+<script>/*PACK:s3*/
+/* ===== Abschnitt 3 „Unterwegs“ (A2) für es, fr, en, it ===== */
+(function(){
+const C = "#E8632B";
+const add = (code, sec, dlg) => {
+  const P = LEL_PACKS[code]; if(!P) return;
+  P.PATH_SECTIONS.push(sec);
+  P.DIALOGS = P.DIALOGS.trim() + "\n" + dlg.trim();
+  P.LANG.status = P.LANG.status.replace(/^A1(–A2)? · Abschnitt \d von 6/, "A2 · Abschnitt 3 von 6");
+};
+const D = {
+ u13:["🚌","Verkehrsmittel","Bus, Bahn, Fahrkarten."],
+ u14:["🧭","Wegbeschreibung","Links, rechts, geradeaus."],
+ u15:["🌦️","Wetter","Wetter und Jahreszeiten."],
+ u16:["⚽","Freizeit","Hobbys und Verabredungen."],
+ u17:["🩺","Gesundheit","Körper, Schmerzen, Apotheke."],
+ u18:["⏪","Gestern","Erste Schritte in der Vergangenheit."]
+};
+const unit = (id, pt, words, sents) => ({id, e:D[id][0], title:D[id][1], pt, desc:D[id][2], words, sents});
+
+/* ---------- Spanisch ---------- */
+add("es", {id:"s3", title:"Unterwegs", pt:"De viaje", level:"A2", color:C, units:[
+ unit("u13", "El transporte", `el autobús|der Bus
+el tren|der Zug
+el metro|die U-Bahn
+el coche|das Auto
+la bicicleta|das Fahrrad
+el billete|die Fahrkarte
+la estación|der Bahnhof
+la parada|die Haltestelle
+el andén|der Bahnsteig
+a pie|zu Fuß`, `Voy al trabajo en metro.|Ich fahre mit der U-Bahn zur Arbeit.|Präpositionen|Verkehrsmittel mit „en“: en metro, en tren – aber „a pie“.
+Un billete para Madrid, por favor.|Eine Fahrkarte nach Madrid, bitte.|Reisen|
+¿A qué hora sale el tren?|Wann fährt der Zug ab?|Fragen|salir = abfahren, llegar = ankommen.
+El autobús llega a las diez.|Der Bus kommt um zehn an.|Uhrzeit|
+¿Dónde está la parada?|Wo ist die Haltestelle?|estar|Für Orte nimmt man „estar“.
+Prefiero ir a pie.|Ich gehe lieber zu Fuß.|preferir|preferir: e wird zu ie – prefiero.`),
+ unit("u14", "¿Por dónde se va?", `a la izquierda|links
+a la derecha|rechts
+todo recto|geradeaus
+cerca|in der Nähe
+lejos|weit weg
+la calle|die Straße
+la esquina|die Ecke
+el semáforo|die Ampel
+cruzar|überqueren
+girar|abbiegen`, `Perdone, ¿dónde está el museo?|Entschuldigung, wo ist das Museum?|Höflichkeit|„Perdone“ ist die höfliche Form (usted).
+Siga todo recto.|Gehen Sie geradeaus.|Imperativ|Höflicher Imperativ: seguir → siga.
+Gire a la derecha en el semáforo.|Biegen Sie an der Ampel rechts ab.|Imperativ|
+Está a cinco minutos a pie.|Es ist fünf Minuten zu Fuß entfernt.|estar|
+El banco está en la esquina.|Die Bank ist an der Ecke.|Ort|
+¿Está lejos de aquí?|Ist es weit von hier?|Fragen|`),
+ unit("u15", "El tiempo", `el tiempo|das Wetter
+el sol|die Sonne
+la lluvia|der Regen
+la nieve|der Schnee
+el viento|der Wind
+hace calor|es ist heiß
+hace frío|es ist kalt
+el verano|der Sommer
+el invierno|der Winter
+la primavera|der Frühling`, `¿Qué tiempo hace hoy?|Wie ist das Wetter heute?|Wetter|Wetter meist mit „hacer“: hace sol, hace frío.
+Hoy hace mucho calor.|Heute ist es sehr heiß.|Wetter|
+Está lloviendo.|Es regnet gerade.|Verlaufsform|estar + Gerundium für das, was gerade passiert.
+En invierno nieva en la montaña.|Im Winter schneit es in den Bergen.|Wetter|
+Mañana va a hacer sol.|Morgen wird es sonnig.|Futur|ir a + Infinitiv = nahe Zukunft.
+Me gusta la primavera.|Ich mag den Frühling.|gustar|`),
+ unit("u16", "El tiempo libre", `el fútbol|der Fußball
+leer|lesen
+nadar|schwimmen
+bailar|tanzen
+el cine|das Kino
+la música|die Musik
+quedar|sich verabreden
+el fin de semana|das Wochenende
+a menudo|oft
+nunca|nie`, `¿Qué haces en tu tiempo libre?|Was machst du in deiner Freizeit?|Fragen|
+Me encanta leer.|Ich lese sehr gern.|encantar|„encantar“ funktioniert wie „gustar“, nur stärker.
+Juego al fútbol los sábados.|Samstags spiele ich Fußball.|jugar|jugar: u wird zu ue – juego.
+¿Quedamos el viernes?|Treffen wir uns am Freitag?|Verabredung|
+Nunca voy al cine.|Ich gehe nie ins Kino.|Verneinung|„Nunca“ vor dem Verb braucht kein „no“.
+El fin de semana voy a nadar.|Am Wochenende gehe ich schwimmen.|Futur|`),
+ unit("u17", "La salud", `la cabeza|der Kopf
+el estómago|der Magen
+la espalda|der Rücken
+la garganta|der Hals
+el médico|der Arzt
+la farmacia|die Apotheke
+el dolor|der Schmerz
+enfermo|krank
+la fiebre|das Fieber
+la pastilla|die Tablette`, `Me duele la cabeza.|Ich habe Kopfschmerzen.|doler|Wörtlich: „Mir tut der Kopf weh.“ Wie „gustar“.
+Me duelen los pies.|Mir tun die Füße weh.|doler|Bei mehreren Dingen: duelen.
+Estoy enfermo.|Ich bin krank.|estar|Vorübergehende Zustände mit „estar“.
+Tengo fiebre.|Ich habe Fieber.|tener|
+Necesito ir al médico.|Ich muss zum Arzt.|Präpositionen|
+¿Tiene algo para el dolor de garganta?|Haben Sie etwas gegen Halsschmerzen?|Apotheke|`),
+ unit("u18", "Ayer", `ayer|gestern
+anoche|gestern Abend
+la semana pasada|letzte Woche
+el año pasado|letztes Jahr
+fui|ich ging / ich war
+comí|ich aß
+hablé|ich sprach
+vi|ich sah
+compré|ich kaufte
+hace dos días|vor zwei Tagen`, `Ayer fui al cine.|Gestern bin ich ins Kino gegangen.|Indefinido|Das Indefinido erzählt abgeschlossene Ereignisse. „fui“ gehört zu ir und zu ser.
+Anoche cené con amigos.|Gestern Abend habe ich mit Freunden gegessen.|Indefinido|-ar-Verben: -é, -aste, -ó …
+¿Qué hiciste el fin de semana?|Was hast du am Wochenende gemacht?|Indefinido|hacer → hice, hiciste, hizo.
+Compré un regalo para mi madre.|Ich habe ein Geschenk für meine Mutter gekauft.|Indefinido|
+Vi una película muy buena.|Ich habe einen sehr guten Film gesehen.|Indefinido|
+Hace dos días llegué a Madrid.|Vor zwei Tagen bin ich in Madrid angekommen.|Zeitangaben|„hace“ + Zeitraum = vor.`)
+]}, `13|¿Cómo vas al trabajo?|Wie kommst du zur Arbeit?|En metro.|Hace sol.|Me duele la cabeza.
+14|¿Dónde está la estación?|Wo ist der Bahnhof?|Todo recto y a la izquierda.|A las diez.|Juego al fútbol.
+15|¿Qué tiempo hace?|Wie ist das Wetter?|Hace frío y llueve.|En autobús.|Ayer.
+16|¿Quedamos el sábado?|Treffen wir uns am Samstag?|¡Vale, perfecto!|Me duele la espalda.|A la derecha.
+17|¿Qué le pasa?|Was fehlt Ihnen?|Me duele el estómago.|Hace calor.|Un billete, por favor.
+18|¿Qué hiciste ayer?|Was hast du gestern gemacht?|Fui a la playa.|Voy mañana.|Está lejos.`);
+
+/* ---------- Französisch ---------- */
+add("fr", {id:"s3", title:"Unterwegs", pt:"En route", level:"A2", color:C, units:[
+ unit("u13", "Les transports", `le bus|der Bus
+le train|der Zug
+le métro|die U-Bahn
+la voiture|das Auto
+le vélo|das Fahrrad
+le billet|die Fahrkarte
+la gare|der Bahnhof
+l'arrêt|die Haltestelle
+le quai|der Bahnsteig
+à pied|zu Fuß`, `Je vais au travail en métro.|Ich fahre mit der U-Bahn zur Arbeit.|Präpositionen|Mit „en“: en métro, en train, en voiture – aber „à pied“, „à vélo“.
+Un billet pour Paris, s'il vous plaît.|Eine Fahrkarte nach Paris, bitte.|Reisen|
+Le train part à quelle heure ?|Wann fährt der Zug ab?|Fragen|partir = abfahren, arriver = ankommen.
+Le bus arrive à dix heures.|Der Bus kommt um zehn Uhr an.|Uhrzeit|
+Où est l'arrêt de bus ?|Wo ist die Bushaltestelle?|Fragen|
+Je préfère y aller à pied.|Ich gehe lieber zu Fuß hin.|y|„y“ ersetzt einen Ort: dorthin.`),
+ unit("u14", "Le chemin", `à gauche|links
+à droite|rechts
+tout droit|geradeaus
+près|in der Nähe
+loin|weit weg
+la rue|die Straße
+le coin|die Ecke
+le feu|die Ampel
+traverser|überqueren
+tourner|abbiegen`, `Pardon, où est le musée ?|Entschuldigung, wo ist das Museum?|Höflichkeit|
+Allez tout droit.|Gehen Sie geradeaus.|Imperativ|Imperativ mit „vous“: allez, tournez, traversez.
+Tournez à droite au feu.|Biegen Sie an der Ampel rechts ab.|Imperativ|à + le = au.
+C'est à cinq minutes à pied.|Es ist fünf Minuten zu Fuß.|Entfernung|
+La banque est au coin de la rue.|Die Bank ist an der Straßenecke.|Ort|
+C'est loin d'ici ?|Ist es weit von hier?|Fragen|`),
+ unit("u15", "La météo", `le temps|das Wetter
+le soleil|die Sonne
+la pluie|der Regen
+la neige|der Schnee
+le vent|der Wind
+il fait chaud|es ist heiß
+il fait froid|es ist kalt
+l'été|der Sommer
+l'hiver|der Winter
+le printemps|der Frühling`, `Quel temps fait-il aujourd'hui ?|Wie ist das Wetter heute?|Wetter|Wetter meist mit „il fait“: il fait beau, il fait froid.
+Aujourd'hui, il fait très chaud.|Heute ist es sehr heiß.|Wetter|
+Il pleut.|Es regnet.|Wetter|pleuvoir → il pleut, neiger → il neige.
+En hiver, il neige à la montagne.|Im Winter schneit es in den Bergen.|Wetter|Jahreszeiten: en été, en hiver – aber „au printemps“.
+Demain, il va faire beau.|Morgen wird es schön.|Futur|aller + Infinitiv = nahe Zukunft.
+J'aime le printemps.|Ich mag den Frühling.|aimer|`),
+ unit("u16", "Les loisirs", `le foot|der Fußball
+lire|lesen
+nager|schwimmen
+danser|tanzen
+le cinéma|das Kino
+la musique|die Musik
+se retrouver|sich treffen
+le week-end|das Wochenende
+souvent|oft
+jamais|nie`, `Qu'est-ce que tu fais pendant ton temps libre ?|Was machst du in deiner Freizeit?|Fragen|
+J'adore lire.|Ich lese sehr gern.|adorer|
+Je joue au foot le samedi.|Samstags spiele ich Fußball.|jouer|Sport: jouer au …, Instrument: jouer du …
+On se retrouve vendredi ?|Treffen wir uns am Freitag?|Verabredung|„On“ heißt im Alltag oft „wir“.
+Je ne vais jamais au cinéma.|Ich gehe nie ins Kino.|Verneinung|ne … jamais = nie.
+Ce week-end, je vais nager.|Dieses Wochenende gehe ich schwimmen.|Futur|`),
+ unit("u17", "La santé", `la tête|der Kopf
+le ventre|der Bauch
+le dos|der Rücken
+la gorge|der Hals
+le médecin|der Arzt
+la pharmacie|die Apotheke
+la douleur|der Schmerz
+malade|krank
+la fièvre|das Fieber
+le comprimé|die Tablette`, `J'ai mal à la tête.|Ich habe Kopfschmerzen.|avoir mal|avoir mal à + Körperteil: j'ai mal au dos, à la gorge.
+J'ai mal au ventre.|Ich habe Bauchschmerzen.|avoir mal|à + le = au.
+Je suis malade.|Ich bin krank.|être|
+J'ai de la fièvre.|Ich habe Fieber.|Teilungsartikel|
+Je dois aller chez le médecin.|Ich muss zum Arzt.|Präpositionen|Zu Personen geht man „chez“.
+Vous avez quelque chose contre le mal de gorge ?|Haben Sie etwas gegen Halsschmerzen?|Apotheke|`),
+ unit("u18", "Hier", `hier|gestern
+hier soir|gestern Abend
+la semaine dernière|letzte Woche
+l'année dernière|letztes Jahr
+je suis allé|ich bin gegangen
+j'ai mangé|ich habe gegessen
+j'ai parlé|ich habe gesprochen
+j'ai vu|ich habe gesehen
+j'ai acheté|ich habe gekauft
+il y a deux jours|vor zwei Tagen`, `Hier, je suis allé au cinéma.|Gestern bin ich ins Kino gegangen.|Passé composé|Bewegungsverben wie aller bilden es mit „être“.
+Hier soir, j'ai dîné avec des amis.|Gestern Abend habe ich mit Freunden gegessen.|Passé composé|Die meisten Verben: avoir + Partizip.
+Qu'est-ce que tu as fait ce week-end ?|Was hast du am Wochenende gemacht?|Passé composé|faire → fait.
+J'ai acheté un cadeau pour ma mère.|Ich habe ein Geschenk für meine Mutter gekauft.|Passé composé|
+J'ai vu un très bon film.|Ich habe einen sehr guten Film gesehen.|Passé composé|voir → vu.
+Je suis arrivé à Paris il y a deux jours.|Ich bin vor zwei Tagen in Paris angekommen.|Zeitangaben|„il y a“ + Zeitraum = vor.`)
+]}, `13|Tu vas au travail comment ?|Wie kommst du zur Arbeit?|En métro.|Il fait beau.|J'ai mal à la tête.
+14|Où est la gare ?|Wo ist der Bahnhof?|Tout droit, puis à gauche.|À dix heures.|Je joue au foot.
+15|Quel temps fait-il ?|Wie ist das Wetter?|Il fait froid et il pleut.|En bus.|Hier.
+16|On se retrouve samedi ?|Treffen wir uns am Samstag?|D'accord, parfait !|J'ai mal au dos.|À droite.
+17|Qu'est-ce qui ne va pas ?|Was fehlt Ihnen?|J'ai mal au ventre.|Il fait chaud.|Un billet, s'il vous plaît.
+18|Qu'est-ce que tu as fait hier ?|Was hast du gestern gemacht?|Je suis allé à la plage.|J'y vais demain.|C'est loin.`);
+
+/* ---------- Englisch ---------- */
+add("en", {id:"s3", title:"Unterwegs", pt:"Out and about", level:"A2", color:C, units:[
+ unit("u13", "Transport", `the bus|der Bus
+the train|der Zug
+the underground|die U-Bahn
+the car|das Auto
+the bike|das Fahrrad
+the ticket|die Fahrkarte
+the station|der Bahnhof
+the bus stop|die Bushaltestelle
+the platform|der Bahnsteig
+on foot|zu Fuß`, `I go to work by underground.|Ich fahre mit der U-Bahn zur Arbeit.|Präpositionen|Mit „by“: by bus, by train – aber „on foot“. In den USA heißt die U-Bahn „subway“.
+A ticket to London, please.|Eine Fahrkarte nach London, bitte.|Reisen|„single“ = einfach, „return“ = hin und zurück.
+What time does the train leave?|Wann fährt der Zug ab?|Fragen|Fragen im Simple Present mit „do / does“.
+The bus arrives at ten.|Der Bus kommt um zehn an.|Simple Present|Fahrpläne stehen im Simple Present.
+Where is the bus stop?|Wo ist die Bushaltestelle?|Fragen|
+I prefer to walk.|Ich gehe lieber zu Fuß.|prefer|`),
+ unit("u14", "Directions", `left|links
+right|rechts
+straight on|geradeaus
+near|in der Nähe
+far|weit weg
+the street|die Straße
+the corner|die Ecke
+the traffic lights|die Ampel
+to cross|überqueren
+to turn|abbiegen`, `Excuse me, where is the museum?|Entschuldigung, wo ist das Museum?|Höflichkeit|
+Go straight on.|Gehen Sie geradeaus.|Imperativ|Der Imperativ ist einfach die Grundform: go, turn, cross.
+Turn right at the traffic lights.|Biegen Sie an der Ampel rechts ab.|Imperativ|
+It's five minutes on foot.|Es ist fünf Minuten zu Fuß.|Entfernung|
+The bank is on the corner.|Die Bank ist an der Ecke.|Präpositionen|„on the corner“ – an der Ecke.
+Is it far from here?|Ist es weit von hier?|Fragen|`),
+ unit("u15", "The weather", `the weather|das Wetter
+the sun|die Sonne
+the rain|der Regen
+the snow|der Schnee
+the wind|der Wind
+it's hot|es ist heiß
+it's cold|es ist kalt
+the summer|der Sommer
+the winter|der Winter
+the spring|der Frühling`, `What's the weather like today?|Wie ist das Wetter heute?|Wetter|
+It's very hot today.|Heute ist es sehr heiß.|Wetter|
+It's raining.|Es regnet gerade.|Verlaufsform|Was gerade passiert: Present Progressive (be + -ing).
+It snows in the mountains in winter.|Im Winter schneit es in den Bergen.|Simple Present|Was regelmäßig passiert: Simple Present.
+It's going to be sunny tomorrow.|Morgen wird es sonnig.|Futur|going to = Vorhersage, Plan.
+I like spring.|Ich mag den Frühling.|like|Jahreszeiten meist ohne Artikel.`),
+ unit("u16", "Free time", `football|Fußball
+to read|lesen
+to swim|schwimmen
+to dance|tanzen
+the cinema|das Kino
+music|die Musik
+to meet up|sich treffen
+the weekend|das Wochenende
+often|oft
+never|nie`, `What do you do in your free time?|Was machst du in deiner Freizeit?|Fragen|
+I love reading.|Ich lese sehr gern.|love + -ing|Nach love, like, hate oft die -ing-Form.
+I play football on Saturdays.|Samstags spiele ich Fußball.|Simple Present|
+Shall we meet up on Friday?|Treffen wir uns am Freitag?|Verabredung|„Shall we …?“ = Sollen wir …? für Vorschläge.
+I never go to the cinema.|Ich gehe nie ins Kino.|Häufigkeit|never, often, always stehen vor dem Verb.
+I'm going swimming this weekend.|Dieses Wochenende gehe ich schwimmen.|Futur|Fester Plan: Present Progressive.`),
+ unit("u17", "Health", `the head|der Kopf
+the stomach|der Magen
+the back|der Rücken
+the throat|der Hals
+the doctor|der Arzt
+the chemist's|die Apotheke
+the pain|der Schmerz
+ill|krank
+a temperature|Fieber
+the tablet|die Tablette`, `I've got a headache.|Ich habe Kopfschmerzen.|have got|headache, stomachache, backache …
+My back hurts.|Mein Rücken tut weh.|hurt|
+I'm ill.|Ich bin krank.|to be|Amerikanisch meist „I'm sick“.
+I've got a temperature.|Ich habe Fieber.|have got|Wörtlich: „Ich habe eine Temperatur.“
+I need to see a doctor.|Ich muss zum Arzt.|need|
+Have you got anything for a sore throat?|Haben Sie etwas gegen Halsschmerzen?|Apotheke|„sore throat“ = Halsschmerzen. Amerikanisch heißt die Apotheke „pharmacy“.`),
+ unit("u18", "Yesterday", `yesterday|gestern
+last night|gestern Abend
+last week|letzte Woche
+last year|letztes Jahr
+I went|ich ging
+I ate|ich aß
+I talked|ich sprach
+I saw|ich sah
+I bought|ich kaufte
+two days ago|vor zwei Tagen`, `Yesterday I went to the cinema.|Gestern bin ich ins Kino gegangen.|Simple Past|go → went ist unregelmäßig.
+Last night I had dinner with friends.|Gestern Abend habe ich mit Freunden gegessen.|Simple Past|have → had.
+What did you do at the weekend?|Was hast du am Wochenende gemacht?|Simple Past|Fragen mit „did“ + Grundform.
+I bought a present for my mother.|Ich habe ein Geschenk für meine Mutter gekauft.|Simple Past|buy → bought.
+I saw a really good film.|Ich habe einen richtig guten Film gesehen.|Simple Past|see → saw.
+I arrived in London two days ago.|Ich bin vor zwei Tagen in London angekommen.|Zeitangaben|„ago“ steht hinter dem Zeitraum.`)
+]}, `13|How do you get to work?|Wie kommst du zur Arbeit?|By bus.|It's sunny.|I've got a headache.
+14|Where is the station?|Wo ist der Bahnhof?|Go straight on and turn left.|At ten.|I play football.
+15|What's the weather like?|Wie ist das Wetter?|It's cold and it's raining.|By train.|Yesterday.
+16|Shall we meet up on Saturday?|Treffen wir uns am Samstag?|OK, great!|My back hurts.|Turn right.
+17|What's the matter?|Was fehlt Ihnen?|I've got a stomachache.|It's hot.|A ticket, please.
+18|What did you do yesterday?|Was hast du gestern gemacht?|I went to the beach.|I'm going tomorrow.|It's far.`);
+
+/* ---------- Italienisch ---------- */
+add("it", {id:"s3", title:"Unterwegs", pt:"In giro", level:"A2", color:C, units:[
+ unit("u13", "I trasporti", `l'autobus|der Bus
+il treno|der Zug
+la metropolitana|die U-Bahn
+la macchina|das Auto
+la bicicletta|das Fahrrad
+il biglietto|die Fahrkarte
+la stazione|der Bahnhof
+la fermata|die Haltestelle
+il binario|das Gleis
+a piedi|zu Fuß`, `Vado al lavoro in metropolitana.|Ich fahre mit der U-Bahn zur Arbeit.|Präpositionen|Mit „in“: in treno, in macchina – aber „a piedi“.
+Un biglietto per Roma, per favore.|Eine Fahrkarte nach Rom, bitte.|Reisen|In Italien den Zugfahrschein vor der Fahrt entwerten, wenn er kein Datum hat.
+A che ora parte il treno?|Wann fährt der Zug ab?|Fragen|partire = abfahren, arrivare = ankommen.
+L'autobus arriva alle dieci.|Der Bus kommt um zehn an.|Uhrzeit|
+Dov'è la fermata?|Wo ist die Haltestelle?|Fragen|dove + è = dov'è.
+Preferisco andare a piedi.|Ich gehe lieber zu Fuß.|preferire|Verben auf -isc-: preferisco, preferisci …`),
+ unit("u14", "La strada", `a sinistra|links
+a destra|rechts
+dritto|geradeaus
+vicino|in der Nähe
+lontano|weit weg
+la via|die Straße
+l'angolo|die Ecke
+il semaforo|die Ampel
+attraversare|überqueren
+girare|abbiegen`, `Scusi, dov'è il museo?|Entschuldigung, wo ist das Museum?|Höflichkeit|„Scusi“ ist die höfliche Form (Lei).
+Vada sempre dritto.|Gehen Sie immer geradeaus.|Imperativ|Höflicher Imperativ: andare → vada.
+Giri a destra al semaforo.|Biegen Sie an der Ampel rechts ab.|Imperativ|
+È a cinque minuti a piedi.|Es ist fünf Minuten zu Fuß.|Entfernung|
+La banca è all'angolo.|Die Bank ist an der Ecke.|Präpositionen|a + l' = all'.
+È lontano da qui?|Ist es weit von hier?|Fragen|`),
+ unit("u15", "Il tempo", `il tempo|das Wetter
+il sole|die Sonne
+la pioggia|der Regen
+la neve|der Schnee
+il vento|der Wind
+fa caldo|es ist heiß
+fa freddo|es ist kalt
+l'estate|der Sommer
+l'inverno|der Winter
+la primavera|der Frühling`, `Che tempo fa oggi?|Wie ist das Wetter heute?|Wetter|Wetter meist mit „fare“: fa caldo, fa bel tempo.
+Oggi fa molto caldo.|Heute ist es sehr heiß.|Wetter|
+Sta piovendo.|Es regnet gerade.|Verlaufsform|stare + Gerundium für das, was gerade passiert.
+In inverno nevica in montagna.|Im Winter schneit es in den Bergen.|Wetter|
+Domani farà bel tempo.|Morgen wird schönes Wetter.|Futur|fare → farà.
+Mi piace la primavera.|Ich mag den Frühling.|piacere|`),
+ unit("u16", "Il tempo libero", `il calcio|der Fußball
+leggere|lesen
+nuotare|schwimmen
+ballare|tanzen
+il cinema|das Kino
+la musica|die Musik
+vedersi|sich treffen
+il fine settimana|das Wochenende
+spesso|oft
+mai|nie`, `Cosa fai nel tempo libero?|Was machst du in deiner Freizeit?|Fragen|
+Adoro leggere.|Ich lese sehr gern.|adorare|
+Il sabato gioco a calcio.|Samstags spiele ich Fußball.|giocare|Sport: giocare a …
+Ci vediamo venerdì?|Sehen wir uns am Freitag?|Verabredung|
+Non vado mai al cinema.|Ich gehe nie ins Kino.|Verneinung|non … mai = nie.
+Questo fine settimana vado a nuotare.|Dieses Wochenende gehe ich schwimmen.|andare a|`),
+ unit("u17", "La salute", `la testa|der Kopf
+la pancia|der Bauch
+la schiena|der Rücken
+la gola|der Hals
+il medico|der Arzt
+la farmacia|die Apotheke
+il dolore|der Schmerz
+malato|krank
+la febbre|das Fieber
+la compressa|die Tablette`, `Mi fa male la testa.|Ich habe Kopfschmerzen.|fare male|Wörtlich: „Mir tut der Kopf weh.“ Auch: Ho mal di testa.
+Mi fanno male i piedi.|Mir tun die Füße weh.|fare male|Bei mehreren Dingen: fanno.
+Sono malato.|Ich bin krank.|essere|
+Ho la febbre.|Ich habe Fieber.|avere|
+Devo andare dal medico.|Ich muss zum Arzt.|Präpositionen|Zu Personen geht man „da“: dal medico.
+Ha qualcosa per il mal di gola?|Haben Sie etwas gegen Halsschmerzen?|Apotheke|`),
+ unit("u18", "Ieri", `ieri|gestern
+ieri sera|gestern Abend
+la settimana scorsa|letzte Woche
+l'anno scorso|letztes Jahr
+sono andato|ich bin gegangen
+ho mangiato|ich habe gegessen
+ho parlato|ich habe gesprochen
+ho visto|ich habe gesehen
+ho comprato|ich habe gekauft
+due giorni fa|vor zwei Tagen`, `Ieri sono andato al cinema.|Gestern bin ich ins Kino gegangen.|Passato prossimo|Bewegungsverben wie andare bilden es mit „essere“.
+Ieri sera ho cenato con amici.|Gestern Abend habe ich mit Freunden gegessen.|Passato prossimo|Die meisten Verben: avere + Partizip.
+Cosa hai fatto nel fine settimana?|Was hast du am Wochenende gemacht?|Passato prossimo|fare → fatto.
+Ho comprato un regalo per mia madre.|Ich habe ein Geschenk für meine Mutter gekauft.|Passato prossimo|
+Ho visto un film molto bello.|Ich habe einen sehr schönen Film gesehen.|Passato prossimo|vedere → visto.
+Sono arrivato a Roma due giorni fa.|Ich bin vor zwei Tagen in Rom angekommen.|Zeitangaben|„fa“ steht hinter dem Zeitraum.`)
+]}, `13|Come vai al lavoro?|Wie kommst du zur Arbeit?|In autobus.|Fa bel tempo.|Mi fa male la testa.
+14|Dov'è la stazione?|Wo ist der Bahnhof?|Sempre dritto e poi a sinistra.|Alle dieci.|Gioco a calcio.
+15|Che tempo fa?|Wie ist das Wetter?|Fa freddo e piove.|In treno.|Ieri.
+16|Ci vediamo sabato?|Sehen wir uns am Samstag?|Va bene, perfetto!|Mi fa male la schiena.|A destra.
+17|Cosa si sente?|Was fehlt Ihnen?|Ho mal di pancia.|Fa caldo.|Un biglietto, per favore.
+18|Cosa hai fatto ieri?|Was hast du gestern gemacht?|Sono andato al mare.|Vado domani.|È lontano.`);
+})();
+
+</script>
+<script>/*PACK:s3b*/
+/* ===== Abschnitt 3 „Unterwegs“ (A2) für pl, tr, de ===== */
+(function(){
+const C = "#E8632B";
+const add = (code, sec, dlg) => {
+  const P = LEL_PACKS[code]; if(!P) return;
+  P.PATH_SECTIONS.push(sec);
+  P.DIALOGS = P.DIALOGS.trim() + "\n" + dlg.trim();
+  P.LANG.status = P.LANG.status.replace(/^A1(–A2)? · Abschnitt \d von 6/, "A2 · Abschnitt 3 von 6");
+};
+const D = {
+ u13:["🚌","Verkehrsmittel","Bus, Bahn, Fahrkarten."],
+ u14:["🧭","Wegbeschreibung","Links, rechts, geradeaus."],
+ u15:["🌦️","Wetter","Wetter und Jahreszeiten."],
+ u16:["⚽","Freizeit","Hobbys und Verabredungen."],
+ u17:["🩺","Gesundheit","Körper, Schmerzen, Apotheke."],
+ u18:["⏪","Gestern","Erste Schritte in der Vergangenheit."]
+};
+const unit = (id, pt, words, sents) => ({id, e:D[id][0], title:D[id][1], pt, desc:D[id][2], words, sents});
+
+/* ---------- Polnisch ---------- */
+add("pl", {id:"s3", title:"Unterwegs", pt:"W drodze", level:"A2", color:C, units:[
+ unit("u13", "Transport", `autobus|der Bus
+pociąg|der Zug
+metro|die U-Bahn
+samochód|das Auto
+rower|das Fahrrad
+bilet|die Fahrkarte
+dworzec|der Bahnhof
+przystanek|die Haltestelle
+peron|der Bahnsteig
+pieszo|zu Fuß`, `Jeżdżę do pracy metrem.|Ich fahre mit der U-Bahn zur Arbeit.|Instrumental|Verkehrsmittel im Instrumental: metro → metrem, autobus → autobusem.
+Poproszę bilet do Krakowa.|Eine Fahrkarte nach Krakau, bitte.|Genitiv|do + Genitiv: Kraków → do Krakowa.
+O której odjeżdża pociąg?|Wann fährt der Zug ab?|Fragen|odjeżdżać = abfahren, przyjeżdżać = ankommen.
+Autobus przyjeżdża o dziesiątej.|Der Bus kommt um zehn an.|Uhrzeit|
+Gdzie jest przystanek?|Wo ist die Haltestelle?|Fragen|
+Wolę iść pieszo.|Ich gehe lieber zu Fuß.|woleć|wolę = ich ziehe vor.`),
+ unit("u14", "Droga", `w lewo|nach links
+w prawo|nach rechts
+prosto|geradeaus
+blisko|in der Nähe
+daleko|weit weg
+ulica|die Straße
+róg|die Ecke
+światła|die Ampel
+przejść przez|überqueren
+skręcić|abbiegen`, `Przepraszam, gdzie jest muzeum?|Entschuldigung, wo ist das Museum?|Höflichkeit|
+Proszę iść prosto.|Gehen Sie bitte geradeaus.|Höflichkeit|Höfliche Aufforderung: proszę + Infinitiv.
+Proszę skręcić w prawo na światłach.|Biegen Sie an der Ampel rechts ab.|Lokativ|na + Lokativ: światła → na światłach.
+To pięć minut pieszo.|Das sind fünf Minuten zu Fuß.|Zahlen|Ab 5 steht der Genitiv Plural: pięć minut.
+Bank jest na rogu.|Die Bank ist an der Ecke.|Lokativ|róg → na rogu.
+Czy to daleko stąd?|Ist es weit von hier?|Fragen|`),
+ unit("u15", "Pogoda", `pogoda|das Wetter
+słońce|die Sonne
+deszcz|der Regen
+śnieg|der Schnee
+wiatr|der Wind
+jest gorąco|es ist heiß
+jest zimno|es ist kalt
+lato|der Sommer
+zima|der Winter
+wiosna|der Frühling`, `Jaka jest dzisiaj pogoda?|Wie ist das Wetter heute?|Wetter|
+Dzisiaj jest bardzo gorąco.|Heute ist es sehr heiß.|Wetter|Wetter oft mit „jest“ + Adverb: jest zimno, jest ciepło.
+Pada deszcz.|Es regnet.|Wetter|Wörtlich: „Es fällt Regen.“ Ebenso: pada śnieg.
+Zimą w górach pada śnieg.|Im Winter schneit es in den Bergen.|Instrumental|Jahreszeiten: zimą, latem, wiosną (Instrumental).
+Jutro będzie słonecznie.|Morgen wird es sonnig.|Futur|być im Futur: będzie.
+Lubię wiosnę.|Ich mag den Frühling.|Akkusativ|wiosna → wiosnę.`),
+ unit("u16", "Czas wolny", `piłka nożna|der Fußball
+czytać|lesen
+pływać|schwimmen
+tańczyć|tanzen
+kino|das Kino
+muzyka|die Musik
+spotkać się|sich treffen
+weekend|das Wochenende
+często|oft
+nigdy|nie`, `Co robisz w wolnym czasie?|Was machst du in deiner Freizeit?|Fragen|
+Uwielbiam czytać.|Ich lese sehr gern.|uwielbiać|
+W soboty gram w piłkę nożną.|Samstags spiele ich Fußball.|grać w|Sport: grać w + Akkusativ.
+Spotkamy się w piątek?|Treffen wir uns am Freitag?|Verabredung|
+Nigdy nie chodzę do kina.|Ich gehe nie ins Kino.|Verneinung|Doppelte Verneinung: nigdy nie.
+W weekend idę popływać.|Am Wochenende gehe ich schwimmen.|iść|`),
+ unit("u17", "Zdrowie", `głowa|der Kopf
+brzuch|der Bauch
+plecy|der Rücken
+gardło|der Hals
+lekarz|der Arzt
+apteka|die Apotheke
+ból|der Schmerz
+chory|krank
+gorączka|das Fieber
+tabletka|die Tablette`, `Boli mnie głowa.|Ich habe Kopfschmerzen.|boleć|Wörtlich: „Mich schmerzt der Kopf.“
+Bolą mnie plecy.|Mir tut der Rücken weh.|boleć|„plecy“ ist Plural, darum: bolą.
+Jestem chory.|Ich bin krank.|być|Frauen sagen: Jestem chora.
+Mam gorączkę.|Ich habe Fieber.|Akkusativ|gorączka → gorączkę.
+Muszę iść do lekarza.|Ich muss zum Arzt.|Genitiv|do + Genitiv: lekarz → do lekarza.
+Czy ma pan coś na ból gardła?|Haben Sie etwas gegen Halsschmerzen?|Apotheke|„na“ + Akkusativ = gegen (ein Leiden).`),
+ unit("u18", "Wczoraj", `wczoraj|gestern
+wczoraj wieczorem|gestern Abend
+w zeszłym tygodniu|letzte Woche
+w zeszłym roku|letztes Jahr
+poszedłem|ich ging (Mann)
+jadłem|ich aß (Mann)
+rozmawiałem|ich sprach (Mann)
+widziałem|ich sah (Mann)
+kupiłem|ich kaufte (Mann)
+dwa dni temu|vor zwei Tagen`, `Wczoraj poszedłem do kina.|Gestern bin ich ins Kino gegangen.|Vergangenheit|Die Vergangenheit richtet sich nach dem Geschlecht: poszedłem (Mann), poszłam (Frau).
+Wczoraj wieczorem jadłem kolację z przyjaciółmi.|Gestern Abend habe ich mit Freunden zu Abend gegessen.|Vergangenheit|Frau: jadłam.
+Co robiłeś w weekend?|Was hast du am Wochenende gemacht?|Vergangenheit|Zu einer Frau: Co robiłaś?
+Kupiłam prezent dla mamy.|Ich habe ein Geschenk für Mama gekauft.|Vergangenheit|Hier spricht eine Frau: kupiłam. dla + Genitiv.
+Widziałem bardzo dobry film.|Ich habe einen sehr guten Film gesehen.|Vergangenheit|
+Przyjechałem do Warszawy dwa dni temu.|Ich bin vor zwei Tagen in Warschau angekommen.|Zeitangaben|„temu“ steht hinter dem Zeitraum.`)
+]}, `13|Jak jeździsz do pracy?|Wie fährst du zur Arbeit?|Autobusem.|Jest słonecznie.|Boli mnie głowa.
+14|Gdzie jest dworzec?|Wo ist der Bahnhof?|Prosto, a potem w lewo.|O dziesiątej.|Gram w piłkę.
+15|Jaka jest pogoda?|Wie ist das Wetter?|Jest zimno i pada deszcz.|Pociągiem.|Wczoraj.
+16|Spotkamy się w sobotę?|Treffen wir uns am Samstag?|Dobrze, świetnie!|Bolą mnie plecy.|W prawo.
+17|Co panu dolega?|Was fehlt Ihnen?|Boli mnie brzuch.|Jest gorąco.|Poproszę bilet.
+18|Co robiłeś wczoraj?|Was hast du gestern gemacht?|Byłem na plaży.|Jadę jutro.|To daleko.`);
+
+/* ---------- Türkisch ---------- */
+add("tr", {id:"s3", title:"Unterwegs", pt:"Yolda", level:"A2", color:C, units:[
+ unit("u13", "Ulaşım", `otobüs|der Bus
+tren|der Zug
+metro|die U-Bahn
+araba|das Auto
+bisiklet|das Fahrrad
+bilet|die Fahrkarte
+istasyon|der Bahnhof
+durak|die Haltestelle
+peron|der Bahnsteig
+yürüyerek|zu Fuß`, `İşe metroyla gidiyorum.|Ich fahre mit der U-Bahn zur Arbeit.|-le|Verkehrsmittel mit -le / -la: metroyla, otobüsle.
+Ankara'ya bir bilet lütfen.|Eine Fahrkarte nach Ankara, bitte.|Dativ|Richtung = Dativ: Ankara'ya.
+Tren saat kaçta kalkıyor?|Wann fährt der Zug ab?|Fragen|kalkmak = abfahren, varmak = ankommen.
+Otobüs saat onda geliyor.|Der Bus kommt um zehn.|Uhrzeit|
+Durak nerede?|Wo ist die Haltestelle?|Fragen|
+Yürümeyi tercih ederim.|Ich gehe lieber zu Fuß.|tercih etmek|`),
+ unit("u14", "Yol tarifi", `sola|nach links
+sağa|nach rechts
+düz|geradeaus
+yakın|nah
+uzak|weit
+cadde|die Straße
+köşe|die Ecke
+trafik ışıkları|die Ampel
+karşıya geçmek|überqueren
+dönmek|abbiegen`, `Affedersiniz, müze nerede?|Entschuldigung, wo ist das Museum?|Höflichkeit|
+Dümdüz gidin.|Gehen Sie geradeaus.|Imperativ|Höflicher Imperativ: -in / -ın / -un / -ün.
+Işıklardan sağa dönün.|Biegen Sie an der Ampel rechts ab.|Ablativ|-dan / -den = von, ab: ışıklardan.
+Yürüyerek beş dakika.|Zu Fuß fünf Minuten.|Entfernung|
+Banka köşede.|Die Bank ist an der Ecke.|Lokativ|
+Buradan uzak mı?|Ist es weit von hier?|Fragen|`),
+ unit("u15", "Hava durumu", `hava|das Wetter
+güneş|die Sonne
+yağmur|der Regen
+kar|der Schnee
+rüzgâr|der Wind
+hava sıcak|es ist heiß
+hava soğuk|es ist kalt
+yaz|der Sommer
+kış|der Winter
+ilkbahar|der Frühling`, `Bugün hava nasıl?|Wie ist das Wetter heute?|Wetter|
+Bugün hava çok sıcak.|Heute ist es sehr heiß.|Wetter|
+Yağmur yağıyor.|Es regnet.|Wetter|Wörtlich: „Regen regnet.“ Ebenso: kar yağıyor.
+Kışın dağlarda kar yağar.|Im Winter schneit es in den Bergen.|Geniş zaman|kışın = im Winter, yazın = im Sommer.
+Yarın hava güneşli olacak.|Morgen wird es sonnig.|Futur|-acak / -ecek = wird.
+İlkbaharı severim.|Ich mag den Frühling.|Akkusativ|`),
+ unit("u16", "Boş zaman", `futbol|der Fußball
+okumak|lesen
+yüzmek|schwimmen
+dans etmek|tanzen
+sinema|das Kino
+müzik|die Musik
+buluşmak|sich treffen
+hafta sonu|das Wochenende
+sık sık|oft
+hiç|nie (mit Verneinung)`, `Boş zamanlarında ne yaparsın?|Was machst du in deiner Freizeit?|Fragen|
+Kitap okumayı çok severim.|Ich lese sehr gern.|sevmek|-meyi / -mayı sevmek = gern tun.
+Cumartesileri futbol oynarım.|Samstags spiele ich Fußball.|Geniş zaman|
+Cuma günü buluşalım mı?|Treffen wir uns am Freitag?|Verabredung|-elim / -alım = lass uns.
+Sinemaya hiç gitmem.|Ich gehe nie ins Kino.|Verneinung|hiç + verneintes Verb = nie.
+Hafta sonu yüzmeye gideceğim.|Am Wochenende gehe ich schwimmen.|Futur|`),
+ unit("u17", "Sağlık", `baş|der Kopf
+karın|der Bauch
+sırt|der Rücken
+boğaz|der Hals
+doktor|der Arzt
+eczane|die Apotheke
+ağrı|der Schmerz
+hasta|krank
+ateş|das Fieber
+hap|die Tablette`, `Başım ağrıyor.|Ich habe Kopfschmerzen.|Possessiv|Wörtlich: „Mein Kopf schmerzt.“
+Sırtım ağrıyor.|Mir tut der Rücken weh.|Possessiv|
+Hastayım.|Ich bin krank.|Personalendung|hasta + -yım = ich bin krank.
+Ateşim var.|Ich habe Fieber.|var|
+Doktora gitmem lazım.|Ich muss zum Arzt.|lazım|-mem lazım = ich muss.
+Boğaz ağrısı için bir şeyiniz var mı?|Haben Sie etwas gegen Halsschmerzen?|Apotheke|`),
+ unit("u18", "Dün", `dün|gestern
+dün akşam|gestern Abend
+geçen hafta|letzte Woche
+geçen yıl|letztes Jahr
+gittim|ich ging
+yedim|ich aß
+konuştum|ich sprach
+gördüm|ich sah
+aldım|ich kaufte / nahm
+iki gün önce|vor zwei Tagen`, `Dün sinemaya gittim.|Gestern bin ich ins Kino gegangen.|Vergangenheit|-di-Vergangenheit: git → gittim.
+Dün akşam arkadaşlarla yemek yedim.|Gestern Abend habe ich mit Freunden gegessen.|Vergangenheit|
+Hafta sonu ne yaptın?|Was hast du am Wochenende gemacht?|Vergangenheit|yap → yaptın (du).
+Annem için bir hediye aldım.|Ich habe für meine Mutter ein Geschenk gekauft.|Vergangenheit|almak heißt nehmen und kaufen.
+Çok güzel bir film gördüm.|Ich habe einen sehr schönen Film gesehen.|Vergangenheit|
+İki gün önce İstanbul'a geldim.|Ich bin vor zwei Tagen in Istanbul angekommen.|Zeitangaben|„önce“ steht hinter dem Zeitraum.`)
+]}, `13|İşe nasıl gidiyorsun?|Wie kommst du zur Arbeit?|Otobüsle.|Hava güneşli.|Başım ağrıyor.
+14|İstasyon nerede?|Wo ist der Bahnhof?|Düz gidin, sonra sola dönün.|Saat onda.|Futbol oynarım.
+15|Hava nasıl?|Wie ist das Wetter?|Soğuk ve yağmur yağıyor.|Trenle.|Dün.
+16|Cumartesi buluşalım mı?|Treffen wir uns am Samstag?|Tamam, harika!|Sırtım ağrıyor.|Sağa.
+17|Neyiniz var?|Was fehlt Ihnen?|Karnım ağrıyor.|Hava sıcak.|Bir bilet lütfen.
+18|Dün ne yaptın?|Was hast du gestern gemacht?|Plaja gittim.|Yarın gidiyorum.|Uzak.`);
+
+/* ---------- Deutsch (Hilfssprachen: en|tr|pl|es|fr|it|pt) ---------- */
+const DE = LEL_PACKS.de; if(!DE || !DE._fmt) return;
+const {words, sents, dialogs, mean} = DE._fmt;
+const W13 = `der Bus|the bus|otobüs|autobus|el autobús|le bus|l'autobus|o autocarro
+der Zug|the train|tren|pociąg|el tren|le train|il treno|o comboio
+die U-Bahn|the underground|metro|metro|el metro|le métro|la metropolitana|o metro
+das Auto|the car|araba|samochód|el coche|la voiture|la macchina|o carro
+das Fahrrad|the bike|bisiklet|rower|la bicicleta|le vélo|la bicicletta|a bicicleta
+die Fahrkarte|the ticket|bilet|bilet|el billete|le billet|il biglietto|o bilhete
+der Bahnhof|the station|istasyon|dworzec|la estación|la gare|la stazione|a estação
+die Haltestelle|the stop|durak|przystanek|la parada|l'arrêt|la fermata|a paragem
+das Gleis|the platform|peron|peron|el andén|le quai|il binario|a linha
+zu Fuß|on foot|yürüyerek|pieszo|a pie|à pied|a piedi|a pé`;
+const S13 = `Ich fahre mit der U-Bahn zur Arbeit.|I go to work by underground.|İşe metroyla gidiyorum.|Jeżdżę do pracy metrem.|Voy al trabajo en metro.|Je vais au travail en métro.|Vado al lavoro in metropolitana.|Vou para o trabalho de metro.|Präpositionen|Transport: mit + dative – mit dem Bus, mit der U-Bahn. But: zu Fuß.
+Eine Fahrkarte nach München, bitte.|A ticket to Munich, please.|Münih'e bir bilet lütfen.|Poproszę bilet do Monachium.|Un billete para Múnich, por favor.|Un billet pour Munich, s'il vous plaît.|Un biglietto per Monaco, per favore.|Um bilhete para Munique, por favor.|Reisen|„nach“ for cities and most countries.
+Wann fährt der Zug ab?|When does the train leave?|Tren ne zaman kalkıyor?|Kiedy odjeżdża pociąg?|¿Cuándo sale el tren?|Le train part quand ?|Quando parte il treno?|Quando parte o comboio?|Trennbare Verben|abfahren is separable: Der Zug fährt um 10 Uhr ab.
+Der Bus kommt um zehn Uhr an.|The bus arrives at ten.|Otobüs saat onda geliyor.|Autobus przyjeżdża o dziesiątej.|El autobús llega a las diez.|Le bus arrive à dix heures.|L'autobus arriva alle dieci.|O autocarro chega às dez.|Trennbare Verben|ankommen: ich komme an, du kommst an …
+Wo ist die Haltestelle?|Where is the stop?|Durak nerede?|Gdzie jest przystanek?|¿Dónde está la parada?|Où est l'arrêt ?|Dov'è la fermata?|Onde é a paragem?|Fragen|
+Ich gehe lieber zu Fuß.|I prefer to walk.|Yürümeyi tercih ederim.|Wolę iść pieszo.|Prefiero ir a pie.|Je préfère y aller à pied.|Preferisco andare a piedi.|Prefiro ir a pé.|lieber|„lieber“ + verb = to prefer doing something.`;
+const W14 = `links|left|sol|w lewo|a la izquierda|à gauche|a sinistra|à esquerda
+rechts|right|sağ|w prawo|a la derecha|à droite|a destra|à direita
+geradeaus|straight on|düz|prosto|todo recto|tout droit|dritto|sempre em frente
+in der Nähe|nearby|yakında|blisko|cerca|près|vicino|perto
+weit|far|uzak|daleko|lejos|loin|lontano|longe
+die Straße|the street|cadde|ulica|la calle|la rue|la via|a rua
+die Ecke|the corner|köşe|róg|la esquina|le coin|l'angolo|a esquina
+die Ampel|the traffic lights|trafik ışıkları|światła|el semáforo|le feu|il semaforo|o semáforo
+überqueren|to cross|karşıya geçmek|przejść przez|cruzar|traverser|attraversare|atravessar
+abbiegen|to turn|dönmek|skręcić|girar|tourner|girare|virar`;
+const S14 = `Entschuldigung, wo ist das Museum?|Excuse me, where is the museum?|Affedersiniz, müze nerede?|Przepraszam, gdzie jest muzeum?|Perdone, ¿dónde está el museo?|Pardon, où est le musée ?|Scusi, dov'è il museo?|Desculpe, onde é o museu?|Höflichkeit|
+Gehen Sie geradeaus.|Go straight on.|Düz gidin.|Proszę iść prosto.|Siga todo recto.|Allez tout droit.|Vada dritto.|Siga em frente.|Imperativ|Polite imperative: verb first, then „Sie“.
+Biegen Sie an der Ampel rechts ab.|Turn right at the traffic lights.|Işıklardan sağa dönün.|Proszę skręcić w prawo na światłach.|Gire a la derecha en el semáforo.|Tournez à droite au feu.|Giri a destra al semaforo.|Vire à direita no semáforo.|Imperativ|Separable verb: the prefix „ab“ goes to the end.
+Es ist fünf Minuten zu Fuß.|It's five minutes on foot.|Yürüyerek beş dakika.|To pięć minut pieszo.|Está a cinco minutos a pie.|C'est à cinq minutes à pied.|È a cinque minuti a piedi.|Fica a cinco minutos a pé.|Entfernung|
+Die Bank ist an der Ecke.|The bank is on the corner.|Banka köşede.|Bank jest na rogu.|El banco está en la esquina.|La banque est au coin.|La banca è all'angolo.|O banco fica na esquina.|Dativ|an + dative (where?): an der Ecke.
+Ist es weit von hier?|Is it far from here?|Buradan uzak mı?|Czy to daleko stąd?|¿Está lejos de aquí?|C'est loin d'ici ?|È lontano da qui?|É longe daqui?|Fragen|`;
+const W15 = `das Wetter|the weather|hava|pogoda|el tiempo|le temps|il tempo|o tempo
+die Sonne|the sun|güneş|słońce|el sol|le soleil|il sole|o sol
+der Regen|the rain|yağmur|deszcz|la lluvia|la pluie|la pioggia|a chuva
+der Schnee|the snow|kar|śnieg|la nieve|la neige|la neve|a neve
+der Wind|the wind|rüzgâr|wiatr|el viento|le vent|il vento|o vento
+es ist heiß|it's hot|hava sıcak|jest gorąco|hace calor|il fait chaud|fa caldo|está calor
+es ist kalt|it's cold|hava soğuk|jest zimno|hace frío|il fait froid|fa freddo|está frio
+der Sommer|the summer|yaz|lato|el verano|l'été|l'estate|o verão
+der Winter|the winter|kış|zima|el invierno|l'hiver|l'inverno|o inverno
+der Frühling|the spring|ilkbahar|wiosna|la primavera|le printemps|la primavera|a primavera`;
+const S15 = `Wie ist das Wetter heute?|What's the weather like today?|Bugün hava nasıl?|Jaka jest dzisiaj pogoda?|¿Qué tiempo hace hoy?|Quel temps fait-il aujourd'hui ?|Che tempo fa oggi?|Como está o tempo hoje?|Wetter|
+Heute ist es sehr heiß.|It's very hot today.|Bugün hava çok sıcak.|Dzisiaj jest bardzo gorąco.|Hoy hace mucho calor.|Aujourd'hui, il fait très chaud.|Oggi fa molto caldo.|Hoje está muito calor.|Satzbau|Time first, then the verb in second position: Heute ist es …
+Es regnet.|It's raining.|Yağmur yağıyor.|Pada deszcz.|Está lloviendo.|Il pleut.|Piove.|Está a chover.|Wetter|Weather verbs use „es“: es regnet, es schneit.
+Im Winter schneit es in den Bergen.|It snows in the mountains in winter.|Kışın dağlarda kar yağar.|Zimą w górach pada śnieg.|En invierno nieva en la montaña.|En hiver, il neige à la montagne.|In inverno nevica in montagna.|No inverno neva nas montanhas.|Jahreszeiten|Seasons: im Winter, im Sommer (in + dem).
+Morgen wird es sonnig.|It's going to be sunny tomorrow.|Yarın hava güneşli olacak.|Jutro będzie słonecznie.|Mañana va a hacer sol.|Demain, il va faire beau.|Domani ci sarà il sole.|Amanhã vai estar sol.|Futur|werden + adjective = will be / become.
+Ich mag den Frühling.|I like spring.|İlkbaharı severim.|Lubię wiosnę.|Me gusta la primavera.|J'aime le printemps.|Mi piace la primavera.|Gosto da primavera.|Akkusativ|der Frühling → den Frühling.`;
+const W16 = `der Fußball|football|futbol|piłka nożna|el fútbol|le foot|il calcio|o futebol
+lesen|to read|okumak|czytać|leer|lire|leggere|ler
+schwimmen|to swim|yüzmek|pływać|nadar|nager|nuotare|nadar
+tanzen|to dance|dans etmek|tańczyć|bailar|danser|ballare|dançar
+das Kino|the cinema|sinema|kino|el cine|le cinéma|il cinema|o cinema
+die Musik|music|müzik|muzyka|la música|la musique|la musica|a música
+sich treffen|to meet|buluşmak|spotkać się|quedar|se retrouver|vedersi|encontrar-se
+das Wochenende|the weekend|hafta sonu|weekend|el fin de semana|le week-end|il fine settimana|o fim de semana
+oft|often|sık sık|często|a menudo|souvent|spesso|muitas vezes
+nie|never|hiç|nigdy|nunca|jamais|mai|nunca`;
+const S16 = `Was machst du in deiner Freizeit?|What do you do in your free time?|Boş zamanlarında ne yaparsın?|Co robisz w wolnym czasie?|¿Qué haces en tu tiempo libre?|Qu'est-ce que tu fais pendant ton temps libre ?|Cosa fai nel tempo libero?|O que fazes nos tempos livres?|Fragen|
+Ich lese sehr gern.|I love reading.|Kitap okumayı çok severim.|Bardzo lubię czytać.|Me encanta leer.|J'adore lire.|Adoro leggere.|Adoro ler.|gern|„gern“ after the verb = to like doing something.
+Samstags spiele ich Fußball.|I play football on Saturdays.|Cumartesileri futbol oynarım.|W soboty gram w piłkę nożną.|Juego al fútbol los sábados.|Je joue au foot le samedi.|Il sabato gioco a calcio.|Jogo futebol aos sábados.|Satzbau|„samstags“ = every Saturday.
+Treffen wir uns am Freitag?|Shall we meet on Friday?|Cuma günü buluşalım mı?|Spotkamy się w piątek?|¿Quedamos el viernes?|On se retrouve vendredi ?|Ci vediamo venerdì?|Encontramo-nos na sexta?|Verabredung|Days: am Montag, am Freitag (an + dem).
+Ich gehe nie ins Kino.|I never go to the cinema.|Sinemaya hiç gitmem.|Nigdy nie chodzę do kina.|Nunca voy al cine.|Je ne vais jamais au cinéma.|Non vado mai al cinema.|Nunca vou ao cinema.|Verneinung|„nie“ = never.
+Am Wochenende gehe ich schwimmen.|I'm going swimming at the weekend.|Hafta sonu yüzmeye gideceğim.|W weekend idę popływać.|El fin de semana voy a nadar.|Ce week-end, je vais nager.|Nel fine settimana vado a nuotare.|No fim de semana vou nadar.|Satzbau|gehen + infinitive: schwimmen gehen, essen gehen.`;
+const W17 = `der Kopf|the head|baş|głowa|la cabeza|la tête|la testa|a cabeça
+der Bauch|the belly|karın|brzuch|la barriga|le ventre|la pancia|a barriga
+der Rücken|the back|sırt|plecy|la espalda|le dos|la schiena|as costas
+der Hals|the throat / neck|boğaz / boyun|gardło / szyja|la garganta / el cuello|la gorge / le cou|la gola / il collo|a garganta / o pescoço
+der Arzt|the doctor|doktor|lekarz|el médico|le médecin|il medico|o médico
+die Apotheke|the chemist's|eczane|apteka|la farmacia|la pharmacie|la farmacia|a farmácia
+der Schmerz|the pain|ağrı|ból|el dolor|la douleur|il dolore|a dor
+krank|ill|hasta|chory|enfermo|malade|malato|doente
+das Fieber|the fever|ateş|gorączka|la fiebre|la fièvre|la febbre|a febre
+die Tablette|the tablet|hap|tabletka|la pastilla|le comprimé|la compressa|o comprimido`;
+const S17 = `Ich habe Kopfschmerzen.|I've got a headache.|Başım ağrıyor.|Boli mnie głowa.|Me duele la cabeza.|J'ai mal à la tête.|Ho mal di testa.|Tenho dores de cabeça.|Komposita|Kopf + Schmerzen = Kopfschmerzen; also Bauchschmerzen, Halsschmerzen.
+Mir tut der Rücken weh.|My back hurts.|Sırtım ağrıyor.|Bolą mnie plecy.|Me duele la espalda.|J'ai mal au dos.|Mi fa male la schiena.|Doem-me as costas.|Dativ|„wehtun“ takes the dative: mir tut … weh.
+Ich bin krank.|I'm ill.|Hastayım.|Jestem chory.|Estoy enfermo.|Je suis malade.|Sono malato.|Estou doente.|sein|
+Ich habe Fieber.|I've got a temperature.|Ateşim var.|Mam gorączkę.|Tengo fiebre.|J'ai de la fièvre.|Ho la febbre.|Tenho febre.|haben|No article: Ich habe Fieber.
+Ich muss zum Arzt.|I need to see a doctor.|Doktora gitmem lazım.|Muszę iść do lekarza.|Tengo que ir al médico.|Je dois aller chez le médecin.|Devo andare dal medico.|Tenho de ir ao médico.|Modalverben|zu + dem = zum. „gehen“ is often left out after „müssen“.
+Haben Sie etwas gegen Halsschmerzen?|Have you got anything for a sore throat?|Boğaz ağrısı için bir şeyiniz var mı?|Czy ma pan coś na ból gardła?|¿Tiene algo para el dolor de garganta?|Vous avez quelque chose contre le mal de gorge ?|Ha qualcosa per il mal di gola?|Tem alguma coisa para a dor de garganta?|Apotheke|„gegen“ + accusative = for (an illness).`;
+const W18 = `gestern|yesterday|dün|wczoraj|ayer|hier|ieri|ontem
+gestern Abend|last night|dün akşam|wczoraj wieczorem|anoche|hier soir|ieri sera|ontem à noite
+letzte Woche|last week|geçen hafta|w zeszłym tygodniu|la semana pasada|la semaine dernière|la settimana scorsa|a semana passada
+letztes Jahr|last year|geçen yıl|w zeszłym roku|el año pasado|l'année dernière|l'anno scorso|o ano passado
+ich bin gegangen|I went|gittim|poszedłem / poszłam|fui|je suis allé|sono andato|fui
+ich habe gegessen|I ate|yedim|jadłem / jadłam|comí|j'ai mangé|ho mangiato|comi
+ich habe gesprochen|I spoke|konuştum|rozmawiałem / rozmawiałam|hablé|j'ai parlé|ho parlato|falei
+ich habe gesehen|I saw|gördüm|widziałem / widziałam|vi|j'ai vu|ho visto|vi
+ich habe gekauft|I bought|aldım|kupiłem / kupiłam|compré|j'ai acheté|ho comprato|comprei
+vor zwei Tagen|two days ago|iki gün önce|dwa dni temu|hace dos días|il y a deux jours|due giorni fa|há dois dias`;
+const S18 = `Gestern bin ich ins Kino gegangen.|Yesterday I went to the cinema.|Dün sinemaya gittim.|Wczoraj poszedłem do kina.|Ayer fui al cine.|Hier, je suis allé au cinéma.|Ieri sono andato al cinema.|Ontem fui ao cinema.|Perfekt|Verbs of movement form the Perfekt with „sein“: ich bin gegangen.
+Gestern Abend habe ich mit Freunden gegessen.|Last night I had dinner with friends.|Dün akşam arkadaşlarla yemek yedim.|Wczoraj wieczorem jadłem kolację z przyjaciółmi.|Anoche cené con amigos.|Hier soir, j'ai dîné avec des amis.|Ieri sera ho cenato con amici.|Ontem à noite jantei com amigos.|Perfekt|Most verbs use „haben“; the participle goes to the end.
+Was hast du am Wochenende gemacht?|What did you do at the weekend?|Hafta sonu ne yaptın?|Co robiłeś w weekend?|¿Qué hiciste el fin de semana?|Qu'est-ce que tu as fait ce week-end ?|Cosa hai fatto nel fine settimana?|O que fizeste no fim de semana?|Perfekt|Regular participle: ge- + stem + -t: machen → gemacht.
+Ich habe ein Geschenk für meine Mutter gekauft.|I bought a present for my mother.|Annem için bir hediye aldım.|Kupiłem prezent dla mamy.|Compré un regalo para mi madre.|J'ai acheté un cadeau pour ma mère.|Ho comprato un regalo per mia madre.|Comprei um presente para a minha mãe.|Perfekt|„für“ + accusative.
+Ich habe einen sehr guten Film gesehen.|I saw a very good film.|Çok iyi bir film gördüm.|Widziałem bardzo dobry film.|Vi una película muy buena.|J'ai vu un très bon film.|Ho visto un film molto bello.|Vi um filme muito bom.|Perfekt|Irregular participle: sehen → gesehen.
+Ich bin vor zwei Tagen in Berlin angekommen.|I arrived in Berlin two days ago.|İki gün önce Berlin'e geldim.|Przyjechałem do Berlina dwa dni temu.|Llegué a Berlín hace dos días.|Je suis arrivé à Berlin il y a deux jours.|Sono arrivato a Berlino due giorni fa.|Cheguei a Berlim há dois dias.|Zeitangaben|„vor“ + dative = ago: vor zwei Tagen.`;
+const DLG3 = `13|Wie kommst du zur Arbeit?|How do you get to work?|İşe nasıl gidiyorsun?|Jak dojeżdżasz do pracy?|¿Cómo vas al trabajo?|Tu vas au travail comment ?|Come vai al lavoro?|Como vais para o trabalho?|Mit dem Bus.|Es ist sonnig.|Ich habe Kopfschmerzen.
+14|Wo ist der Bahnhof?|Where is the station?|İstasyon nerede?|Gdzie jest dworzec?|¿Dónde está la estación?|Où est la gare ?|Dov'è la stazione?|Onde é a estação?|Geradeaus und dann links.|Um zehn Uhr.|Ich spiele Fußball.
+15|Wie ist das Wetter?|What's the weather like?|Hava nasıl?|Jaka jest pogoda?|¿Qué tiempo hace?|Quel temps fait-il ?|Che tempo fa?|Como está o tempo?|Es ist kalt und es regnet.|Mit dem Zug.|Gestern.
+16|Treffen wir uns am Samstag?|Shall we meet on Saturday?|Cumartesi buluşalım mı?|Spotkamy się w sobotę?|¿Quedamos el sábado?|On se retrouve samedi ?|Ci vediamo sabato?|Encontramo-nos no sábado?|Gern, super!|Mir tut der Rücken weh.|Rechts.
+17|Was fehlt Ihnen?|What's the matter?|Neyiniz var?|Co panu dolega?|¿Qué le pasa?|Qu'est-ce qui ne va pas ?|Cosa si sente?|O que tem?|Ich habe Bauchschmerzen.|Es ist heiß.|Eine Fahrkarte, bitte.
+18|Was hast du gestern gemacht?|What did you do yesterday?|Dün ne yaptın?|Co robiłeś wczoraj?|¿Qué hiciste ayer?|Qu'est-ce que tu as fait hier ?|Cosa hai fatto ieri?|O que fizeste ontem?|Ich war am Strand.|Ich fahre morgen.|Es ist weit.`;
+const U = (id, e, title, pt, d, w, s) => ({id, e, title, pt, desc:mean(d), words:words(w), sents:sents(s)});
+add("de", {id:"s3", title:"Unterwegs", pt:"Unterwegs", level:"A2", color:C, units:[
+  U("u13","🚌","Verkehrsmittel","Mit Bus und Bahn",["Bus, train, tickets.","Otobüs, tren, bilet.","Autobus, pociąg, bilety.","Autobús, tren, billetes.","Bus, train, billets.","Autobus, treno, biglietti.","Autocarro, comboio, bilhetes."], W13, S13),
+  U("u14","🧭","Wegbeschreibung","Wie komme ich …?",["Left, right, straight on.","Sol, sağ, düz.","W lewo, w prawo, prosto.","Izquierda, derecha, recto.","Gauche, droite, tout droit.","Sinistra, destra, dritto.","Esquerda, direita, em frente."], W14, S14),
+  U("u15","🌦️","Wetter","Wie ist das Wetter?",["Weather and seasons.","Hava ve mevsimler.","Pogoda i pory roku.","El tiempo y las estaciones.","La météo et les saisons.","Il tempo e le stagioni.","O tempo e as estações."], W15, S15),
+  U("u16","⚽","Freizeit","In meiner Freizeit",["Hobbies and making plans.","Hobiler ve buluşmalar.","Hobby i spotkania.","Aficiones y quedar.","Loisirs et rendez-vous.","Hobby e appuntamenti.","Passatempos e combinar encontros."], W16, S16),
+  U("u17","🩺","Gesundheit","Beim Arzt",["Body, pain, pharmacy.","Vücut, ağrı, eczane.","Ciało, ból, apteka.","Cuerpo, dolor, farmacia.","Corps, douleur, pharmacie.","Corpo, dolore, farmacia.","Corpo, dor, farmácia."], W17, S17),
+  U("u18","⏪","Gestern","Das Perfekt",["First steps in the past tense.","Geçmiş zamana ilk adımlar.","Pierwsze kroki w czasie przeszłym.","Primeros pasos en el pasado.","Premiers pas au passé.","Primi passi nel passato.","Primeiros passos no passado."], W18, S18)
+]}, dialogs(DLG3));
+})();
+
+</script>
 <script>
 window.LEL_LANGS = [
   {code:"pt", flag:"🇵🇹", name:"Portugiesisch", sub:"Europäisches Portugiesisch (Portugal)"},
