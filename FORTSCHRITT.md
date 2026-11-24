@@ -17,8 +17,10 @@
 
 - Abschnitt 3 „Unterwegs“ (A2) für alle sieben neuen Sprachen: Verkehrsmittel, Wegbeschreibung, Wetter, Freizeit, Gesundheit, erste Vergangenheitsform – 42 weitere Stationen (jetzt 126 pro Sprache).
 
+- Abschnitt 4 „Mein Leben“ (B1) für alle sieben neuen Sprachen: Arbeit, Pläne, Meinungen, Gefühle, Hotel und Reisen, Erzählen in der Vergangenheit – jetzt 168 Stationen pro Sprache.
+
 ## Offen
-- Abschnitte 4–6 (B1–C1) für alle neuen Sprachen, Wortschatz deutlich erweitern.
+- Abschnitte 5–6 (B2–C1) für alle neuen Sprachen, Wortschatz deutlich erweitern.
 - C2 für alle Sprachen (auch Portugiesisch).
 - KI-Lehrer und KI-Wörterbuch für die neuen Sprachen.
 - Eigene Übungsarten für Polnisch (Fallendungen) und Türkisch (Vokalharmonie, Endungen).
