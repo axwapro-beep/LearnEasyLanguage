@@ -158,7 +158,7 @@ gut|good|iyi|dobry / dobrze|bueno / bien|bon / bien|buono / bene|bom / bem
 müde|tired|yorgun|zmęczony|cansado|fatigué|stanco|cansado`;
 
 return {
-HELP, HELP_CUR: H, REMAP: true,
+HELP, HELP_CUR: H, REMAP: true, _fmt:{words, sents, dialogs, mean},
 LANG: {code:"de", flag:"🇩🇪", name:"Deutsch", adj:"Deutsch", inLang:"Deutsch", into:"ins Deutsche",
   native:H.de, nativeInto:H.into,
   country:"Deutschland", voiceFrom:"aus Deutschland", tts:"de-DE", ttsRe:/^de[-_]DE/i, prefix:"de",
