@@ -19,8 +19,10 @@
 
 - Abschnitt 4 „Mein Leben“ (B1) für alle sieben neuen Sprachen: Arbeit, Pläne, Meinungen, Gefühle, Hotel und Reisen, Erzählen in der Vergangenheit – jetzt 168 Stationen pro Sprache.
 
+- Abschnitt 5 „Gesellschaft und Welt“ (B2) für alle sieben neuen Sprachen: Umwelt, Technik, Konjunktiv/Bedingungssätze, Kultur, formelle Beschwerden, Nachrichten und Passiv – jetzt 210 Stationen pro Sprache.
+
 ## Offen
-- Abschnitte 5–6 (B2–C1) für alle neuen Sprachen, Wortschatz deutlich erweitern.
+- Abschnitt 6 (C1) für alle neuen Sprachen, Wortschatz deutlich erweitern.
 - C2 für alle Sprachen (auch Portugiesisch).
 - KI-Lehrer und KI-Wörterbuch für die neuen Sprachen.
 - Eigene Übungsarten für Polnisch (Fallendungen) und Türkisch (Vokalharmonie, Endungen).
