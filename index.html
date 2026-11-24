@@ -1456,6 +1456,1775 @@ Dass es etwas gibt, sagt man mit **hay**: **Hay un bar aquí.**`],
 };
 
 </script>
+<script>/*PACK:fr*/
+/* ===== Sprachpaket: Französisch (Frankreich) =====
+   Norm: Académie française, Le Robert / Larousse; Niveaus: Référentiels CECRL. Siehe QUELLEN.md. */
+LEL_PACKS.fr = (function(){
+const avPC = p => `j'ai ${p},as ${p},a ${p},avons ${p},avez ${p},ont ${p}`;
+const etPC = p => `suis ${p}(e),es ${p}(e),est ${p}(e),sommes ${p}(e)s,êtes ${p}(e)(s),sont ${p}(e)s`;
+const imp = (s, v) => `${v ? "j'" + s : s}ais,${s}ais,${s}ait,${s}ions,${s}iez,${s}aient`;
+const fut = (s, v) => `${v ? "j'" + s : s}ai,${s}as,${s}a,${s}ons,${s}ez,${s}ont`;
+return {
+LANG: {code:"fr", flag:"🇫🇷", name:"Französisch", adj:"Französisch (Frankreich)", inLang:"Französisch", into:"ins Französische",
+  country:"Frankreich", voiceFrom:"aus Frankreich", tts:"fr-FR", ttsRe:/^fr[-_]FR/i, prefix:"fr",
+  voicePath:"Französisch → Frankreich", status:"A1 · Abschnitt 1 von 6", tutor:false},
+ART_RE: /^(le|la|les|un|une|des|der|die|das|ein|eine|einen) /,
+F_RE: /am[ée]lie|audrey|aur[ée]lie|marie|virginie|julie|female|femme|woman/i,
+M_RE: /thomas|nicolas|paul|henri|\bmale\b|homme|\bman\b/i,
+FUNC: ["le","la","les","un","une","des","de","du","à","au","en","et","ne","pas","je","tu","il","elle","que","pour","avec"],
+LEVEL_NAMES: {A1:"Absolute Grundlagen",A2:"Einfache Gespräche & Alltag",B1:"Selbstständig kommunizieren",B2:"Flüssiger sprechen",C1:"Fortgeschrittenes Französisch"},
+CURRICULUM: {
+ A1:[["A1-01","Begrüßen & sich vorstellen","bonjour, je m'appelle …, tu vs. vous"],["A1-02","Aussprache","stumme Endungen, Nasale, Liaison"],["A1-03","Artikel & Geschlecht","le / la / l' / les, un / une / des"],["A1-04","être & avoir","je suis, j'ai – die zwei wichtigsten Verben"],["A1-05","Verben auf -er","parler, habiter, travailler"],["A1-06","Verneinung","ne … pas, ne … rien, ne … jamais"],["A1-07","Fragen","Intonation, est-ce que, Fragewörter"],["A1-08","Zahlen & Uhrzeit","0–100, quelle heure est-il ?"],["A1-T","A1-Abschlusstest","Prüfung über alle A1-Themen"]],
+ A2:[["A2-01","Passé composé","j'ai mangé, je suis allé(e)"],["A2-02","Imparfait","Gewohnheiten und Beschreibungen"],["A2-03","Futur proche","je vais partir"],["A2-04","Reflexive Verben","se lever, s'appeler"],["A2-T","A2-Abschlusstest","Prüfung über alle A2-Themen"]],
+ B1:[["B1-01","Passé composé vs. imparfait","erzählen"],["B1-02","Subjonctif présent","il faut que tu viennes"],["B1-03","Pronomen y und en","j'y vais, j'en veux"],["B1-T","B1-Abschlusstest","Prüfung über alle B1-Themen"]],
+ B2:[["B2-01","Conditionnel & si-Sätze","si j'avais le temps …"],["B2-02","Indirekte Rede","il a dit qu'il viendrait"],["B2-T","B2-Abschlusstest","Prüfung über alle B2-Themen"]],
+ C1:[["C1-01","Stil & Register","soutenu, courant, familier"],["C1-02","Komplexe Satzgefüge","Konnektoren, Nominalstil"],["C1-T","C1-Abschlusstest","Prüfung über alle C1-Themen"]]
+},
+SCENARIOS: [["☕","Au café","Bestelle einen Kaffee und ein Croissant"],["🛒","Au supermarché","Frag nach Produkten, Preisen und bezahle"],["📞","Au téléphone","Reserviere einen Tisch im Restaurant"],["🍻","Entre amis","Verabrede dich für den Abend"],["👨‍👩‍👧","En famille","Lerne die Familie eines Freundes kennen"],["🧭","Dans la rue","Frag nach dem Weg zur Metro"],["💊","À la pharmacie","Beschreibe Beschwerden und kauf etwas"],["🏨","À l'hôtel","Check-in und Fragen an der Rezeption"],["🏠","Avec le voisin","Smalltalk mit dem Nachbarn"],["🎲","Conversation libre","Freies Gespräch auf deinem Niveau"]],
+SCEN_DE: ["Im Café","Im Supermarkt","Am Telefon","Mit Freunden","Mit der Familie","Auf der Straße","In der Apotheke","Im Hotel","Mit dem Nachbarn","Freies Gespräch"],
+STARTER_VOCAB: [["bonjour","guten Tag / hallo"],["bonsoir","guten Abend"],["salut","hallo (locker)"],["je m'appelle …","ich heiße …"],["ça va ?","wie geht's?"],["merci","danke"],["s'il vous plaît","bitte (höflich)"],["pardon","Entschuldigung"],["oui","ja"],["non","nein"],["au revoir","auf Wiedersehen"]],
+INITIAL_CHAT: [{role:"assistant", content:"Bonjour ! Hier lernst du Französisch, wie man es in Frankreich spricht 🇫🇷\n\nFang einfach mit der ersten Lektion im Lernpfad an."}],
+THEMES: [
+ {id:"gruss",e:"👋",name:"Begrüßung & Höflichkeit",level:"A1",w:`bonjour|guten Tag / hallo
+bonsoir|guten Abend
+salut|hallo / tschüss (locker)
+au revoir|auf Wiedersehen
+à bientôt|bis bald
+à demain|bis morgen
+à tout à l'heure|bis nachher
+bonne nuit|gute Nacht
+ça va ?|wie geht's?
+ça va bien|es geht gut
+merci|danke
+merci beaucoup|vielen Dank
+de rien|gern geschehen
+s'il vous plaît|bitte (höflich)
+s'il te plaît|bitte (zu Freunden)
+pardon|Entschuldigung
+excusez-moi|entschuldigen Sie
+enchanté|freut mich (sagt ein Mann)
+enchantée|freut mich (sagt eine Frau)
+bienvenue|willkommen`},
+ {id:"ichdu",e:"🙋",name:"Personen & Vorstellen",level:"A1",w:`je|ich
+tu|du
+il|er
+elle|sie (Singular)
+on|man / wir (umgangssprachlich)
+nous|wir
+vous|ihr / Sie
+ils|sie (Plural, männlich oder gemischt)
+elles|sie (Plural, nur Frauen)
+je m'appelle|ich heiße
+le prénom|der Vorname
+le nom|der Name / Nachname
+monsieur|Herr
+madame|Frau (Anrede)
+allemand|deutsch / der Deutsche
+allemande|deutsch / die Deutsche
+français|französisch / der Franzose
+l'Allemagne|Deutschland
+la France|Frankreich`},
+ {id:"fragen",e:"❓",name:"Fragewörter",level:"A1",w:`qu'est-ce que ?|was?
+qui ?|wer?
+où ?|wo? / wohin?
+d'où ?|woher?
+quand ?|wann?
+comment ?|wie?
+combien ?|wie viel?
+pourquoi ?|warum?
+parce que|weil
+quel|welcher
+quelle|welche`},
+ {id:"zahlen",e:"🔢",name:"Zahlen",level:"A1",w:`zéro|null
+un|eins
+deux|zwei
+trois|drei
+quatre|vier
+cinq|fünf
+six|sechs
+sept|sieben
+huit|acht
+neuf|neun
+dix|zehn
+onze|elf
+douze|zwölf
+treize|dreizehn
+quatorze|vierzehn
+quinze|fünfzehn
+seize|sechzehn
+dix-sept|siebzehn
+dix-huit|achtzehn
+dix-neuf|neunzehn
+vingt|zwanzig
+vingt et un|einundzwanzig
+trente|dreißig
+quarante|vierzig
+cinquante|fünfzig
+soixante|sechzig
+soixante-dix|siebzig
+quatre-vingts|achtzig
+quatre-vingt-dix|neunzig
+cent|hundert
+mille|tausend`},
+ {id:"verben",e:"⚙️",name:"Erste Verben",level:"A1",w:`être|sein
+avoir|haben
+aller|gehen / fahren
+faire|machen
+pouvoir|können
+vouloir|wollen
+parler|sprechen
+travailler|arbeiten
+habiter|wohnen
+manger|essen
+boire|trinken
+s'appeler|heißen
+venir|kommen
+savoir|wissen
+voir|sehen
+prendre|nehmen
+dire|sagen
+aimer|mögen / lieben`},
+ {id:"alltag",e:"☀️",name:"Erste Alltagswörter",level:"A1",w:`oui|ja
+non|nein
+si|doch
+d'accord|einverstanden / okay
+aussi|auch
+rien|nichts
+jamais|nie
+aujourd'hui|heute
+demain|morgen
+hier|gestern
+ici|hier
+là-bas|dort
+beaucoup|viel
+un peu|ein bisschen
+très|sehr
+bien|gut
+le café|der Kaffee
+l'eau|das Wasser
+la bière|das Bier
+le pain|das Brot
+la maison|das Haus
+la rue|die Straße
+les toilettes|die Toilette
+la gare|der Bahnhof
+le frère|der Bruder
+la sœur|die Schwester
+l'ami|der Freund
+l'amie|die Freundin`}
+],
+PATH_SECTIONS: [
+ {id:"s1", title:"Erste Schritte", pt:"Premiers pas", level:"A1", color:"#2F6BFF", units:[
+  {id:"u1", e:"👋", title:"Begrüßungen", pt:"Bonjour !", desc:"Hallo sagen, danke und bitte.",
+   words:`bonjour|guten Tag / hallo
+bonsoir|guten Abend
+salut|hallo / tschüss (locker)
+au revoir|auf Wiedersehen
+à bientôt|bis bald
+à demain|bis morgen
+merci|danke
+s'il vous plaît|bitte (höflich)
+de rien|gern geschehen
+ça va ?|wie geht's?`,
+   sents:`Bonjour, madame !|Guten Tag! (zu einer Frau)|Begrüßung|In Frankreich grüßt man höflich mit „bonjour“ und oft mit „madame“ oder „monsieur“.
+Bonsoir, ça va ?|Guten Abend, wie geht's?|Begrüßung|Vor ? und ! steht im Französischen ein schmales Leerzeichen.
+Ça va bien, merci.|Es geht gut, danke.|Begrüßung|
+Salut, à demain !|Tschüss, bis morgen!|Begrüßung|„Salut“ sagt man nur unter Freunden.
+Au revoir et à bientôt !|Auf Wiedersehen und bis bald!|Begrüßung|
+Un café, s'il vous plaît.|Einen Kaffee, bitte.|Höflichkeit|„Un café“ ist in Frankreich ein Espresso.`},
+  {id:"u2", e:"🙋", title:"Sich vorstellen", pt:"Je m'appelle…", desc:"Name, Herkunft und Wohnort.",
+   words:`je m'appelle|ich heiße
+je suis|ich bin
+tu t'appelles comment ?|wie heißt du? (locker)
+tu viens d'où ?|woher kommst du? (locker)
+je viens d'Allemagne|ich komme aus Deutschland
+j'habite à|ich wohne in (Stadt)
+enchanté|freut mich (sagt ein Mann)
+enchantée|freut mich (sagt eine Frau)
+le prénom|der Vorname
+allemand|deutsch / Deutscher`,
+   sents:`Je m'appelle Daniel.|Ich heiße Daniel.|Reflexive Verben|„s'appeler“ heißt wörtlich „sich nennen“.
+Comment tu t'appelles ?|Wie heißt du?|Fragen|So fragt man im Alltag. Höflich: „Comment vous appelez-vous ?“
+Je suis allemand.|Ich bin Deutscher.|être|Nationalitäten schreibt man als Adjektiv klein: allemand.
+Je viens d'Allemagne.|Ich komme aus Deutschland.|Präpositionen|Vor einem Vokal wird „de“ zu „d'“.
+J'habite à Berlin.|Ich wohne in Berlin.|Präpositionen|Vor Städtenamen steht „à“.
+Enchantée !|Freut mich!|Begrüßung|Frauen schreiben „enchantée“ – gesprochen klingt es gleich.
+Tu viens d'où ?|Woher kommst du?|Fragen|`,
+   story:{title:"Im Sprachkurs", lines:`Camille|Salut ! Tu t'appelles comment ?|Hallo! Wie heißt du?
+Daniel|Je m'appelle Daniel. Et toi ?|Ich heiße Daniel. Und du?
+Camille|Moi, c'est Camille. Tu viens d'où ?|Ich bin Camille. Woher kommst du?
+Daniel|Je viens d'Allemagne, mais j'habite à Paris.|Ich komme aus Deutschland, aber ich wohne in Paris.
+Camille|Enchantée, Daniel !|Freut mich, Daniel!`, qs:`Woher kommt Daniel?|Aus Deutschland|Aus Paris|Aus Kanada
+Wo wohnt Daniel?|In Paris|In Berlin|In Lyon
+Was sagt Camille am Ende?|Freut mich|Bis morgen|Danke schön`}},
+  {id:"u3", e:"✅", title:"Ja und Nein", pt:"Oui ou non", desc:"Zustimmen, ablehnen, verneinen.",
+   words:`oui|ja
+non|nein
+si|doch
+d'accord|einverstanden / okay
+bien sûr|natürlich
+aussi|auch
+moi non plus|ich auch nicht
+rien|nichts
+jamais|nie
+je ne sais pas|ich weiß nicht`,
+   sents:`Oui, bien sûr.|Ja, natürlich.|Zustimmung|
+Non, merci.|Nein, danke.|Verneinung|
+Je ne sais pas.|Ich weiß nicht.|Verneinung|Die Verneinung umschließt das Verb: ne … pas. Im Alltag fällt „ne“ oft weg: „Je sais pas.“
+Tu ne viens pas ? – Si !|Kommst du nicht? – Doch!|Zustimmung|Auf eine verneinte Frage antwortet man mit „si“ statt „oui“.
+Je ne veux rien.|Ich will nichts.|Verneinung|ne … rien = nichts.
+Moi non plus.|Ich auch nicht.|Verneinung|Antwort auf einen verneinten Satz – auf einen bejahten sagt man „moi aussi“.
+D'accord, à demain.|Einverstanden, bis morgen.|Zustimmung|`},
+  {id:"u4", e:"❓", title:"Grundlegende Fragen", pt:"Questions", desc:"Wer, was, wo, wann und wie viel?",
+   words:`qu'est-ce que ?|was?
+qui ?|wer?
+où ?|wo? / wohin?
+quand ?|wann?
+comment ?|wie?
+combien ?|wie viel?
+pourquoi ?|warum?
+parce que|weil
+quel|welcher
+d'où ?|woher?`,
+   sents:`Qu'est-ce que c'est ?|Was ist das?|Fragen|Eine der wichtigsten Fragen überhaupt.
+Où sont les toilettes ?|Wo ist die Toilette?|Fragen|„les toilettes“ steht im Französischen immer im Plural.
+C'est combien ?|Wie viel kostet das?|Fragen|Im Alltag sehr üblich; formeller: „Combien ça coûte ?“
+Qui est-ce ?|Wer ist das?|Fragen|
+Pourquoi tu ne viens pas ?|Warum kommst du nicht?|Fragen|
+Parce que je suis fatigué.|Weil ich müde bin.|être|Eine Frau schreibt „fatiguée“.
+Quand commence le cours ?|Wann beginnt der Kurs?|Fragen|`},
+  {id:"u5", e:"🔢", title:"Zahlen", pt:"Les nombres", desc:"Von eins bis hundert, Alter und Preise.",
+   words:`un|eins
+deux|zwei
+trois|drei
+quatre|vier
+cinq|fünf
+dix|zehn
+vingt|zwanzig
+cent|hundert
+l'euro|der Euro
+tu as quel âge ?|wie alt bist du?`,
+   sents:`J'ai vingt ans.|Ich bin zwanzig Jahre alt.|avoir|Das Alter sagt man mit „avoir“ (haben): j'ai … ans.
+Tu as quel âge ?|Wie alt bist du?|Fragen|
+Ça fait cinq euros.|Das macht fünf Euro.|Zahlen|
+Un, deux, trois, quatre.|Eins, zwei, drei, vier.|Zahlen|
+J'ai deux frères.|Ich habe zwei Brüder.|avoir|
+Soixante-dix, c'est soixante plus dix.|Siebzig ist sechzig plus zehn.|Zahlen|In Frankreich zählt man ab 70 anders: 70 = soixante-dix, 80 = quatre-vingts, 90 = quatre-vingt-dix. In Belgien und der Schweiz sagt man septante und nonante.`},
+  {id:"u6", e:"🧱", title:"Einfache Sätze", pt:"Phrases simples", desc:"Ich, du, er, sie – die ersten Verben.",
+   words:`je|ich
+tu|du
+il|er
+elle|sie (Singular)
+nous|wir
+vous|ihr / Sie
+ils|sie (Plural)
+on|man / wir (umgangssprachlich)
+parler|sprechen
+travailler|arbeiten`,
+   sents:`Je parle allemand.|Ich spreche Deutsch.|Verben auf -er|
+Tu parles français ?|Sprichst du Französisch?|Fragen|Im Alltag stellt man Fragen oft nur mit der Stimme.
+Elle travaille à Paris.|Sie arbeitet in Paris.|Verben auf -er|parle, parles, parle, parlent klingen alle gleich.
+Nous habitons à Berlin.|Wir wohnen in Berlin.|Verben auf -er|
+On va au cinéma ?|Gehen wir ins Kino?|Pronomen|„on“ ersetzt im Alltag oft „nous“. à + le = au.
+Vous parlez anglais ?|Sprechen Sie Englisch?|Anrede|„vous“ ist „Sie“ und gleichzeitig „ihr“.
+Il ne travaille pas aujourd'hui.|Er arbeitet heute nicht.|Verneinung|`}
+ ]}
+],
+DIALOGS: `1|Bonjour, ça va ?|Hallo, wie geht's?|Ça va bien, merci. Et toi ?|Ça fait trois euros.|J'habite à Berlin.
+1|Merci pour ton aide !|Danke für deine Hilfe!|De rien !|Je ne sais pas.|C'est combien ?
+2|Comment tu t'appelles ?|Wie heißt du?|Je m'appelle Daniel.|J'ai vingt ans.|À bientôt !
+2|Tu viens d'où ?|Woher kommst du?|Je viens d'Allemagne.|Je m'appelle Camille.|À huit heures.
+3|Tu veux un café ?|Möchtest du einen Kaffee?|Oui, volontiers.|Je viens d'Allemagne.|J'ai deux frères.
+4|Où sont les toilettes ?|Wo ist die Toilette?|Là-bas, à droite.|Ça fait cinq euros.|Je m'appelle Daniel.
+5|Tu as quel âge ?|Wie alt bist du?|J'ai trente ans.|J'habite à Paris.|Ça va bien, merci.
+5|C'est combien, la baguette ?|Was kostet das Baguette?|Un euro vingt.|À demain.|Je suis allemand.
+6|Tu parles français ?|Sprichst du Französisch?|Oui, un peu.|J'ai vingt ans.|De rien.`,
+SENTENCES: `A1|Je m'appelle Daniel et je viens d'Allemagne.|Ich heiße Daniel und komme aus Deutschland.
+A1|J'habite à Paris depuis deux ans.|Ich wohne seit zwei Jahren in Paris.
+A1|Je voudrais un café, s'il vous plaît.|Ich hätte gern einen Kaffee, bitte.
+A1|L'addition, s'il vous plaît.|Die Rechnung, bitte.
+A1|Où est la gare ?|Wo ist der Bahnhof?
+A1|Il fait très chaud aujourd'hui.|Heute ist es sehr heiß.
+A1|J'ai faim.|Ich habe Hunger.
+A1|Je ne parle pas très bien français.|Ich spreche nicht sehr gut Französisch.
+A1|Vous pouvez répéter, s'il vous plaît ?|Können Sie das bitte wiederholen?
+A1|Ma sœur travaille dans un hôpital.|Meine Schwester arbeitet in einem Krankenhaus.`,
+PERSONS: ["je","tu","il / elle / on","nous","vous","ils / elles"],
+TENSES: [
+  ["pres","Présent","Was jetzt oder regelmäßig passiert: **je parle** = ich spreche."],
+  ["pc","Passé composé","Abgeschlossene Handlung in der Vergangenheit: **j'ai parlé** = ich habe gesprochen. Bewegungsverben mit **être**: **je suis allé(e)**."],
+  ["imp","Imparfait","Gewohnheiten und Beschreibungen in der Vergangenheit: **je parlais** = ich sprach (früher)."],
+  ["fut","Futur simple","Zukunft: **je parlerai** = ich werde sprechen. Im Alltag oft **aller** + Infinitiv: **je vais parler**."]
+],
+VERBS: {
+  "être":   ["sein", "suis,es,est,sommes,êtes,sont", avPC("été"), imp("ét", true), fut("ser")],
+  avoir:    ["haben", "j'ai,as,a,avons,avez,ont", avPC("eu"), imp("av", true), fut("aur", true)],
+  aller:    ["gehen / fahren", "vais,vas,va,allons,allez,vont", etPC("allé"), imp("all", true), fut("ir", true)],
+  faire:    ["machen", "fais,fais,fait,faisons,faites,font", avPC("fait"), imp("fais"), fut("fer")],
+  pouvoir:  ["können", "peux,peux,peut,pouvons,pouvez,peuvent", avPC("pu"), imp("pouv"), fut("pourr")],
+  vouloir:  ["wollen", "veux,veux,veut,voulons,voulez,veulent", avPC("voulu"), imp("voul"), fut("voudr")],
+  dire:     ["sagen", "dis,dis,dit,disons,dites,disent", avPC("dit"), imp("dis"), fut("dir")],
+  venir:    ["kommen", "viens,viens,vient,venons,venez,viennent", etPC("venu"), imp("ven"), fut("viendr")],
+  voir:     ["sehen", "vois,vois,voit,voyons,voyez,voient", avPC("vu"), imp("voy"), fut("verr")],
+  savoir:   ["wissen", "sais,sais,sait,savons,savez,savent", avPC("su"), imp("sav"), fut("saur")],
+  prendre:  ["nehmen", "prends,prends,prend,prenons,prenez,prennent", avPC("pris"), imp("pren"), fut("prendr")],
+  parler:   ["sprechen (Muster für -er)", "parle,parles,parle,parlons,parlez,parlent", avPC("parlé"), imp("parl"), fut("parler")],
+  finir:    ["beenden (Muster für -ir)", "finis,finis,finit,finissons,finissez,finissent", avPC("fini"), imp("finiss"), fut("finir")],
+  attendre: ["warten (Muster für -re)", "attends,attends,attend,attendons,attendez,attendent", avPC("attendu"), imp("attend", true), fut("attendr", true)]
+},
+VERB_NOTES: {
+  "être": "Vor einem Vokal wird **je** zu **j'**: **j'ai**, **j'étais**.",
+  aller: "Passé composé mit **être** – das Partizip passt sich an: **elle est allée**, **ils sont allés**.",
+  venir: "Passé composé mit **être**: **je suis venu(e)**.",
+  parler: "**parle**, **parles**, **parle**, **parlent** klingen gleich – nur die Schrift unterscheidet sie."
+},
+CHEATS: [
+ ["Aussprache in Frankreich", `- Endkonsonanten spricht man meist nicht: **petit**, **vous**. Oft gesprochen werden c, r, f, l am Ende: **avec**, **bonjour**, **neuf**, **sel**.
+- Ein **e** am Wortende ist stumm: **une**, **table**.
+- Nasale: **an/en**, **on**, **in/un**: **enfant**, **bon**, **vin**.
+- **ou** klingt wie deutsches „u“, **u** wie deutsches „ü“: **vous** – **vu**.
+- **oi** klingt wie „wa“: **moi**, **trois**.
+- **h** spricht man nie.
+- Liaison: Ein sonst stummer Endkonsonant wird vor Vokal gesprochen: **les amis**, **vous avez**.
+- Betont wird immer die letzte Silbe.`],
+ ["Artikel & Geschlecht", `- Bestimmt: **le** (m), **la** (f), **les** (Plural). Vor Vokal oder stummem h: **l'** – **l'ami**, **l'eau**.
+- Unbestimmt: **un**, **une**, **des**.
+- Teilungsartikel für unbestimmte Mengen: **du pain**, **de la confiture**, **de l'eau** – nach Verneinung nur **de**: **Je ne mange pas de viande.**
+- Verschmelzung: **à + le = au**, **à + les = aux**, **de + le = du**, **de + les = des**.
+- Das Geschlecht muss man mitlernen: **le livre**, **la table**. Wörter auf **-tion** und **-té** sind meist weiblich.`],
+ ["Verneinung", `- Die Verneinung umschließt das konjugierte Verb: **Je ne parle pas anglais.**
+- Vor Vokal: **n'** – **Je n'ai pas le temps.**
+- **ne … rien** (nichts), **ne … jamais** (nie), **ne … plus** (nicht mehr), **ne … personne** (niemand).
+- Im gesprochenen Alltag fällt **ne** oft weg: **Je sais pas.** Schriftlich bleibt es.`],
+ ["Du, Sie & on", `- **tu** (du): Freunde, Familie, Kinder, unter Jüngeren.
+- **vous** (Sie): Fremde, Geschäfte, Behörden, Arbeit – im Zweifel immer **vous**. **vous** heißt auch „ihr“.
+- **on** (man) ersetzt im Alltag sehr oft **nous**: **On y va ?** (Gehen wir?)
+- Höflich grüßen: **Bonjour, monsieur. Bonjour, madame.**`],
+ ["Fragen stellen", `Drei Möglichkeiten, von locker bis formell:
+- Nur mit der Stimme: **Tu viens ?**
+- Mit **est-ce que**: **Est-ce que tu viens ?**
+- Mit Umstellung, vor allem schriftlich: **Viens-tu ?**
+Mit Fragewort: **Tu habites où ?** – **Où est-ce que tu habites ?** – **Où habites-tu ?**`],
+ ["Passé composé: avoir oder être?", `- Die meisten Verben bilden das Passé composé mit **avoir**: **J'ai mangé.**
+- Mit **être**: Verben der Bewegung und Zustandsänderung (aller, venir, arriver, partir, entrer, sortir, naître, mourir, rester, tomber …) und alle reflexiven Verben: **Je suis allé(e). Je me suis levé(e).**
+- Bei **être** richtet sich das Partizip nach dem Subjekt: **Elle est allée. Ils sont venus.**`]
+]
+};
+})();
+
+</script>
+<script>/*PACK:en*/
+/* ===== Sprachpaket: Englisch (britisches Standardenglisch) =====
+   Norm: Cambridge Dictionary, Oxford Learner's Dictionaries; Niveaus: English Profile (Cambridge). Siehe QUELLEN.md. */
+LEL_PACKS.en = (function(){
+const s3 = (b, t) => `${b},${b},${t},${b},${b},${b}`;
+const all = x => `${x},${x},${x},${x},${x},${x}`;
+const pp = p => `have ${p},have ${p},has ${p},have ${p},have ${p},have ${p}`;
+const will = v => all("will " + v);
+return {
+LANG: {code:"en", flag:"🇬🇧", name:"Englisch", adj:"britisches Englisch", inLang:"Englisch", into:"ins Englische",
+  country:"Großbritannien", voiceFrom:"aus Großbritannien", tts:"en-GB", ttsRe:/^en[-_]GB/i, prefix:"en",
+  voicePath:"Englisch → Vereinigtes Königreich", status:"A1 · Abschnitt 1 von 6", tutor:false},
+ART_RE: /^(the|a|an|to|der|die|das|ein|eine|einen) /,
+F_RE: /kate|serena|stephanie|martha|libby|sonia|female|woman/i,
+M_RE: /daniel|arthur|oliver|ryan|thomas|\bmale\b|\bman\b/i,
+FUNC: ["the","a","an","to","of","in","on","at","and","is","are","i","you","it","for","with","not","do","does"],
+LEVEL_NAMES: {A1:"Absolute Grundlagen",A2:"Einfache Gespräche & Alltag",B1:"Selbstständig kommunizieren",B2:"Flüssiger sprechen",C1:"Fortgeschrittenes Englisch"},
+CURRICULUM: {
+ A1:[["A1-01","Begrüßen & sich vorstellen","hello, my name is …, how are you?"],["A1-02","Aussprache","th, w und v, das britische r"],["A1-03","Artikel","the, a, an – kein Geschlecht"],["A1-04","to be","I am, you are, he is"],["A1-05","Simple Present","I work, she works"],["A1-06","Fragen & Verneinung mit do","Do you …? I don't …"],["A1-07","have got","I've got a brother"],["A1-08","Zahlen & Uhrzeit","0–100, What time is it?"],["A1-T","A1-Abschlusstest","Prüfung über alle A1-Themen"]],
+ A2:[["A2-01","Present Progressive","I'm working"],["A2-02","Simple Past","I worked, I went"],["A2-03","going to & will","Pläne und Vorhersagen"],["A2-04","Vergleiche","bigger, more interesting"],["A2-T","A2-Abschlusstest","Prüfung über alle A2-Themen"]],
+ B1:[["B1-01","Present Perfect","I have seen"],["B1-02","Past Progressive","I was working when …"],["B1-03","Bedingungssätze I & II","if I have / if I had"],["B1-T","B1-Abschlusstest","Prüfung über alle B1-Themen"]],
+ B2:[["B2-01","Passiv","it was built"],["B2-02","Indirekte Rede","she said she would come"],["B2-T","B2-Abschlusstest","Prüfung über alle B2-Themen"]],
+ C1:[["C1-01","Stil & Register","formell, neutral, umgangssprachlich"],["C1-02","Phrasal verbs & Idiome","put up with, get over"],["C1-T","C1-Abschlusstest","Prüfung über alle C1-Themen"]]
+},
+SCENARIOS: [["☕","At the café","Bestelle einen Tee und etwas zu essen"],["🛒","At the supermarket","Frag nach Produkten, Preisen und bezahle"],["📞","On the phone","Reserviere einen Tisch im Restaurant"],["🍻","With friends","Verabrede dich für den Abend"],["👨‍👩‍👧","With the family","Lerne die Familie eines Freundes kennen"],["🧭","In the street","Frag nach dem Weg zur U-Bahn"],["💊","At the chemist's","Beschreibe Beschwerden und kauf etwas"],["🏨","At the hotel","Check-in und Fragen an der Rezeption"],["🏠","With the neighbour","Smalltalk mit dem Nachbarn"],["🎲","Free conversation","Freies Gespräch auf deinem Niveau"]],
+SCEN_DE: ["Im Café","Im Supermarkt","Am Telefon","Mit Freunden","Mit der Familie","Auf der Straße","In der Apotheke","Im Hotel","Mit dem Nachbarn","Freies Gespräch"],
+STARTER_VOCAB: [["hello","hallo"],["good morning","guten Morgen"],["good evening","guten Abend"],["my name is …","ich heiße …"],["how are you?","wie geht's?"],["thank you","danke"],["please","bitte"],["sorry","Entschuldigung"],["yes","ja"],["no","nein"],["goodbye","auf Wiedersehen"]],
+INITIAL_CHAT: [{role:"assistant", content:"Hello! Hier lernst du britisches Englisch 🇬🇧\n\nFang einfach mit der ersten Lektion im Lernpfad an."}],
+THEMES: [
+ {id:"gruss",e:"👋",name:"Begrüßung & Höflichkeit",level:"A1",w:`hello|hallo
+hi|hi
+good morning|guten Morgen
+good afternoon|guten Tag (nachmittags)
+good evening|guten Abend
+good night|gute Nacht
+goodbye|auf Wiedersehen
+bye|tschüss
+see you later|bis später
+see you tomorrow|bis morgen
+how are you?|wie geht's?
+fine|gut
+thank you|danke
+thanks|danke (locker)
+you're welcome|gern geschehen
+please|bitte
+sorry|Entschuldigung / tut mir leid
+excuse me|entschuldigen Sie
+nice to meet you|freut mich
+welcome|willkommen`},
+ {id:"ichdu",e:"🙋",name:"Personen & Vorstellen",level:"A1",w:`I|ich
+you|du / ihr / Sie
+he|er
+she|sie (Singular)
+it|es
+we|wir
+they|sie (Plural)
+my name is|ich heiße
+the first name|der Vorname
+the surname|der Nachname
+Mr|Herr
+Mrs|Frau (verheiratet)
+Ms|Frau (neutral)
+German|deutsch / Deutscher
+English|englisch / Englisch
+British|britisch
+Germany|Deutschland
+England|England`},
+ {id:"fragen",e:"❓",name:"Fragewörter",level:"A1",w:`what?|was?
+who?|wer?
+where?|wo? / wohin?
+when?|wann?
+how?|wie?
+how much?|wie viel?
+how many?|wie viele?
+why?|warum?
+because|weil
+which?|welcher / welche / welches?
+whose?|wessen?`},
+ {id:"zahlen",e:"🔢",name:"Zahlen",level:"A1",w:`zero|null
+one|eins
+two|zwei
+three|drei
+four|vier
+five|fünf
+six|sechs
+seven|sieben
+eight|acht
+nine|neun
+ten|zehn
+eleven|elf
+twelve|zwölf
+thirteen|dreizehn
+fourteen|vierzehn
+fifteen|fünfzehn
+sixteen|sechzehn
+seventeen|siebzehn
+eighteen|achtzehn
+nineteen|neunzehn
+twenty|zwanzig
+twenty-one|einundzwanzig
+thirty|dreißig
+forty|vierzig
+fifty|fünfzig
+sixty|sechzig
+seventy|siebzig
+eighty|achtzig
+ninety|neunzig
+a hundred|hundert
+a thousand|tausend
+the pound|das Pfund`},
+ {id:"verben",e:"⚙️",name:"Erste Verben",level:"A1",w:`to be|sein
+to have|haben
+to do|tun / machen
+to go|gehen / fahren
+to make|machen / herstellen
+to get|bekommen
+to take|nehmen
+to come|kommen
+to see|sehen
+to know|wissen / kennen
+to say|sagen
+to speak|sprechen
+to work|arbeiten
+to live|wohnen / leben
+to eat|essen
+to drink|trinken
+to like|mögen
+to want|wollen`},
+ {id:"alltag",e:"☀️",name:"Erste Alltagswörter",level:"A1",w:`yes|ja
+no|nein
+of course|natürlich
+OK|okay
+too|auch (am Satzende)
+nothing|nichts
+never|nie
+today|heute
+tomorrow|morgen
+yesterday|gestern
+here|hier
+there|dort
+a lot|viel
+a little|ein bisschen
+very|sehr
+well|gut (Adverb)
+the coffee|der Kaffee
+the tea|der Tee
+the water|das Wasser
+the bread|das Brot
+the house|das Haus
+the flat|die Wohnung
+the street|die Straße
+the toilet|die Toilette
+the station|der Bahnhof
+the brother|der Bruder
+the sister|die Schwester
+the friend|der Freund / die Freundin`}
+],
+PATH_SECTIONS: [
+ {id:"s1", title:"Erste Schritte", pt:"First steps", level:"A1", color:"#2F6BFF", units:[
+  {id:"u1", e:"👋", title:"Begrüßungen", pt:"Hello!", desc:"Hallo sagen, danke und bitte.",
+   words:`hello|hallo
+hi|hi
+good morning|guten Morgen
+good afternoon|guten Tag (nachmittags)
+good evening|guten Abend
+goodbye|auf Wiedersehen
+bye|tschüss
+see you later|bis später
+thank you|danke
+please|bitte`,
+   sents:`Hello, good morning!|Hallo, guten Morgen!|Begrüßung|„Good morning“ sagt man bis etwa zum Mittag.
+Hi, how are you?|Hi, wie geht's?|Begrüßung|„How are you?“ ist oft nur ein Gruß – man antwortet kurz.
+I'm fine, thanks.|Mir geht's gut, danke.|Begrüßung|„thanks“ ist lockerer als „thank you“.
+Good evening and good night!|Guten Abend und gute Nacht!|Begrüßung|„Good night“ sagt man nur zum Abschied oder vor dem Schlafen.
+Bye, see you later!|Tschüss, bis später!|Begrüßung|
+A coffee, please.|Einen Kaffee, bitte.|Höflichkeit|In Großbritannien hört man „please“ und „thank you“ sehr oft.`},
+  {id:"u2", e:"🙋", title:"Sich vorstellen", pt:"My name is…", desc:"Name, Herkunft und Wohnort.",
+   words:`my name is|ich heiße
+I'm|ich bin
+what's your name?|wie heißt du?
+where are you from?|woher kommst du?
+I'm from Germany|ich komme aus Deutschland
+I live in|ich wohne in
+nice to meet you|freut mich
+the name|der Name
+German|deutsch / Deutscher
+English|englisch / Englisch`,
+   sents:`My name is Daniel.|Ich heiße Daniel.|Vorstellen|
+What's your name?|Wie heißt du?|Fragen|„What's“ ist die Kurzform von „what is“.
+I'm German.|Ich bin Deutscher.|to be|Nationalitäten und Sprachen schreibt man im Englischen groß.
+I'm from Germany.|Ich komme aus Deutschland.|Präpositionen|Herkunft: be from + Land.
+I live in Berlin.|Ich wohne in Berlin.|Präpositionen|
+Nice to meet you!|Freut mich!|Begrüßung|
+Where are you from?|Woher kommst du?|Fragen|Die Präposition steht am Ende der Frage.`,
+   story:{title:"Im Sprachkurs", lines:`Emma|Hi! What's your name?|Hi! Wie heißt du?
+Daniel|My name is Daniel. And you?|Ich heiße Daniel. Und du?
+Emma|I'm Emma. Where are you from?|Ich bin Emma. Woher kommst du?
+Daniel|I'm from Germany, but I live in London.|Ich komme aus Deutschland, aber ich wohne in London.
+Emma|Nice to meet you, Daniel!|Freut mich, Daniel!`, qs:`Woher kommt Daniel?|Aus Deutschland|Aus London|Aus Amerika
+Wo wohnt Daniel?|In London|In Berlin|In Manchester
+Was sagt Emma am Ende?|Freut mich|Bis morgen|Danke schön`}},
+  {id:"u3", e:"✅", title:"Ja und Nein", pt:"Yes or no", desc:"Zustimmen, ablehnen, verneinen.",
+   words:`yes|ja
+no|nein
+of course|natürlich
+OK|okay
+sure|klar
+me too|ich auch
+me neither|ich auch nicht
+nothing|nichts
+never|nie
+I don't know|ich weiß nicht`,
+   sents:`Yes, of course.|Ja, natürlich.|Zustimmung|
+No, thank you.|Nein, danke.|Verneinung|
+I don't know.|Ich weiß nicht.|Verneinung|Verneinung mit „do not“ (don't) + Grundform.
+Do you like tea? – Yes, I do.|Magst du Tee? – Ja.|Kurzantworten|Man antwortet gern kurz mit dem Hilfsverb: Yes, I do. / No, I don't.
+I don't want anything.|Ich will nichts.|Verneinung|Im Englischen nur eine Verneinung: not … anything.
+Me too.|Ich auch.|Zustimmung|
+Me neither.|Ich auch nicht.|Verneinung|Antwort auf einen verneinten Satz.`},
+  {id:"u4", e:"❓", title:"Grundlegende Fragen", pt:"Questions", desc:"Wer, was, wo, wann und wie viel?",
+   words:`what?|was?
+who?|wer?
+where?|wo? / wohin?
+when?|wann?
+how?|wie?
+how much?|wie viel?
+why?|warum?
+because|weil
+which?|welcher / welche / welches?
+how many?|wie viele?`,
+   sents:`What is this?|Was ist das?|Fragen|
+Where is the toilet?|Wo ist die Toilette?|Fragen|In Großbritannien sagt man „toilet“ oder locker „loo“, in den USA „restroom“.
+How much is it?|Wie viel kostet das?|Fragen|
+Who is that?|Wer ist das?|Fragen|
+Why aren't you coming?|Warum kommst du nicht?|Fragen|
+Because I'm tired.|Weil ich müde bin.|to be|
+When does the lesson start?|Wann fängt der Unterricht an?|Fragen|Fragen im Simple Present bildet man mit „do/does“.`},
+  {id:"u5", e:"🔢", title:"Zahlen", pt:"Numbers", desc:"Von eins bis hundert, Alter und Preise.",
+   words:`one|eins
+two|zwei
+three|drei
+four|vier
+five|fünf
+ten|zehn
+twenty|zwanzig
+a hundred|hundert
+the pound|das Pfund
+how old are you?|wie alt bist du?`,
+   sents:`I'm twenty years old.|Ich bin zwanzig Jahre alt.|to be|Das Alter sagt man mit „to be“, nicht mit „have“.
+How old are you?|Wie alt bist du?|Fragen|
+That's five pounds.|Das macht fünf Pfund.|Zahlen|In Großbritannien bezahlt man mit Pfund (£).
+One, two, three, four.|Eins, zwei, drei, vier.|Zahlen|
+I have two brothers.|Ich habe zwei Brüder.|to have|In Großbritannien sagt man auch oft: I've got two brothers.
+A hundred pounds is a lot of money.|Hundert Pfund sind viel Geld.|Zahlen|„a hundred“ oder „one hundred“.`},
+  {id:"u6", e:"🧱", title:"Einfache Sätze", pt:"Simple sentences", desc:"Ich, du, er, sie – die ersten Verben.",
+   words:`I|ich
+you|du / ihr / Sie
+he|er
+she|sie (Singular)
+it|es
+we|wir
+they|sie (Plural)
+to speak|sprechen
+to work|arbeiten
+to live|wohnen / leben`,
+   sents:`I speak German.|Ich spreche Deutsch.|Simple Present|
+Do you speak English?|Sprichst du Englisch?|Fragen|
+She works in London.|Sie arbeitet in London.|Simple Present|In der 3. Person Singular hängt man -s an: she works.
+We live in Berlin.|Wir wohnen in Berlin.|Simple Present|
+They are from Spain.|Sie kommen aus Spanien.|to be|
+He doesn't work today.|Er arbeitet heute nicht.|Verneinung|In der 3. Person: doesn't + Grundform.
+I'm working at the moment.|Ich arbeite gerade.|Verlaufsform|Was gerade passiert: am/is/are + -ing.`}
+ ]}
+],
+DIALOGS: `1|Hi, how are you?|Hi, wie geht's?|I'm fine, thanks. And you?|That's three pounds.|I live in Berlin.
+1|Thanks for your help!|Danke für deine Hilfe!|You're welcome!|I don't know.|How much is it?
+2|What's your name?|Wie heißt du?|My name is Daniel.|I'm twenty years old.|See you later!
+2|Where are you from?|Woher kommst du?|I'm from Germany.|My name is Emma.|At eight o'clock.
+3|Would you like a cup of tea?|Möchtest du eine Tasse Tee?|Yes, please.|I'm from Germany.|I have two brothers.
+4|Where is the toilet?|Wo ist die Toilette?|Over there, on the right.|That's five pounds.|My name is Daniel.
+5|How old are you?|Wie alt bist du?|I'm thirty.|I live in London.|I'm fine, thanks.
+5|How much is the bread?|Wie viel kostet das Brot?|One pound fifty.|See you tomorrow.|I'm German.
+6|Do you speak English?|Sprichst du Englisch?|Yes, a little.|I'm twenty years old.|You're welcome.`,
+SENTENCES: `A1|My name is Daniel and I'm from Germany.|Ich heiße Daniel und komme aus Deutschland.
+A1|I've lived in London for two years.|Ich wohne seit zwei Jahren in London.
+A1|Could I have a coffee, please?|Könnte ich bitte einen Kaffee haben?
+A1|Can I have the bill, please?|Kann ich bitte die Rechnung haben?
+A1|Where is the station?|Wo ist der Bahnhof?
+A1|It's very hot today.|Heute ist es sehr heiß.
+A1|I'm hungry.|Ich habe Hunger.
+A1|My English isn't very good.|Mein Englisch ist nicht sehr gut.
+A1|Could you say that again, please?|Könnten Sie das bitte wiederholen?
+A1|My sister works in a hospital.|Meine Schwester arbeitet in einem Krankenhaus.`,
+PERSONS: ["I","you","he / she / it","we","you (Plural)","they"],
+TENSES: [
+  ["pres","Simple Present","Gewohnheiten und Fakten: **I work** = ich arbeite. In der 3. Person ein -s: **she works**."],
+  ["past","Simple Past","Abgeschlossene Vergangenheit mit Zeitangabe (yesterday, last year): **I went** = ich ging / bin gegangen."],
+  ["perf","Present Perfect","Erfahrung oder Ergebnis bis jetzt (ever, never, already, just): **I have been** = ich bin gewesen."],
+  ["fut","Future (will)","Spontane Entscheidungen und Vorhersagen: **I will go**. Pläne meist mit **going to**: I'm going to travel."]
+],
+VERBS: {
+  be:   ["sein", "am,are,is,are,are,are", "was,were,was,were,were,were", pp("been"), will("be")],
+  have: ["haben", s3("have","has"), all("had"), pp("had"), will("have")],
+  do:   ["tun / machen", s3("do","does"), all("did"), pp("done"), will("do")],
+  go:   ["gehen / fahren", s3("go","goes"), all("went"), pp("gone"), will("go")],
+  make: ["machen / herstellen", s3("make","makes"), all("made"), pp("made"), will("make")],
+  get:  ["bekommen / werden", s3("get","gets"), all("got"), pp("got"), will("get")],
+  take: ["nehmen", s3("take","takes"), all("took"), pp("taken"), will("take")],
+  come: ["kommen", s3("come","comes"), all("came"), pp("come"), will("come")],
+  see:  ["sehen", s3("see","sees"), all("saw"), pp("seen"), will("see")],
+  know: ["wissen / kennen", s3("know","knows"), all("knew"), pp("known"), will("know")],
+  say:  ["sagen", s3("say","says"), all("said"), pp("said"), will("say")],
+  eat:  ["essen", s3("eat","eats"), all("ate"), pp("eaten"), will("eat")],
+  can:  ["können", all("can"), all("could"), pp("been able to"), will("be able to")],
+  work: ["arbeiten (regelmäßig)", s3("work","works"), all("worked"), pp("worked"), will("work")],
+  live: ["wohnen (regelmäßig)", s3("live","lives"), all("lived"), pp("lived"), will("live")]
+},
+VERB_NOTES: {
+  be: "**be** ist unregelmäßig in allen Formen. Kurzformen: **I'm**, **you're**, **he's**, **we're**, **they're**.",
+  get: "Britisch: **have got**. Amerikanisch oft: **have gotten**.",
+  say: "**says** spricht man [säs], **said** [säd].",
+  can: "**can** hat keine eigene Perfekt- und Zukunftsform – man nimmt **be able to**."
+},
+CHEATS: [
+ ["Aussprache (britisches Englisch)", `- **th** stimmlos wie in **think**, stimmhaft wie in **this** – Zungenspitze zwischen die Zähne.
+- **w** ist ein kurzes „u“: **water**, **we**. Das englische **v** klingt dagegen wie deutsches „w“: **very**.
+- Im britischen Standard spricht man **r** nach einem Vokal meist nicht: **car**, **water**.
+- Endungen nicht verhärten: **dog** endet auf weichem g.
+- **-ed** in der Vergangenheit: [t] nach stimmlosen Lauten (**worked**), [d] sonst (**lived**), [id] nach t/d (**wanted**).
+- Schreibung und Aussprache weichen oft ab: **know**, **island**. Am besten mit der Hörübung lernen.`],
+ ["Artikel", `- **the** steht für der/die/das – Englisch hat kein grammatisches Geschlecht.
+- **a** vor Konsonantenlaut, **an** vor Vokallaut: **a book**, **an apple**, **an hour** (h ist stumm), **a university** (gesprochen „ju“).
+- Bei Berufen steht **a**: **She's a doctor.**
+- Allgemeine Aussagen ohne Artikel: **I like music.**`],
+ ["Fragen & Verneinung mit do", `- Im Simple Present bildet man Fragen mit **do/does**: **Do you work here? Does she live in London?**
+- Verneinung mit **don't/doesn't** + Grundform: **I don't know. He doesn't like tea.**
+- Bei **be**, **can** und anderen Hilfsverben kein **do**: **Are you tired? I can't swim.**
+- Nur eine Verneinung pro Satz: **I don't have anything.**`],
+ ["Simple oder Progressive?", `- **Simple Present**: Gewohnheiten und Fakten – **I work in Berlin.**
+- **Present Progressive** (am/is/are + -ing): was gerade passiert – **I'm working right now.**
+- In der 3. Person Singular kommt im Simple Present ein **-s** dazu: **she works**, **he goes**.`],
+ ["Britisch oder amerikanisch?", `In dieser App lernst du britisches Englisch. Typische Unterschiede:
+- **flat** (GB) – **apartment** (US): Wohnung
+- **lift** – **elevator**: Aufzug
+- **holiday** – **vacation**: Urlaub
+- **colour**, **centre** – **color**, **center**
+- **Have you got …?** ist in Großbritannien üblich, **Do you have …?** überall – beides ist richtig.`],
+ ["Present Perfect", `- Bildung: **have/has** + 3. Verbform: **I have seen**, **she has gone**.
+- Für Erfahrungen und Ergebnisse bis jetzt: **Have you ever been to London?**
+- Mit einem abgeschlossenen Zeitpunkt (yesterday, in 2020) steht das Simple Past: **I saw him yesterday.**`]
+]
+};
+})();
+
+</script>
+<script>/*PACK:it*/
+/* ===== Sprachpaket: Italienisch (Standarditalienisch) =====
+   Norm: Accademia della Crusca, Vocabolario Treccani; Niveaus: Profilo della lingua italiana. Siehe QUELLEN.md. */
+LEL_PACKS.it = (function(){
+const av = p => `ho ${p},hai ${p},ha ${p},abbiamo ${p},avete ${p},hanno ${p}`;
+const es = s => `sono ${s}o/a,sei ${s}o/a,è ${s}o/a,siamo ${s}i/e,siete ${s}i/e,sono ${s}i/e`;
+const imp = s => `${s}vo,${s}vi,${s}va,${s}vamo,${s}vate,${s}vano`;
+const fut = s => `${s}ò,${s}ai,${s}à,${s}emo,${s}ete,${s}anno`;
+return {
+LANG: {code:"it", flag:"🇮🇹", name:"Italienisch", adj:"Italienisch", inLang:"Italienisch", into:"ins Italienische",
+  country:"Italien", voiceFrom:"aus Italien", tts:"it-IT", ttsRe:/^it[-_]IT/i, prefix:"it",
+  voicePath:"Italienisch", status:"A1 · Abschnitt 1 von 6", tutor:false},
+ART_RE: /^(il|lo|la|i|gli|le|un|uno|una|der|die|das|ein|eine|einen) /,
+F_RE: /alice|federica|paola|elsa|emma|female|donna|woman/i,
+M_RE: /luca|diego|giorgio|cosimo|\bmale\b|uomo|\bman\b/i,
+FUNC: ["il","lo","la","i","gli","le","un","una","di","del","della","a","al","in","nel","e","che","non","per","con","mi","ti"],
+LEVEL_NAMES: {A1:"Absolute Grundlagen",A2:"Einfache Gespräche & Alltag",B1:"Selbstständig kommunizieren",B2:"Flüssiger sprechen",C1:"Fortgeschrittenes Italienisch"},
+CURRICULUM: {
+ A1:[["A1-01","Begrüßen & sich vorstellen","ciao, buongiorno, mi chiamo …, tu vs. Lei"],["A1-02","Aussprache","c/g weich und hart, gli, gn, Doppelkonsonanten"],["A1-03","Artikel & Geschlecht","il / lo / la / l' / i / gli / le"],["A1-04","essere & avere","sono, ho"],["A1-05","Verben auf -are, -ere, -ire","parlare, prendere, dormire, capire"],["A1-06","Verneinung","non, niente, mai"],["A1-07","Präposition + Artikel","al, del, nel, sul"],["A1-08","Zahlen & Uhrzeit","0–100, che ore sono?"],["A1-T","A1-Abschlusstest","Prüfung über alle A1-Themen"]],
+ A2:[["A2-01","Passato prossimo","ho mangiato, sono andato/a"],["A2-02","Imperfetto","Gewohnheiten und Beschreibungen"],["A2-03","Reflexive Verben","alzarsi, chiamarsi"],["A2-04","Objektpronomen","lo, la, gli, ne"],["A2-T","A2-Abschlusstest","Prüfung über alle A2-Themen"]],
+ B1:[["B1-01","Futuro & condizionale","Pläne, Vermutungen, Höflichkeit"],["B1-02","Congiuntivo presente","penso che sia"],["B1-03","Imperativ","bejaht, verneint, mit Pronomen"],["B1-T","B1-Abschlusstest","Prüfung über alle B1-Themen"]],
+ B2:[["B2-01","Congiuntivo imperfetto & Bedingungssätze","se avessi tempo …"],["B2-02","Indirekte Rede","ha detto che sarebbe venuto"],["B2-T","B2-Abschlusstest","Prüfung über alle B2-Themen"]],
+ C1:[["C1-01","Stil & Register","formell, umgangssprachlich, regional"],["C1-02","Passato remoto","in Literatur und Süditalien"],["C1-T","C1-Abschlusstest","Prüfung über alle C1-Themen"]]
+},
+SCENARIOS: [["☕","Al bar","Bestelle einen Kaffee und ein Cornetto"],["🛒","Al supermercato","Frag nach Produkten, Preisen und bezahle"],["📞","Al telefono","Reserviere einen Tisch im Restaurant"],["🍻","Con gli amici","Verabrede dich für den Abend"],["👨‍👩‍👧","In famiglia","Lerne die Familie eines Freundes kennen"],["🧭","Per strada","Frag nach dem Weg zur Metro"],["💊","In farmacia","Beschreibe Beschwerden und kauf etwas"],["🏨","In albergo","Check-in und Fragen an der Rezeption"],["🏠","Con il vicino","Smalltalk mit dem Nachbarn"],["🎲","Conversazione libera","Freies Gespräch auf deinem Niveau"]],
+SCEN_DE: ["In der Bar","Im Supermarkt","Am Telefon","Mit Freunden","Mit der Familie","Auf der Straße","In der Apotheke","Im Hotel","Mit dem Nachbarn","Freies Gespräch"],
+STARTER_VOCAB: [["ciao","hallo / tschüss"],["buongiorno","guten Morgen / guten Tag"],["buonasera","guten Abend"],["mi chiamo …","ich heiße …"],["come stai?","wie geht's dir?"],["grazie","danke"],["per favore","bitte"],["scusa","Entschuldigung"],["sì","ja"],["no","nein"],["arrivederci","auf Wiedersehen"]],
+INITIAL_CHAT: [{role:"assistant", content:"Ciao! Hier lernst du Italienisch 🇮🇹\n\nFang einfach mit der ersten Lektion im Lernpfad an."}],
+THEMES: [
+ {id:"gruss",e:"👋",name:"Begrüßung & Höflichkeit",level:"A1",w:`ciao|hallo / tschüss (locker)
+salve|hallo (neutral)
+buongiorno|guten Morgen / guten Tag
+buonasera|guten Abend
+buonanotte|gute Nacht
+arrivederci|auf Wiedersehen
+a dopo|bis später
+a domani|bis morgen
+a presto|bis bald
+come stai?|wie geht's dir?
+come sta?|wie geht es Ihnen?
+bene|gut
+grazie|danke
+grazie mille|vielen Dank
+prego|bitte / gern geschehen
+per favore|bitte
+scusa|Entschuldigung (zu Freunden)
+mi scusi|entschuldigen Sie
+piacere|freut mich
+benvenuto|willkommen`},
+ {id:"ichdu",e:"🙋",name:"Personen & Vorstellen",level:"A1",w:`io|ich
+tu|du
+lui|er
+lei|sie (Singular)
+Lei|Sie (höflich)
+noi|wir
+voi|ihr
+loro|sie (Plural)
+mi chiamo|ich heiße
+il nome|der Name / Vorname
+il cognome|der Nachname
+il signore|der Herr
+la signora|die Frau (Anrede)
+tedesco|deutsch / der Deutsche
+tedesca|deutsch / die Deutsche
+italiano|italienisch / der Italiener
+la Germania|Deutschland
+l'Italia|Italien`},
+ {id:"fragen",e:"❓",name:"Fragewörter",level:"A1",w:`che cosa?|was?
+chi?|wer?
+dove?|wo? / wohin?
+di dove?|woher?
+quando?|wann?
+come?|wie?
+quanto?|wie viel?
+quanti?|wie viele?
+perché?|warum?
+perché|weil
+quale?|welcher / welche / welches?`},
+ {id:"zahlen",e:"🔢",name:"Zahlen",level:"A1",w:`zero|null
+uno|eins
+due|zwei
+tre|drei
+quattro|vier
+cinque|fünf
+sei|sechs
+sette|sieben
+otto|acht
+nove|neun
+dieci|zehn
+undici|elf
+dodici|zwölf
+tredici|dreizehn
+quattordici|vierzehn
+quindici|fünfzehn
+sedici|sechzehn
+diciassette|siebzehn
+diciotto|achtzehn
+diciannove|neunzehn
+venti|zwanzig
+ventuno|einundzwanzig
+trenta|dreißig
+quaranta|vierzig
+cinquanta|fünfzig
+sessanta|sechzig
+settanta|siebzig
+ottanta|achtzig
+novanta|neunzig
+cento|hundert
+mille|tausend`},
+ {id:"verben",e:"⚙️",name:"Erste Verben",level:"A1",w:`essere|sein
+avere|haben
+andare|gehen / fahren
+fare|machen
+potere|können
+volere|wollen
+stare|sein / sich befinden
+parlare|sprechen
+lavorare|arbeiten
+abitare|wohnen
+mangiare|essen
+bere|trinken
+chiamarsi|heißen
+venire|kommen
+sapere|wissen
+vedere|sehen
+prendere|nehmen
+capire|verstehen`},
+ {id:"alltag",e:"☀️",name:"Erste Alltagswörter",level:"A1",w:`sì|ja
+no|nein
+certo|sicher / natürlich
+va bene|okay / in Ordnung
+anche|auch
+niente|nichts
+mai|nie
+oggi|heute
+domani|morgen
+ieri|gestern
+qui|hier
+lì|dort
+molto|viel / sehr
+poco|wenig
+un po'|ein bisschen
+il caffè|der Kaffee (Espresso)
+l'acqua|das Wasser
+la birra|das Bier
+il pane|das Brot
+la casa|das Haus
+la strada|die Straße
+il bagno|die Toilette / das Bad
+la stazione|der Bahnhof
+il fratello|der Bruder
+la sorella|die Schwester
+l'amico|der Freund
+l'amica|die Freundin`}
+],
+PATH_SECTIONS: [
+ {id:"s1", title:"Erste Schritte", pt:"Primi passi", level:"A1", color:"#2F6BFF", units:[
+  {id:"u1", e:"👋", title:"Begrüßungen", pt:"Ciao!", desc:"Hallo sagen, danke und bitte.",
+   words:`ciao|hallo / tschüss (locker)
+buongiorno|guten Morgen / guten Tag
+buonasera|guten Abend
+buonanotte|gute Nacht
+arrivederci|auf Wiedersehen
+a dopo|bis später
+a domani|bis morgen
+grazie|danke
+per favore|bitte
+prego|bitte / gern geschehen`,
+   sents:`Ciao, come stai?|Hallo, wie geht's dir?|Begrüßung|„Ciao“ nur unter Freunden – zur Begrüßung und zum Abschied.
+Buongiorno, signora!|Guten Tag! (zu einer Frau)|Begrüßung|„Buongiorno“ sagt man etwa bis zum frühen Nachmittag.
+Bene, grazie.|Gut, danke.|Begrüßung|
+Buonasera e a domani!|Guten Abend und bis morgen!|Begrüßung|„Buonasera“ sagt man ab dem Nachmittag.
+Arrivederci, a dopo!|Auf Wiedersehen, bis später!|Begrüßung|
+Un caffè, per favore.|Einen Kaffee, bitte.|Höflichkeit|„Un caffè“ ist in Italien ein Espresso.`},
+  {id:"u2", e:"🙋", title:"Sich vorstellen", pt:"Mi chiamo…", desc:"Name, Herkunft und Wohnort.",
+   words:`mi chiamo|ich heiße
+sono|ich bin
+come ti chiami?|wie heißt du?
+di dove sei?|woher kommst du?
+vengo dalla Germania|ich komme aus Deutschland
+abito a|ich wohne in (Stadt)
+piacere|freut mich
+il nome|der Name
+tedesco|deutsch / Deutscher
+italiano|italienisch / Italiener`,
+   sents:`Mi chiamo Daniel.|Ich heiße Daniel.|Reflexive Verben|„chiamarsi“ heißt wörtlich „sich nennen“.
+Come ti chiami?|Wie heißt du?|Fragen|
+Sono tedesco.|Ich bin Deutscher.|essere|Frauen sagen „sono tedesca“.
+Vengo dalla Germania.|Ich komme aus Deutschland.|Präpositionen|da + la = dalla.
+Abito a Berlino.|Ich wohne in Berlin.|Präpositionen|Vor Städten steht „a“: a Roma, a Berlino.
+Piacere!|Freut mich!|Begrüßung|
+Di dove sei?|Woher kommst du?|Fragen|`,
+   story:{title:"Im Sprachkurs", lines:`Giulia|Ciao! Come ti chiami?|Hallo! Wie heißt du?
+Daniel|Mi chiamo Daniel. E tu?|Ich heiße Daniel. Und du?
+Giulia|Io sono Giulia. Di dove sei?|Ich bin Giulia. Woher kommst du?
+Daniel|Vengo dalla Germania, ma abito a Roma.|Ich komme aus Deutschland, aber ich wohne in Rom.
+Giulia|Piacere, Daniel!|Freut mich, Daniel!`, qs:`Woher kommt Daniel?|Aus Deutschland|Aus Rom|Aus der Schweiz
+Wo wohnt Daniel?|In Rom|In Berlin|In Mailand
+Was sagt Giulia am Ende?|Freut mich|Bis morgen|Danke schön`}},
+  {id:"u3", e:"✅", title:"Ja und Nein", pt:"Sì o no", desc:"Zustimmen, ablehnen, verneinen.",
+   words:`sì|ja
+no|nein
+certo|sicher / natürlich
+va bene|okay / in Ordnung
+anche|auch
+neanche|auch nicht
+niente|nichts
+mai|nie
+non lo so|ich weiß es nicht
+d'accordo|einverstanden`,
+   sents:`Sì, certo.|Ja, natürlich.|Zustimmung|
+No, grazie.|Nein, danke.|Verneinung|
+Non lo so.|Ich weiß es nicht.|Verneinung|„non“ steht direkt vor dem Verb.
+Va bene, d'accordo.|Okay, einverstanden.|Zustimmung|
+Non voglio niente.|Ich will nichts.|Verneinung|Die doppelte Verneinung ist richtig: non … niente.
+Neanche io.|Ich auch nicht.|Verneinung|
+Anch'io.|Ich auch.|Zustimmung|Vor „io“ wird „anche“ zu „anch'“.`},
+  {id:"u4", e:"❓", title:"Grundlegende Fragen", pt:"Domande", desc:"Wer, was, wo, wann und wie viel?",
+   words:`che cosa?|was?
+chi?|wer?
+dove?|wo? / wohin?
+quando?|wann?
+come?|wie?
+quanto?|wie viel?
+perché?|warum?
+perché|weil
+quale?|welcher / welche / welches?
+quanti?|wie viele?`,
+   sents:`Che cos'è?|Was ist das?|Fragen|Im Alltag oft verkürzt: „Cos'è?“
+Dov'è il bagno?|Wo ist die Toilette?|Fragen|dove + è = dov'è.
+Quanto costa?|Wie viel kostet das?|Fragen|
+Chi è?|Wer ist das?|Fragen|
+Perché non vieni?|Warum kommst du nicht?|Fragen|„perché“ heißt sowohl „warum“ als auch „weil“.
+Perché sono stanco.|Weil ich müde bin.|essere|Frauen sagen „stanca“.
+Quando comincia la lezione?|Wann beginnt der Unterricht?|Fragen|`},
+  {id:"u5", e:"🔢", title:"Zahlen", pt:"I numeri", desc:"Von eins bis hundert, Alter und Preise.",
+   words:`uno|eins
+due|zwei
+tre|drei
+quattro|vier
+cinque|fünf
+dieci|zehn
+venti|zwanzig
+cento|hundert
+l'euro|der Euro
+quanti anni hai?|wie alt bist du?`,
+   sents:`Ho vent'anni.|Ich bin zwanzig Jahre alt.|avere|Das Alter sagt man mit „avere“ (haben). venti + anni = vent'anni.
+Quanti anni hai?|Wie alt bist du?|Fragen|
+Sono cinque euro.|Das macht fünf Euro.|Zahlen|„euro“ bleibt im Plural unverändert.
+Uno, due, tre, quattro.|Eins, zwei, drei, vier.|Zahlen|
+Ho due fratelli.|Ich habe zwei Brüder.|avere|„fratelli“ kann auch „Geschwister“ heißen.
+Cento euro sono tanti soldi.|Hundert Euro sind viel Geld.|Zahlen|`},
+  {id:"u6", e:"🧱", title:"Einfache Sätze", pt:"Frasi semplici", desc:"Ich, du, er, sie – die ersten Verben.",
+   words:`io|ich
+tu|du
+lui|er
+lei|sie (Singular)
+noi|wir
+voi|ihr
+loro|sie (Plural)
+parlare|sprechen
+lavorare|arbeiten
+abitare|wohnen`,
+   sents:`Parlo tedesco.|Ich spreche Deutsch.|Verben auf -are|Das Pronomen lässt man meist weg.
+Parli italiano?|Sprichst du Italienisch?|Fragen|Fragen erkennt man nur an der Stimme.
+Lei lavora a Roma.|Sie arbeitet in Rom.|Verben auf -are|
+Noi abitiamo a Berlino.|Wir wohnen in Berlin.|Verben auf -are|
+Voi siete di qui?|Seid ihr von hier?|essere|
+Lei parla inglese?|Sprechen Sie Englisch?|Anrede|Die höfliche Anrede ist „Lei“ mit der 3. Person.
+Lui non lavora oggi.|Er arbeitet heute nicht.|Verneinung|`}
+ ]}
+],
+DIALOGS: `1|Ciao, come stai?|Hallo, wie geht's dir?|Bene, grazie. E tu?|Sono tre euro.|Abito a Berlino.
+1|Grazie per l'aiuto!|Danke für die Hilfe!|Prego!|Non lo so.|Quanto costa?
+2|Come ti chiami?|Wie heißt du?|Mi chiamo Daniel.|Ho vent'anni.|A dopo!
+2|Di dove sei?|Woher kommst du?|Sono tedesco.|Mi chiamo Giulia.|Alle otto.
+3|Vuoi un caffè?|Möchtest du einen Kaffee?|Sì, grazie.|Sono tedesco.|Ho due fratelli.
+4|Dov'è il bagno?|Wo ist die Toilette?|Lì, a destra.|Sono cinque euro.|Mi chiamo Daniel.
+5|Quanti anni hai?|Wie alt bist du?|Ho trent'anni.|Abito a Roma.|Bene, grazie.
+5|Quanto costa il pane?|Wie viel kostet das Brot?|Un euro.|A domani.|Sono tedesco.
+6|Parli italiano?|Sprichst du Italienisch?|Sì, un po'.|Ho vent'anni.|Prego.`,
+SENTENCES: `A1|Mi chiamo Daniel e vengo dalla Germania.|Ich heiße Daniel und komme aus Deutschland.
+A1|Abito a Roma da due anni.|Ich wohne seit zwei Jahren in Rom.
+A1|Vorrei un caffè, per favore.|Ich hätte gern einen Kaffee, bitte.
+A1|Il conto, per favore.|Die Rechnung, bitte.
+A1|Dov'è la stazione?|Wo ist der Bahnhof?
+A1|Oggi fa molto caldo.|Heute ist es sehr heiß.
+A1|Ho fame.|Ich habe Hunger.
+A1|Non parlo molto bene l'italiano.|Ich spreche nicht sehr gut Italienisch.
+A1|Può ripetere, per favore?|Können Sie das bitte wiederholen?
+A1|Mia sorella lavora in un ospedale.|Meine Schwester arbeitet in einem Krankenhaus.`,
+PERSONS: ["io","tu","lui / lei / Lei","noi","voi","loro"],
+TENSES: [
+  ["pres","Presente","Was jetzt oder regelmäßig passiert: **parlo** = ich spreche."],
+  ["pp","Passato prossimo","Abgeschlossene Handlung in der Vergangenheit: **ho parlato** = ich habe gesprochen. Bewegungsverben mit **essere**: **sono andato/a**."],
+  ["imp","Imperfetto","Gewohnheiten und Beschreibungen in der Vergangenheit: **parlavo** = ich sprach (früher)."],
+  ["fut","Futuro","Zukunft und Vermutungen: **parlerò** = ich werde sprechen. Im Alltag oft Präsens: Domani vado a Roma."]
+],
+VERBS: {
+  essere:  ["sein", "sono,sei,è,siamo,siete,sono", es("stat"), "ero,eri,era,eravamo,eravate,erano", "sarò,sarai,sarà,saremo,sarete,saranno"],
+  avere:   ["haben", "ho,hai,ha,abbiamo,avete,hanno", av("avuto"), imp("ave"), fut("avr")],
+  andare:  ["gehen / fahren", "vado,vai,va,andiamo,andate,vanno", es("andat"), imp("anda"), fut("andr")],
+  fare:    ["machen", "faccio,fai,fa,facciamo,fate,fanno", av("fatto"), imp("face"), fut("far")],
+  potere:  ["können", "posso,puoi,può,possiamo,potete,possono", av("potuto"), imp("pote"), fut("potr")],
+  volere:  ["wollen", "voglio,vuoi,vuole,vogliamo,volete,vogliono", av("voluto"), imp("vole"), fut("vorr")],
+  dire:    ["sagen", "dico,dici,dice,diciamo,dite,dicono", av("detto"), imp("dice"), fut("dir")],
+  venire:  ["kommen", "vengo,vieni,viene,veniamo,venite,vengono", es("venut"), imp("veni"), fut("verr")],
+  vedere:  ["sehen", "vedo,vedi,vede,vediamo,vedete,vedono", av("visto"), imp("vede"), fut("vedr")],
+  sapere:  ["wissen", "so,sai,sa,sappiamo,sapete,sanno", av("saputo"), imp("sape"), fut("sapr")],
+  stare:   ["sein / sich befinden", "sto,stai,sta,stiamo,state,stanno", es("stat"), imp("sta"), fut("star")],
+  parlare: ["sprechen (Muster für -are)", "parlo,parli,parla,parliamo,parlate,parlano", av("parlato"), imp("parla"), fut("parler")],
+  prendere:["nehmen (Muster für -ere)", "prendo,prendi,prende,prendiamo,prendete,prendono", av("preso"), imp("prende"), fut("prender")],
+  dormire: ["schlafen (Muster für -ire)", "dormo,dormi,dorme,dormiamo,dormite,dormono", av("dormito"), imp("dormi"), fut("dormir")],
+  capire:  ["verstehen (-ire mit -isc-)", "capisco,capisci,capisce,capiamo,capite,capiscono", av("capito"), imp("capi"), fut("capir")]
+},
+VERB_NOTES: {
+  essere: "Passato prossimo von **essere** und **stare** ist gleich: **sono stato/a**.",
+  andare: "Mit **essere** passt sich das Partizip an: **lei è andata**, **siamo andati**.",
+  capire: "Viele Verben auf -ire schieben **-isc-** ein: **capisco**, **finisco**, **preferisco** – aber nicht bei noi und voi.",
+  parlare: "Betonung in **parlano** auf der ersten Silbe: PAR-la-no."
+},
+CHEATS: [
+ ["Aussprache in Italien", `- **c** und **g** vor e/i weich: **ciao**, **gelato**; sonst hart: **casa**, **gola**.
+- **ch** und **gh** sind hart: **che**, **spaghetti**.
+- **gli** klingt wie „lj“: **figlio**; **gn** wie „nj“: **gnocchi**.
+- **sc** vor e/i wie „sch“: **pesce**.
+- **z** wie „ts“ oder „ds“: **pizza**, **zero**.
+- Doppelkonsonanten spricht man hörbar länger: **pena** – **penna**, **caro** – **carro**.
+- Das **h** ist immer stumm: **ho**.
+- Meist auf der vorletzten Silbe betont; ein Akzent auf dem letzten Vokal zeigt Endbetonung: **città**, **caffè**, **perché**.`],
+ ["Artikel & Geschlecht", `- Männlich: **il** (il libro), **lo** vor s+Konsonant, z, gn, ps (lo studente, lo zio), **l'** vor Vokal (l'amico). Plural: **i**, **gli**.
+- Weiblich: **la** (la casa), **l'** vor Vokal (l'amica). Plural: **le**.
+- Unbestimmt: **un**, **uno**, **una**, **un'**.
+- Wörter auf **-o** meist männlich, auf **-a** meist weiblich, auf **-e** beides: **il pane**, **la notte**.
+- Plural: **-o → -i**, **-a → -e**, **-e → -i**: libri, case, notti.`],
+ ["essere oder stare?", `- **essere** (sein) für Identität, Herkunft, Eigenschaften: **Sono tedesco. È simpatica.**
+- **stare** für das Befinden und in festen Wendungen: **Come stai? Sto bene.**
+- **stare** + Gerundium = gerade etwas tun: **Sto lavorando.**
+- Wo etwas ist, sagt man mit **essere**: **Dov'è la stazione?**`],
+ ["Du & Sie", `- **tu** (du): Freunde, Familie, Gleichaltrige.
+- **Lei** (Sie): höfliche Anrede mit dem Verb in der 3. Person: **Come sta?**
+- **voi** (ihr): für mehrere Personen – auch höflich üblich.`],
+ ["Präposition + Artikel", `Präpositionen verschmelzen mit dem Artikel:
+- **di**: del, dello, della, dei, degli, delle
+- **a**: al, allo, alla, ai, agli, alle
+- **da**: dal, dallo, dalla …
+- **in**: nel, nello, nella …
+- **su**: sul, sullo, sulla …
+Beispiele: **Vado al cinema. Vengo dalla Germania. Il libro è sul tavolo.**`],
+ ["Passato prossimo: avere oder essere?", `- Meist mit **avere**: **Ho mangiato.**
+- Mit **essere**: viele Verben der Bewegung und Veränderung (andare, venire, partire, arrivare, nascere, stare, essere) und alle reflexiven Verben: **Sono andato/a. Mi sono alzato/a.**
+- Bei **essere** passt sich das Partizip an: **Lei è andata. Siamo arrivati.**`]
+]
+};
+})();
+
+</script>
+<script>/*PACK:pl*/
+/* ===== Sprachpaket: Polnisch (Standardpolnisch) =====
+   Norm: Rada Języka Polskiego, Słownik języka polskiego PWN; Niveaus: Standards der Państwowa Komisja
+   do spraw Poświadczania Znajomości Języka Polskiego jako Obcego. Siehe QUELLEN.md. */
+LEL_PACKS.pl = (function(){
+const past = (s, p) => `${s}em,${s}eś,${s},${p}iśmy,${p}iście,${p}i`;
+const fut = (s, p) => `będę ${s},będziesz ${s},będzie ${s},będziemy ${p},będziecie ${p},będą ${p}`;
+return {
+LANG: {code:"pl", flag:"🇵🇱", name:"Polnisch", adj:"Polnisch", inLang:"Polnisch", into:"ins Polnische",
+  country:"Polen", voiceFrom:"aus Polen", tts:"pl-PL", ttsRe:/^pl/i, prefix:"pl",
+  voicePath:"Polnisch", status:"A1 · Abschnitt 1 von 6", tutor:false},
+ART_RE: /^(der|die|das|ein|eine|einen) /,
+F_RE: /zosia|ewa|maja|agnieszka|female|kobieta|woman/i,
+M_RE: /krzysztof|jacek|jan|\bmale\b|mężczyzna|\bman\b/i,
+FUNC: ["i","w","na","z","do","nie","się","to","jest","a","ale","że","o","po","dla"],
+LEVEL_NAMES: {A1:"Absolute Grundlagen",A2:"Einfache Gespräche & Alltag",B1:"Selbstständig kommunizieren",B2:"Flüssiger sprechen",C1:"Fortgeschrittenes Polnisch"},
+CURRICULUM: {
+ A1:[["A1-01","Begrüßen & sich vorstellen","cześć, dzień dobry, mam na imię …, pan / pani"],["A1-02","Aussprache","sz, cz, rz/ż, ł, ś/ć/ź, ą/ę"],["A1-03","Geschlecht","männlich, weiblich, sächlich – ohne Artikel"],["A1-04","być & mieć","jestem, mam"],["A1-05","Präsens: drei Konjugationen","mówię, mieszkam, pracuję"],["A1-06","Verneinung + Genitiv","nie mam czasu"],["A1-07","Lokativ & Instrumental","w Berlinie, jestem studentem"],["A1-08","Zahlen & Uhrzeit","0–100, która godzina?"],["A1-T","A1-Abschlusstest","Prüfung über alle A1-Themen"]],
+ A2:[["A2-01","Vergangenheit","byłem / byłam"],["A2-02","Aspekt","robić – zrobić"],["A2-03","Akkusativ & Genitiv","Mengen, Verneinung, Objekte"],["A2-04","Bewegungsverben","iść / chodzić, jechać / jeździć"],["A2-T","A2-Abschlusstest","Prüfung über alle A2-Themen"]],
+ B1:[["B1-01","Dativ","daję bratu"],["B1-02","Konditional","chciałbym"],["B1-03","Imperativ","zrób, nie rób"],["B1-T","B1-Abschlusstest","Prüfung über alle B1-Themen"]],
+ B2:[["B2-01","Partizipien","czytający, przeczytany"],["B2-02","Komplexe Sätze","żeby, chociaż, gdyby"],["B2-T","B2-Abschlusstest","Prüfung über alle B2-Themen"]],
+ C1:[["C1-01","Stil & Register","formell und umgangssprachlich"],["C1-02","Zahlwörter vollständig","Sammelzahlen, Männlichpersonenform"],["C1-T","C1-Abschlusstest","Prüfung über alle C1-Themen"]]
+},
+SCENARIOS: [["☕","W kawiarni","Bestelle einen Kaffee und ein Stück Kuchen"],["🛒","W sklepie","Frag nach Produkten, Preisen und bezahle"],["📞","Przez telefon","Reserviere einen Tisch im Restaurant"],["🍻","Ze znajomymi","Verabrede dich für den Abend"],["👨‍👩‍👧","W rodzinie","Lerne die Familie eines Freundes kennen"],["🧭","Na ulicy","Frag nach dem Weg zur Straßenbahn"],["💊","W aptece","Beschreibe Beschwerden und kauf etwas"],["🏨","W hotelu","Check-in und Fragen an der Rezeption"],["🏠","Z sąsiadem","Smalltalk mit dem Nachbarn"],["🎲","Wolna rozmowa","Freies Gespräch auf deinem Niveau"]],
+SCEN_DE: ["Im Café","Im Laden","Am Telefon","Mit Freunden","Mit der Familie","Auf der Straße","In der Apotheke","Im Hotel","Mit dem Nachbarn","Freies Gespräch"],
+STARTER_VOCAB: [["cześć","hallo / tschüss"],["dzień dobry","guten Tag"],["dobry wieczór","guten Abend"],["mam na imię …","ich heiße …"],["co słychać?","was gibt's Neues?"],["dziękuję","danke"],["proszę","bitte"],["przepraszam","Entschuldigung"],["tak","ja"],["nie","nein"],["do widzenia","auf Wiedersehen"]],
+INITIAL_CHAT: [{role:"assistant", content:"Cześć! Hier lernst du Polnisch 🇵🇱\n\nFang einfach mit der ersten Lektion im Lernpfad an."}],
+THEMES: [
+ {id:"gruss",e:"👋",name:"Begrüßung & Höflichkeit",level:"A1",w:`cześć|hallo / tschüss (locker)
+dzień dobry|guten Tag / guten Morgen
+dobry wieczór|guten Abend
+dobranoc|gute Nacht
+do widzenia|auf Wiedersehen
+na razie|bis dann (locker)
+do jutra|bis morgen
+do zobaczenia|bis bald
+co słychać?|was gibt's Neues?
+jak się masz?|wie geht es dir?
+dobrze|gut
+dziękuję|danke
+dziękuję bardzo|vielen Dank
+nie ma za co|gern geschehen
+proszę|bitte
+przepraszam|Entschuldigung
+miło mi|freut mich
+witamy|willkommen`},
+ {id:"ichdu",e:"🙋",name:"Personen & Vorstellen",level:"A1",w:`ja|ich
+ty|du
+on|er
+ona|sie (Singular)
+ono|es
+my|wir
+wy|ihr
+oni|sie (Plural, mit Männern)
+one|sie (Plural, ohne Männer)
+pan|Herr / Sie (zu einem Mann)
+pani|Frau / Sie (zu einer Frau)
+mam na imię|ich heiße (Vorname)
+nazywam się|ich heiße (Nachname / voller Name)
+imię|der Vorname
+nazwisko|der Nachname
+Niemiec|der Deutsche
+Niemka|die Deutsche
+Polak|der Pole
+Polka|die Polin
+Niemcy|Deutschland
+Polska|Polen`},
+ {id:"fragen",e:"❓",name:"Fragewörter",level:"A1",w:`co?|was?
+kto?|wer?
+gdzie?|wo?
+dokąd?|wohin?
+skąd?|woher?
+kiedy?|wann?
+jak?|wie?
+ile?|wie viel? / wie viele?
+dlaczego?|warum?
+bo|weil
+który?|welcher?
+czy|ob (leitet Ja/Nein-Fragen ein)`},
+ {id:"zahlen",e:"🔢",name:"Zahlen",level:"A1",w:`zero|null
+jeden|eins
+dwa|zwei
+trzy|drei
+cztery|vier
+pięć|fünf
+sześć|sechs
+siedem|sieben
+osiem|acht
+dziewięć|neun
+dziesięć|zehn
+jedenaście|elf
+dwanaście|zwölf
+trzynaście|dreizehn
+czternaście|vierzehn
+piętnaście|fünfzehn
+szesnaście|sechzehn
+siedemnaście|siebzehn
+osiemnaście|achtzehn
+dziewiętnaście|neunzehn
+dwadzieścia|zwanzig
+dwadzieścia jeden|einundzwanzig
+trzydzieści|dreißig
+czterdzieści|vierzig
+pięćdziesiąt|fünfzig
+sześćdziesiąt|sechzig
+siedemdziesiąt|siebzig
+osiemdziesiąt|achtzig
+dziewięćdziesiąt|neunzig
+sto|hundert
+tysiąc|tausend
+złoty|der Złoty (Währung)`},
+ {id:"verben",e:"⚙️",name:"Erste Verben",level:"A1",w:`być|sein
+mieć|haben
+iść|gehen (zu Fuß, gerade)
+jechać|fahren (gerade)
+robić|machen
+móc|können
+chcieć|wollen
+mówić|sprechen
+pracować|arbeiten
+mieszkać|wohnen
+jeść|essen
+pić|trinken
+wiedzieć|wissen
+rozumieć|verstehen
+lubić|mögen
+kochać|lieben`},
+ {id:"alltag",e:"☀️",name:"Erste Alltagswörter",level:"A1",w:`tak|ja
+nie|nein / nicht
+oczywiście|natürlich
+dobrze|gut / okay
+też|auch
+nic|nichts
+nigdy|nie
+dzisiaj|heute
+jutro|morgen
+wczoraj|gestern
+tutaj|hier
+tam|dort
+dużo|viel
+trochę|ein bisschen
+bardzo|sehr
+kawa|der Kaffee
+herbata|der Tee
+woda|das Wasser
+piwo|das Bier
+chleb|das Brot
+dom|das Haus
+ulica|die Straße
+toaleta|die Toilette
+dworzec|der Bahnhof
+brat|der Bruder
+siostra|die Schwester
+przyjaciel|der Freund
+przyjaciółka|die Freundin`}
+],
+PATH_SECTIONS: [
+ {id:"s1", title:"Erste Schritte", pt:"Pierwsze kroki", level:"A1", color:"#2F6BFF", units:[
+  {id:"u1", e:"👋", title:"Begrüßungen", pt:"Cześć!", desc:"Hallo sagen, danke und bitte.",
+   words:`cześć|hallo / tschüss (locker)
+dzień dobry|guten Tag / guten Morgen
+dobry wieczór|guten Abend
+do widzenia|auf Wiedersehen
+dobranoc|gute Nacht
+na razie|bis dann (locker)
+do jutra|bis morgen
+dziękuję|danke
+proszę|bitte
+przepraszam|Entschuldigung`,
+   sents:`Dzień dobry!|Guten Tag!|Begrüßung|„Dzień dobry“ sagt man vom Morgen bis zum Abend.
+Cześć, co słychać?|Hallo, was gibt's Neues?|Begrüßung|„Cześć“ nur unter Freunden und Gleichaltrigen.
+Dobrze, dziękuję.|Gut, danke.|Begrüßung|
+Dobry wieczór!|Guten Abend!|Begrüßung|Ab dem Abend sagt man „dobry wieczór“.
+Do widzenia, do jutra!|Auf Wiedersehen, bis morgen!|Begrüßung|
+Poproszę kawę.|Ich hätte gern einen Kaffee.|Fälle|„kawa“ wird im Akkusativ zu „kawę“.`},
+  {id:"u2", e:"🙋", title:"Sich vorstellen", pt:"Mam na imię…", desc:"Name, Herkunft und Wohnort.",
+   words:`mam na imię|ich heiße (Vorname)
+nazywam się|ich heiße (voller Name)
+jestem|ich bin
+jak masz na imię?|wie heißt du?
+skąd jesteś?|woher kommst du?
+jestem z Niemiec|ich komme aus Deutschland
+mieszkam w|ich wohne in
+miło mi|freut mich
+Niemiec|der Deutsche
+Niemka|die Deutsche`,
+   sents:`Mam na imię Daniel.|Ich heiße Daniel.|Vorstellen|Wörtlich: „Ich habe zum Vornamen Daniel.“
+Jak masz na imię?|Wie heißt du?|Fragen|
+Jestem Niemcem.|Ich bin Deutscher.|Fälle|Nach „być“ (sein) steht ein Substantiv im Instrumental: Niemiec → Niemcem. Eine Frau sagt „Jestem Niemką“.
+Jestem z Niemiec.|Ich komme aus Deutschland.|Fälle|Nach „z“ (aus) steht der Genitiv: Niemcy → z Niemiec.
+Mieszkam w Berlinie.|Ich wohne in Berlin.|Fälle|Nach „w“ (in) steht der Lokativ: Berlin → w Berlinie.
+Miło mi!|Freut mich!|Begrüßung|
+Skąd jesteś?|Woher kommst du?|Fragen|`,
+   story:{title:"Im Sprachkurs", lines:`Ola|Cześć! Jak masz na imię?|Hallo! Wie heißt du?
+Daniel|Mam na imię Daniel. A ty?|Ich heiße Daniel. Und du?
+Ola|Jestem Ola. Skąd jesteś?|Ich bin Ola. Woher kommst du?
+Daniel|Jestem z Niemiec, ale mieszkam w Krakowie.|Ich komme aus Deutschland, aber ich wohne in Krakau.
+Ola|Bardzo mi miło!|Sehr erfreut!`, qs:`Woher kommt Daniel?|Aus Deutschland|Aus Krakau|Aus Österreich
+Wo wohnt Daniel?|In Krakau|In Berlin|In Danzig
+Was sagt Ola am Ende?|Sehr erfreut|Bis morgen|Danke schön`}},
+  {id:"u3", e:"✅", title:"Ja und Nein", pt:"Tak czy nie", desc:"Zustimmen, ablehnen, verneinen.",
+   words:`tak|ja
+nie|nein / nicht
+oczywiście|natürlich
+dobrze|gut / okay
+też|auch
+ja też|ich auch
+ja też nie|ich auch nicht
+nic|nichts
+nigdy|nie
+nie wiem|ich weiß nicht`,
+   sents:`Tak, oczywiście.|Ja, natürlich.|Zustimmung|
+Nie, dziękuję.|Nein, danke.|Verneinung|
+Nie wiem.|Ich weiß nicht.|Verneinung|„nie“ steht direkt vor dem Verb.
+Dobrze, zgoda.|Gut, einverstanden.|Zustimmung|
+Nic nie chcę.|Ich will nichts.|Verneinung|Die doppelte Verneinung ist richtig: nic nie …
+Ja też nie.|Ich auch nicht.|Verneinung|
+Nie mam czasu.|Ich habe keine Zeit.|Fälle|Nach einer Verneinung steht das Objekt im Genitiv: czas → czasu.`},
+  {id:"u4", e:"❓", title:"Grundlegende Fragen", pt:"Pytania", desc:"Wer, was, wo, wann und wie viel?",
+   words:`co?|was?
+kto?|wer?
+gdzie?|wo?
+kiedy?|wann?
+jak?|wie?
+ile?|wie viel? / wie viele?
+dlaczego?|warum?
+bo|weil
+który?|welcher?
+skąd?|woher?`,
+   sents:`Co to jest?|Was ist das?|Fragen|
+Gdzie jest toaleta?|Wo ist die Toilette?|Fragen|
+Ile to kosztuje?|Wie viel kostet das?|Fragen|
+Kto to jest?|Wer ist das?|Fragen|
+Dlaczego nie przychodzisz?|Warum kommst du nicht?|Fragen|
+Bo jestem zmęczony.|Weil ich müde bin.|Geschlecht|Eine Frau sagt „zmęczona“.
+Kiedy zaczyna się lekcja?|Wann beginnt der Unterricht?|Fragen|„się“ gehört zum Verb: zaczynać się = anfangen.`},
+  {id:"u5", e:"🔢", title:"Zahlen", pt:"Liczby", desc:"Von eins bis hundert, Alter und Preise.",
+   words:`jeden|eins
+dwa|zwei
+trzy|drei
+cztery|vier
+pięć|fünf
+dziesięć|zehn
+dwadzieścia|zwanzig
+sto|hundert
+złoty|der Złoty (Währung)
+ile masz lat?|wie alt bist du?`,
+   sents:`Mam dwadzieścia lat.|Ich bin zwanzig Jahre alt.|Zahlen|Das Alter sagt man mit „mieć“ (haben). Ab 5 steht „lat“.
+Ile masz lat?|Wie alt bist du?|Fragen|
+To kosztuje pięć złotych.|Das kostet fünf Złoty.|Zahlen|Nach 2–4 sagt man „złote“, ab 5 „złotych“ (Genitiv Plural).
+Jeden, dwa, trzy, cztery.|Eins, zwei, drei, vier.|Zahlen|
+Mam dwóch braci.|Ich habe zwei Brüder.|Zahlen|Für Gruppen mit Männern gibt es eigene Zahlformen: dwóch braci.
+Sto złotych to dużo pieniędzy.|Hundert Złoty sind viel Geld.|Zahlen|`},
+  {id:"u6", e:"🧱", title:"Einfache Sätze", pt:"Proste zdania", desc:"Ich, du, er, sie – die ersten Verben.",
+   words:`ja|ich
+ty|du
+on|er
+ona|sie (Singular)
+my|wir
+wy|ihr
+oni|sie (Plural, mit Männern)
+pan|Sie (höflich, zu einem Mann)
+mówić|sprechen
+pracować|arbeiten`,
+   sents:`Mówię po niemiecku.|Ich spreche Deutsch.|Verben|Das Pronomen lässt man meist weg. „po niemiecku“ = auf Deutsch.
+Mówisz po polsku?|Sprichst du Polnisch?|Fragen|
+Ona pracuje w Warszawie.|Sie arbeitet in Warschau.|Verben|Warszawa → w Warszawie (Lokativ).
+Mieszkamy w Berlinie.|Wir wohnen in Berlin.|Verben|
+Czy pan mówi po angielsku?|Sprechen Sie Englisch? (zu einem Mann)|Anrede|Höflich: „pan“ oder „pani“ mit der 3. Person. „czy“ leitet Ja/Nein-Fragen ein.
+On dzisiaj nie pracuje.|Er arbeitet heute nicht.|Verneinung|
+Jesteście stąd?|Seid ihr von hier?|być|`}
+ ]}
+],
+DIALOGS: `1|Cześć, co słychać?|Hallo, was gibt's Neues?|Dobrze, dziękuję. A u ciebie?|To kosztuje trzy złote.|Mieszkam w Berlinie.
+1|Dziękuję za pomoc!|Danke für die Hilfe!|Nie ma za co!|Nie wiem.|Ile to kosztuje?
+2|Jak masz na imię?|Wie heißt du?|Mam na imię Daniel.|Mam dwadzieścia lat.|Na razie!
+2|Skąd jesteś?|Woher kommst du?|Jestem z Niemiec.|Mam na imię Ola.|O ósmej.
+3|Chcesz kawę?|Möchtest du einen Kaffee?|Tak, chętnie.|Jestem z Niemiec.|Mam dwóch braci.
+4|Gdzie jest toaleta?|Wo ist die Toilette?|Tam, na prawo.|To kosztuje pięć złotych.|Mam na imię Daniel.
+5|Ile masz lat?|Wie alt bist du?|Mam trzydzieści lat.|Mieszkam w Krakowie.|Dobrze, dziękuję.
+5|Ile kosztuje chleb?|Wie viel kostet das Brot?|Pięć złotych.|Do jutra.|Jestem Niemcem.
+6|Mówisz po polsku?|Sprichst du Polnisch?|Tak, trochę.|Mam dwadzieścia lat.|Nie ma za co.`,
+SENTENCES: `A1|Mam na imię Daniel i jestem z Niemiec.|Ich heiße Daniel und komme aus Deutschland.
+A1|Mieszkam w Krakowie od dwóch lat.|Ich wohne seit zwei Jahren in Krakau.
+A1|Poproszę kawę z mlekiem.|Ich hätte gern einen Kaffee mit Milch.
+A1|Poproszę rachunek.|Die Rechnung, bitte.
+A1|Gdzie jest dworzec?|Wo ist der Bahnhof?
+A1|Dzisiaj jest bardzo gorąco.|Heute ist es sehr heiß.
+A1|Jestem głodny.|Ich habe Hunger. (Mann)
+A1|Nie mówię dobrze po polsku.|Ich spreche nicht gut Polnisch.
+A1|Czy może pan powtórzyć?|Können Sie das wiederholen? (zu einem Mann)
+A1|Moja siostra pracuje w szpitalu.|Meine Schwester arbeitet in einem Krankenhaus.`,
+PERSONS: ["ja","ty","on / ona / ono","my","wy","oni / one"],
+TENSES: [
+  ["pres","Präsens","Was jetzt oder regelmäßig passiert: **mówię** = ich spreche."],
+  ["past","Vergangenheit","Die Form richtet sich nach dem Geschlecht. Hier die männlichen Formen: **mówiłem** = ich (Mann) sprach – eine Frau sagt **mówiłam**."],
+  ["fut","Zukunft","Bei unvollendeten Verben **być** + Vergangenheitsform: **będę mówił** = ich werde sprechen. Bei **iść** die vollendete Form **pójdę**."]
+],
+VERBS: {
+  "być":     ["sein", "jestem,jesteś,jest,jesteśmy,jesteście,są", past("był","byl"), "będę,będziesz,będzie,będziemy,będziecie,będą"],
+  "mieć":    ["haben", "mam,masz,ma,mamy,macie,mają", past("miał","miel"), fut("miał","mieli")],
+  "iść":     ["gehen", "idę,idziesz,idzie,idziemy,idziecie,idą", past("szedł","szl"), "pójdę,pójdziesz,pójdzie,pójdziemy,pójdziecie,pójdą"],
+  "robić":   ["machen", "robię,robisz,robi,robimy,robicie,robią", past("robił","robil"), fut("robił","robili")],
+  "mówić":   ["sprechen", "mówię,mówisz,mówi,mówimy,mówicie,mówią", past("mówił","mówil"), fut("mówił","mówili")],
+  "chcieć":  ["wollen", "chcę,chcesz,chce,chcemy,chcecie,chcą", past("chciał","chciel"), fut("chciał","chcieli")],
+  "móc":     ["können", "mogę,możesz,może,możemy,możecie,mogą", "mogłem,mogłeś,mógł,mogliśmy,mogliście,mogli", fut("mógł","mogli")],
+  "wiedzieć":["wissen", "wiem,wiesz,wie,wiemy,wiecie,wiedzą", past("wiedział","wiedziel"), fut("wiedział","wiedzieli")],
+  "pracować":["arbeiten", "pracuję,pracujesz,pracuje,pracujemy,pracujecie,pracują", past("pracował","pracowal"), fut("pracował","pracowali")],
+  "mieszkać":["wohnen", "mieszkam,mieszkasz,mieszka,mieszkamy,mieszkacie,mieszkają", past("mieszkał","mieszkal"), fut("mieszkał","mieszkali")],
+  "jeść":    ["essen", "jem,jesz,je,jemy,jecie,jedzą", past("jadł","jedl"), fut("jadł","jedli")],
+  "pić":     ["trinken", "piję,pijesz,pije,pijemy,pijecie,piją", past("pił","pil"), fut("pił","pili")]
+},
+VERB_NOTES: {
+  "być": "**być** ist unregelmäßig. Weibliche Vergangenheit: **byłam**, **byłaś**, **była**, **byłyśmy**.",
+  "iść": "**iść** bedeutet „gerade zu Fuß unterwegs sein“. Regelmäßig gehen heißt **chodzić**.",
+  "mówić": "Muster für viele Verben auf -ić: **mówię**, **mówisz** …",
+  "pracować": "Verben auf **-ować** bilden das Präsens mit **-uj-**: **pracuję**, **kupuję**."
+},
+CHEATS: [
+ ["Aussprache", `- **sz** wie „sch“, **cz** wie „tsch“: **szkoła**, **czas**.
+- **rz** und **ż** klingen gleich, wie das „g“ in „Garage“: **rzeka**, **żaba**.
+- **ś**, **ć**, **ź** (auch **si**, **ci**, **zi**) sind weichere Varianten: **cześć**, **ciocia**.
+- **ł** klingt wie englisches „w“: **mały**. Das **w** klingt wie deutsches „w“.
+- **ą** und **ę** sind nasal: **są**, **idę** – am Wortende klingt ę oft fast wie „e“.
+- **ó** klingt genau wie **u**: **mój**.
+- **c** ist immer „ts“: **co**. **ch** wie in „Bach“.
+- Betonung fast immer auf der vorletzten Silbe: **Polska**, **dziękuję**.`],
+ ["Die sieben Fälle", `Polnisch hat sieben Fälle. Die Endung zeigt die Rolle im Satz:
+- **Nominativ** (wer?): **To jest Kraków.**
+- **Genitiv** (nach Verneinung, nach z = aus, nach Mengen): **Nie mam czasu. Jestem z Polski.**
+- **Dativ** (wem?): **Daję bratu książkę.**
+- **Akkusativ** (wen?): **Mam kota. Poproszę kawę.**
+- **Instrumental** (mit wem? – nach być bei Substantiven): **Jestem studentem. Jadę z mamą.**
+- **Lokativ** (wo? – nach w, na, o): **Mieszkam w Berlinie.**
+- **Vokativ** (Anrede): **Panie Tomaszu!**
+Am Anfang reichen feste Wendungen – die Fälle kommen Schritt für Schritt.`],
+ ["Geschlecht", `- Männlich: meist auf Konsonant – **dom**, **kot**, **student**.
+- Weiblich: meist auf **-a** – **kawa**, **mama**, **Polska**.
+- Sächlich: auf **-o**, **-e**, **-ę** – **okno**, **morze**, **imię**.
+- Polnisch hat keine Artikel: **kot** = die Katze / eine Katze.
+- Adjektive passen sich an: **dobry dzień**, **dobra kawa**, **dobre piwo**.`],
+ ["Verneinung", `- **nie** steht direkt vor dem Verb: **Nie wiem.**
+- Doppelte Verneinung ist richtig: **Nic nie wiem. Nikt nie przyszedł.**
+- Nach Verneinung steht das Objekt im Genitiv: **Mam czas.** → **Nie mam czasu.** – **Lubię kawę.** → **Nie lubię kawy.**`],
+ ["Aspekt: robić oder zrobić?", `Die meisten Verben gibt es als Paar:
+- **unvollendet**: Vorgang, Wiederholung – **robić**, **pisać**, **czytać**
+- **vollendet**: einmalig, abgeschlossen – **zrobić**, **napisać**, **przeczytać**
+- Vollendete Verben haben kein Präsens: **zrobię** heißt „ich werde (es) machen“.
+- **Codziennie czytam gazetę.** (Ich lese jeden Tag Zeitung.) – **Przeczytałem tę książkę.** (Ich habe dieses Buch zu Ende gelesen.)`],
+ ["Du & Sie", `- **ty** (du): Freunde, Familie, Gleichaltrige.
+- Höflich: **pan** (zu einem Mann), **pani** (zu einer Frau), **państwo** (zu mehreren) – mit dem Verb in der 3. Person: **Czy pan mówi po niemiecku?**
+- Mit Vornamen per Sie: **Pani Anno, …**`]
+]
+};
+})();
+
+</script>
+<script>/*PACK:tr*/
+/* ===== Sprachpaket: Türkisch (Türkeitürkisch) =====
+   Norm: Türk Dil Kurumu (TDK) – Güncel Türkçe Sözlük und Yazım Kılavuzu; Lehrwerke des Yunus Emre Enstitüsü. Siehe QUELLEN.md. */
+LEL_PACKS.tr = {
+LANG: {code:"tr", flag:"🇹🇷", name:"Türkisch", adj:"Türkisch", inLang:"Türkisch", into:"ins Türkische",
+  country:"der Türkei", voiceFrom:"aus der Türkei", tts:"tr-TR", ttsRe:/^tr/i, prefix:"tr",
+  voicePath:"Türkisch", status:"A1 · Abschnitt 1 von 6", tutor:false},
+ART_RE: /^(der|die|das|ein|eine|einen) /,
+F_RE: /yelda|filiz|seda|female|kadın|woman/i,
+M_RE: /cem|ahmet|emre|\bmale\b|erkek|\bman\b/i,
+FUNC: ["ve","bir","bu","ne","mi","mı","mu","mü","da","de","için","ile","çok","değil","var","yok"],
+LEVEL_NAMES: {A1:"Absolute Grundlagen",A2:"Einfache Gespräche & Alltag",B1:"Selbstständig kommunizieren",B2:"Flüssiger sprechen",C1:"Fortgeschrittenes Türkisch"},
+CURRICULUM: {
+ A1:[["A1-01","Begrüßen & sich vorstellen","merhaba, benim adım …, sen vs. siz"],["A1-02","Aussprache","ı, ç, ş, ğ, c, Betonung"],["A1-03","Vokalharmonie","e/a und i/ı/ü/u"],["A1-04","Ich bin …","Personalendungen: -ım, -sın …"],["A1-05","var & yok","haben und es gibt"],["A1-06","Präsens (-iyor)","geliyorum, konuşuyorum"],["A1-07","Ortsendungen","-de/-da, -den/-dan, -e/-a"],["A1-08","Zahlen & Uhrzeit","0–100, saat kaç?"],["A1-T","A1-Abschlusstest","Prüfung über alle A1-Themen"]],
+ A2:[["A2-01","Vergangenheit (-di)","geldim, gittim"],["A2-02","Futur (-ecek)","geleceğim"],["A2-03","Besitzendungen","evim, evin, evi"],["A2-04","Akkusativ","kitabı okuyorum"],["A2-T","A2-Abschlusstest","Prüfung über alle A2-Themen"]],
+ B1:[["B1-01","Aorist","gelirim, gelmem"],["B1-02","Können & Müssen","gelebilirim, gelmeliyim"],["B1-03","Vergangenheit (-miş)","gehört / berichtet"],["B1-T","B1-Abschlusstest","Prüfung über alle B1-Themen"]],
+ B2:[["B2-01","Partizipien & Nebensätze","gelen adam, geldiğim zaman"],["B2-02","Bedingungssätze","gelirsem, gelseydim"],["B2-T","B2-Abschlusstest","Prüfung über alle B2-Themen"]],
+ C1:[["C1-01","Stil & Register","formell und umgangssprachlich"],["C1-02","Komplexe Satzgefüge","Konverben, Nominalisierung"],["C1-T","C1-Abschlusstest","Prüfung über alle C1-Themen"]]
+},
+SCENARIOS: [["☕","Kafede","Bestelle einen Tee und etwas Süßes"],["🛒","Markette","Frag nach Produkten, Preisen und bezahle"],["📞","Telefonda","Reserviere einen Tisch im Restaurant"],["🍻","Arkadaşlarla","Verabrede dich für den Abend"],["👨‍👩‍👧","Ailede","Lerne die Familie eines Freundes kennen"],["🧭","Sokakta","Frag nach dem Weg zur Metro"],["💊","Eczanede","Beschreibe Beschwerden und kauf etwas"],["🏨","Otelde","Check-in und Fragen an der Rezeption"],["🏠","Komşuyla","Smalltalk mit dem Nachbarn"],["🎲","Serbest sohbet","Freies Gespräch auf deinem Niveau"]],
+SCEN_DE: ["Im Café","Im Supermarkt","Am Telefon","Mit Freunden","Mit der Familie","Auf der Straße","In der Apotheke","Im Hotel","Mit dem Nachbarn","Freies Gespräch"],
+STARTER_VOCAB: [["merhaba","hallo"],["günaydın","guten Morgen"],["iyi akşamlar","guten Abend"],["benim adım …","mein Name ist …"],["nasılsın?","wie geht's dir?"],["teşekkür ederim","danke"],["lütfen","bitte"],["özür dilerim","Entschuldigung"],["evet","ja"],["hayır","nein"],["görüşürüz","bis dann"]],
+INITIAL_CHAT: [{role:"assistant", content:"Merhaba! Hier lernst du Türkisch 🇹🇷\n\nFang einfach mit der ersten Lektion im Lernpfad an."}],
+THEMES: [
+ {id:"gruss",e:"👋",name:"Begrüßung & Höflichkeit",level:"A1",w:`merhaba|hallo
+selam|hallo (locker)
+günaydın|guten Morgen
+iyi günler|guten Tag / schönen Tag
+iyi akşamlar|guten Abend
+iyi geceler|gute Nacht
+hoşça kal|tschüss (sagt, wer geht)
+güle güle|tschüss (sagt, wer bleibt)
+görüşürüz|bis dann
+yarın görüşürüz|bis morgen
+nasılsın?|wie geht's dir?
+nasılsınız?|wie geht es Ihnen?
+iyiyim|mir geht's gut
+teşekkür ederim|danke
+teşekkürler|danke (etwas lockerer)
+rica ederim|gern geschehen
+lütfen|bitte
+özür dilerim|Entschuldigung
+pardon|Verzeihung
+memnun oldum|freut mich
+hoş geldiniz|willkommen`},
+ {id:"ichdu",e:"🙋",name:"Personen & Vorstellen",level:"A1",w:`ben|ich
+sen|du
+o|er / sie / es
+biz|wir
+siz|ihr / Sie
+onlar|sie (Plural)
+benim adım|mein Name ist
+ad|der Name
+soyadı|der Nachname
+bey|Herr (nach dem Vornamen)
+hanım|Frau (nach dem Vornamen)
+Alman|der Deutsche / deutsch
+Türk|der Türke / türkisch
+Almanya|Deutschland
+Türkiye|die Türkei
+Almanca|Deutsch (Sprache)
+Türkçe|Türkisch (Sprache)`},
+ {id:"fragen",e:"❓",name:"Fragewörter",level:"A1",w:`ne?|was?
+kim?|wer?
+nerede?|wo?
+nereye?|wohin?
+nereden?|woher?
+ne zaman?|wann?
+nasıl?|wie?
+ne kadar?|wie viel?
+kaç?|wie viele?
+neden?|warum?
+çünkü|weil
+hangi?|welcher / welche / welches?`},
+ {id:"zahlen",e:"🔢",name:"Zahlen",level:"A1",w:`sıfır|null
+bir|eins
+iki|zwei
+üç|drei
+dört|vier
+beş|fünf
+altı|sechs
+yedi|sieben
+sekiz|acht
+dokuz|neun
+on|zehn
+on bir|elf
+on iki|zwölf
+on üç|dreizehn
+on dört|vierzehn
+on beş|fünfzehn
+yirmi|zwanzig
+yirmi bir|einundzwanzig
+otuz|dreißig
+kırk|vierzig
+elli|fünfzig
+altmış|sechzig
+yetmiş|siebzig
+seksen|achtzig
+doksan|neunzig
+yüz|hundert
+bin|tausend
+lira|die Lira`},
+ {id:"verben",e:"⚙️",name:"Erste Verben",level:"A1",w:`olmak|sein / werden
+gelmek|kommen
+gitmek|gehen / fahren
+yapmak|machen
+konuşmak|sprechen
+çalışmak|arbeiten
+yaşamak|leben / wohnen
+istemek|wollen
+bilmek|wissen / können
+görmek|sehen
+yemek|essen
+içmek|trinken
+anlamak|verstehen
+okumak|lesen
+almak|nehmen / kaufen
+sevmek|lieben / mögen`},
+ {id:"alltag",e:"☀️",name:"Erste Alltagswörter",level:"A1",w:`evet|ja
+hayır|nein
+tabii|natürlich
+tamam|okay / in Ordnung
+de|auch (nach dem Wort, auch „da“)
+hiçbir şey|nichts
+asla|nie
+bugün|heute
+yarın|morgen
+dün|gestern
+burada|hier
+orada|dort
+çok|viel / sehr
+biraz|ein bisschen
+iyi|gut
+kahve|der Kaffee
+çay|der Tee
+su|das Wasser
+bira|das Bier
+ekmek|das Brot
+ev|das Haus
+sokak|die Straße
+tuvalet|die Toilette
+istasyon|der Bahnhof
+erkek kardeş|der Bruder
+kız kardeş|die Schwester
+arkadaş|der Freund / die Freundin`}
+],
+PATH_SECTIONS: [
+ {id:"s1", title:"Erste Schritte", pt:"İlk adımlar", level:"A1", color:"#2F6BFF", units:[
+  {id:"u1", e:"👋", title:"Begrüßungen", pt:"Merhaba!", desc:"Hallo sagen, danke und bitte.",
+   words:`merhaba|hallo
+günaydın|guten Morgen
+iyi akşamlar|guten Abend
+iyi geceler|gute Nacht
+hoşça kal|tschüss (sagt, wer geht)
+güle güle|tschüss (sagt, wer bleibt)
+görüşürüz|bis dann
+teşekkür ederim|danke
+lütfen|bitte
+rica ederim|gern geschehen`,
+   sents:`Merhaba, nasılsın?|Hallo, wie geht's dir?|Begrüßung|
+Günaydın!|Guten Morgen!|Begrüßung|
+Teşekkürler, iyiyim.|Danke, mir geht's gut.|Begrüßung|„teşekkürler“ ist etwas lockerer als „teşekkür ederim“.
+Size iyi akşamlar!|Ihnen einen schönen Abend!|Begrüßung|„size“ = Ihnen / euch.
+Hoşça kal! – Güle güle!|Tschüss! – Tschüss!|Begrüßung|Wer geht, sagt „hoşça kal“; wer bleibt, antwortet „güle güle“.
+Bir çay, lütfen.|Einen Tee, bitte.|Höflichkeit|Tee (çay) trinkt man in der Türkei den ganzen Tag.`},
+  {id:"u2", e:"🙋", title:"Sich vorstellen", pt:"Benim adım…", desc:"Name, Herkunft und Wohnort.",
+   words:`benim adım|mein Name ist
+ben|ich
+adın ne?|wie heißt du?
+nerelisin?|woher kommst du?
+Almanyalıyım|ich komme aus Deutschland
+yaşamak|leben / wohnen
+memnun oldum|freut mich
+ad|der Name
+Alman|der Deutsche / deutsch
+Türk|der Türke / türkisch`,
+   sents:`Benim adım Daniel.|Mein Name ist Daniel.|Endungen|„ad“ (Name) + „-ım“ = adım (mein Name).
+Adın ne?|Wie heißt du?|Fragen|Wörtlich: „Dein Name was?“
+Ben Almanım.|Ich bin Deutscher.|Endungen|Die Endung „-ım“ heißt hier „ich bin“: Alman + ım.
+Almanyalıyım.|Ich komme aus Deutschland.|Endungen|Almanya + lı (aus) + yım (ich bin).
+Berlin'de yaşıyorum.|Ich wohne in Berlin.|Endungen|„-de/-da“ heißt „in“. Bei Eigennamen trennt man die Endung mit Apostroph ab.
+Memnun oldum!|Freut mich!|Begrüßung|
+Nerelisin?|Woher kommst du?|Fragen|`,
+   story:{title:"Im Sprachkurs", lines:`Elif|Merhaba! Adın ne?|Hallo! Wie heißt du?
+Daniel|Benim adım Daniel. Ya senin?|Mein Name ist Daniel. Und deiner?
+Elif|Benim adım Elif. Nerelisin?|Ich heiße Elif. Woher kommst du?
+Daniel|Almanyalıyım ama İstanbul'da yaşıyorum.|Ich komme aus Deutschland, aber ich wohne in Istanbul.
+Elif|Memnun oldum, Daniel!|Freut mich, Daniel!`, qs:`Woher kommt Daniel?|Aus Deutschland|Aus Istanbul|Aus den Niederlanden
+Wo wohnt Daniel?|In Istanbul|In Berlin|In Izmir
+Was sagt Elif am Ende?|Freut mich|Bis morgen|Danke schön`}},
+  {id:"u3", e:"✅", title:"Ja und Nein", pt:"Evet mi hayır mı", desc:"Zustimmen, ablehnen, verneinen.",
+   words:`evet|ja
+hayır|nein
+tabii|natürlich
+tamam|okay / in Ordnung
+ben de|ich auch
+hiç|gar nicht / überhaupt
+hiçbir şey|nichts
+asla|nie
+bilmiyorum|ich weiß nicht
+anlaştık|abgemacht`,
+   sents:`Evet, tabii.|Ja, natürlich.|Zustimmung|
+Hayır, teşekkürler.|Nein, danke.|Verneinung|
+Bilmiyorum.|Ich weiß nicht.|Verneinung|Die Verneinung steckt im Verb: bil-mi-yorum.
+Tamam, anlaştık.|Okay, abgemacht.|Zustimmung|
+Hiçbir şey istemiyorum.|Ich will nichts.|Verneinung|„hiçbir şey“ steht mit einem verneinten Verb.
+Ben de.|Ich auch.|Zustimmung|
+Ben de istemiyorum.|Ich will auch nicht.|Verneinung|`},
+  {id:"u4", e:"❓", title:"Grundlegende Fragen", pt:"Sorular", desc:"Wer, was, wo, wann und wie viel?",
+   words:`ne?|was?
+kim?|wer?
+nerede?|wo?
+ne zaman?|wann?
+nasıl?|wie?
+ne kadar?|wie viel?
+neden?|warum?
+çünkü|weil
+hangi?|welcher / welche / welches?
+nereden?|woher?`,
+   sents:`Bu ne?|Was ist das?|Fragen|
+Tuvalet nerede?|Wo ist die Toilette?|Fragen|Das Fragewort steht meist am Ende oder direkt vor dem Verb.
+Bu ne kadar?|Wie viel kostet das?|Fragen|
+Bu kim?|Wer ist das?|Fragen|
+Neden gelmiyorsun?|Warum kommst du nicht?|Fragen|
+Çünkü yorgunum.|Weil ich müde bin.|Endungen|yorgun (müde) + um (ich bin).
+Ders ne zaman başlıyor?|Wann beginnt der Unterricht?|Fragen|`},
+  {id:"u5", e:"🔢", title:"Zahlen", pt:"Sayılar", desc:"Von eins bis hundert, Alter und Preise.",
+   words:`bir|eins
+iki|zwei
+üç|drei
+dört|vier
+beş|fünf
+on|zehn
+yirmi|zwanzig
+yüz|hundert
+lira|die Lira
+kaç yaşındasın?|wie alt bist du?`,
+   sents:`Yirmi yaşındayım.|Ich bin zwanzig Jahre alt.|Endungen|yaş (Alter) + ında + yım (ich bin).
+Kaç yaşındasın?|Wie alt bist du?|Fragen|
+Beş lira.|Fünf Lira.|Zahlen|
+Bir, iki, üç, dört.|Eins, zwei, drei, vier.|Zahlen|
+Benim iki erkek kardeşim var.|Ich habe zwei Brüder.|var/yok|„Haben“ sagt man mit „var“ (es gibt).
+Yüz lira çok para.|Hundert Lira sind viel Geld.|Zahlen|Nach Zahlen bleibt das Substantiv im Singular: iki kardeş, yüz lira.`},
+  {id:"u6", e:"🧱", title:"Einfache Sätze", pt:"Basit cümleler", desc:"Ich, du, er, sie – die ersten Verben.",
+   words:`ben|ich
+sen|du
+o|er / sie / es
+biz|wir
+siz|ihr / Sie
+onlar|sie (Plural)
+konuşmak|sprechen
+çalışmak|arbeiten
+anlamak|verstehen
+okumak|lesen`,
+   sents:`Almanca konuşuyorum.|Ich spreche Deutsch.|Präsens|Das Pronomen lässt man meist weg – die Endung zeigt die Person.
+Türkçe konuşuyor musun?|Sprichst du Türkisch?|Fragen|Die Fragepartikel „mi“ schreibt man getrennt und passt sie an: musun.
+Ankara'da çalışıyor.|Er / Sie arbeitet in Ankara.|Präsens|„o“ unterscheidet nicht zwischen er und sie.
+Biz Berlin'de yaşıyoruz.|Wir wohnen in Berlin.|Präsens|
+Siz İngilizce biliyor musunuz?|Können Sie Englisch?|Anrede|„siz“ ist „ihr“ und höflich „Sie“.
+Bugün çalışmıyor.|Er / Sie arbeitet heute nicht.|Verneinung|Verneinung: çalış-mı-yor.
+Anlamıyorum.|Ich verstehe nicht.|Verneinung|`}
+ ]}
+],
+DIALOGS: `1|Merhaba, nasılsın?|Hallo, wie geht's dir?|Teşekkürler, iyiyim. Sen nasılsın?|Üç lira.|Berlin'de yaşıyorum.
+1|Yardımın için teşekkürler!|Danke für deine Hilfe!|Rica ederim!|Bilmiyorum.|Bu ne kadar?
+2|Adın ne?|Wie heißt du?|Benim adım Daniel.|Yirmi yaşındayım.|Görüşürüz!
+2|Nerelisin?|Woher kommst du?|Almanyalıyım.|Benim adım Elif.|Saat sekizde.
+3|Çay ister misin?|Möchtest du einen Tee?|Evet, lütfen.|Almanyalıyım.|Benim iki kardeşim var.
+4|Tuvalet nerede?|Wo ist die Toilette?|Orada, sağda.|Beş lira.|Benim adım Daniel.
+5|Kaç yaşındasın?|Wie alt bist du?|Otuz yaşındayım.|Ankara'da yaşıyorum.|Teşekkürler, iyiyim.
+5|Ekmek ne kadar?|Wie viel kostet das Brot?|On lira.|Yarın görüşürüz.|Ben Almanım.
+6|Türkçe konuşuyor musun?|Sprichst du Türkisch?|Evet, biraz.|Yirmi yaşındayım.|Rica ederim.`,
+SENTENCES: `A1|Benim adım Daniel, Almanyalıyım.|Mein Name ist Daniel, ich komme aus Deutschland.
+A1|İki yıldır İstanbul'da yaşıyorum.|Ich wohne seit zwei Jahren in Istanbul.
+A1|Bir kahve alabilir miyim?|Kann ich einen Kaffee haben?
+A1|Hesap lütfen.|Die Rechnung, bitte.
+A1|Otobüs durağı nerede?|Wo ist die Bushaltestelle?
+A1|Bugün hava çok sıcak.|Heute ist es sehr heiß.
+A1|Acıktım.|Ich habe Hunger.
+A1|Türkçem çok iyi değil.|Mein Türkisch ist nicht sehr gut.
+A1|Tekrar eder misiniz, lütfen?|Können Sie das bitte wiederholen?
+A1|Kız kardeşim hastanede çalışıyor.|Meine Schwester arbeitet in einem Krankenhaus.`,
+PERSONS: ["ben","sen","o","biz","siz","onlar"],
+TENSES: [
+  ["pres","Präsens (-iyor)","Was jetzt passiert oder fest geplant ist: **geliyorum** = ich komme (gerade)."],
+  ["past","Vergangenheit (-di)","Selbst erlebte, abgeschlossene Vergangenheit: **geldim** = ich bin gekommen / kam."],
+  ["fut","Futur (-ecek)","Zukunft: **geleceğim** = ich werde kommen."],
+  ["aor","Aorist","Gewohnheiten, allgemeine Aussagen, Angebote: **gelirim** = ich komme (gewöhnlich)."]
+],
+VERBS: {
+  gelmek:   ["kommen", "geliyorum,geliyorsun,geliyor,geliyoruz,geliyorsunuz,geliyorlar", "geldim,geldin,geldi,geldik,geldiniz,geldiler", "geleceğim,geleceksin,gelecek,geleceğiz,geleceksiniz,gelecekler", "gelirim,gelirsin,gelir,geliriz,gelirsiniz,gelirler"],
+  gitmek:   ["gehen / fahren", "gidiyorum,gidiyorsun,gidiyor,gidiyoruz,gidiyorsunuz,gidiyorlar", "gittim,gittin,gitti,gittik,gittiniz,gittiler", "gideceğim,gideceksin,gidecek,gideceğiz,gideceksiniz,gidecekler", "giderim,gidersin,gider,gideriz,gidersiniz,giderler"],
+  yapmak:   ["machen", "yapıyorum,yapıyorsun,yapıyor,yapıyoruz,yapıyorsunuz,yapıyorlar", "yaptım,yaptın,yaptı,yaptık,yaptınız,yaptılar", "yapacağım,yapacaksın,yapacak,yapacağız,yapacaksınız,yapacaklar", "yaparım,yaparsın,yapar,yaparız,yaparsınız,yaparlar"],
+  "konuşmak":["sprechen", "konuşuyorum,konuşuyorsun,konuşuyor,konuşuyoruz,konuşuyorsunuz,konuşuyorlar", "konuştum,konuştun,konuştu,konuştuk,konuştunuz,konuştular", "konuşacağım,konuşacaksın,konuşacak,konuşacağız,konuşacaksınız,konuşacaklar", "konuşurum,konuşursun,konuşur,konuşuruz,konuşursunuz,konuşurlar"],
+  "çalışmak":["arbeiten", "çalışıyorum,çalışıyorsun,çalışıyor,çalışıyoruz,çalışıyorsunuz,çalışıyorlar", "çalıştım,çalıştın,çalıştı,çalıştık,çalıştınız,çalıştılar", "çalışacağım,çalışacaksın,çalışacak,çalışacağız,çalışacaksınız,çalışacaklar", "çalışırım,çalışırsın,çalışır,çalışırız,çalışırsınız,çalışırlar"],
+  istemek:  ["wollen", "istiyorum,istiyorsun,istiyor,istiyoruz,istiyorsunuz,istiyorlar", "istedim,istedin,istedi,istedik,istediniz,istediler", "isteyeceğim,isteyeceksin,isteyecek,isteyeceğiz,isteyeceksiniz,isteyecekler", "isterim,istersin,ister,isteriz,istersiniz,isterler"],
+  bilmek:   ["wissen", "biliyorum,biliyorsun,biliyor,biliyoruz,biliyorsunuz,biliyorlar", "bildim,bildin,bildi,bildik,bildiniz,bildiler", "bileceğim,bileceksin,bilecek,bileceğiz,bileceksiniz,bilecekler", "bilirim,bilirsin,bilir,biliriz,bilirsiniz,bilirler"],
+  "görmek": ["sehen", "görüyorum,görüyorsun,görüyor,görüyoruz,görüyorsunuz,görüyorlar", "gördüm,gördün,gördü,gördük,gördünüz,gördüler", "göreceğim,göreceksin,görecek,göreceğiz,göreceksiniz,görecekler", "görürüm,görürsün,görür,görürüz,görürsünüz,görürler"],
+  yemek:    ["essen", "yiyorum,yiyorsun,yiyor,yiyoruz,yiyorsunuz,yiyorlar", "yedim,yedin,yedi,yedik,yediniz,yediler", "yiyeceğim,yiyeceksin,yiyecek,yiyeceğiz,yiyeceksiniz,yiyecekler", "yerim,yersin,yer,yeriz,yersiniz,yerler"],
+  "içmek":  ["trinken", "içiyorum,içiyorsun,içiyor,içiyoruz,içiyorsunuz,içiyorlar", "içtim,içtin,içti,içtik,içtiniz,içtiler", "içeceğim,içeceksin,içecek,içeceğiz,içeceksiniz,içecekler", "içerim,içersin,içer,içeriz,içersiniz,içerler"],
+  anlamak:  ["verstehen", "anlıyorum,anlıyorsun,anlıyor,anlıyoruz,anlıyorsunuz,anlıyorlar", "anladım,anladın,anladı,anladık,anladınız,anladılar", "anlayacağım,anlayacaksın,anlayacak,anlayacağız,anlayacaksınız,anlayacaklar", "anlarım,anlarsın,anlar,anlarız,anlarsınız,anlarlar"],
+  okumak:   ["lesen", "okuyorum,okuyorsun,okuyor,okuyoruz,okuyorsunuz,okuyorlar", "okudum,okudun,okudu,okuduk,okudunuz,okudular", "okuyacağım,okuyacaksın,okuyacak,okuyacağız,okuyacaksınız,okuyacaklar", "okurum,okursun,okur,okuruz,okursunuz,okurlar"],
+  almak:    ["nehmen / kaufen", "alıyorum,alıyorsun,alıyor,alıyoruz,alıyorsunuz,alıyorlar", "aldım,aldın,aldı,aldık,aldınız,aldılar", "alacağım,alacaksın,alacak,alacağız,alacaksınız,alacaklar", "alırım,alırsın,alır,alırız,alırsınız,alırlar"]
+},
+VERB_NOTES: {
+  gitmek: "Vor einem Vokal wird **t** zu **d**: **gidiyorum**, **gideceğim** – aber **gittim**.",
+  yemek: "Im Präsens und Futur wird **e** zu **i**: **yiyorum**, **yiyeceğim**.",
+  bilmek: "Der Aorist ist unregelmäßig: **bilirim** (nicht „bilerim“). Ebenso **gelirim**, **alırım**.",
+  "görmek": "Vierfache Vokalharmonie: nach **ö** wird die Endung **ü**: **görüyorum**, **gördüm**."
+},
+CHEATS: [
+ ["Aussprache", `- Türkisch spricht man fast so, wie man es schreibt.
+- **ı** (ohne Punkt) ist ein dumpfes „i“, ähnlich dem „e“ in „bitte“: **kız**.
+- **c** klingt wie „dsch“: **cami**. **ç** wie „tsch“: **çay**.
+- **ş** wie „sch“: **şeker**.
+- **ğ** spricht man nicht, es dehnt den Vokal davor: **dağ**.
+- **y** wie deutsches „j“: **yok**. **z** ist stimmhaft wie in „Rose“. **v** fast wie „w“.
+- **ö** und **ü** wie im Deutschen.
+- Betont wird meist die letzte Silbe: **merhaba**, **kitap**.`],
+ ["Vokalharmonie", `Endungen passen ihre Vokale an das Wort an:
+- Zweifach (**e/a**): nach e, i, ö, ü → **e**; nach a, ı, o, u → **a**: **evler** (Häuser), **kitaplar** (Bücher).
+- Vierfach (**i/ı/ü/u**): nach e, i → **i**; a, ı → **ı**; ö, ü → **ü**; o, u → **u**: **evim**, **adım**, **gözüm**, **okulum**.
+- Deshalb: **Berlin'de**, aber **Ankara'da** – **gelmiyorum**, aber **anlamıyorum**.`],
+ ["Endungen statt Präpositionen", `Wo im Deutschen eine Präposition steht, hängt das Türkische eine Endung an:
+- **-de/-da** (in, an, bei): **evde** (zu Hause), **İstanbul'da** (in Istanbul)
+- **-den/-dan** (aus, von): **Almanya'dan** (aus Deutschland)
+- **-e/-a** (nach, zu): **eve** (nach Hause), **okula** (zur Schule)
+- Nach stimmlosen Konsonanten wird **d** zu **t**: **kitapta**, **sokakta**.
+- Bei Eigennamen trennt man die Endung mit Apostroph ab.`],
+ ["Satzbau", `- Das Verb steht am Ende: **Ben çay içiyorum.** (Ich Tee trinke.)
+- Personalpronomen lässt man meist weg – die Endung zeigt die Person: **İçiyorum.** (Ich trinke.)
+- Ja/Nein-Fragen bildet man mit **mi/mı/mü/mu** (getrennt geschrieben): **Çay istiyor musun?**
+- Es gibt kein grammatisches Geschlecht und keinen bestimmten Artikel. **bir** heißt „ein“.`],
+ ["haben: var und yok", `- „Haben“ sagt man mit **var** (es gibt) und Besitzendung: **Arabam var.** (Ich habe ein Auto – wörtlich: Mein Auto gibt es.)
+- Nicht haben: **yok**: **Zamanım yok.** (Ich habe keine Zeit.)
+- Ohne Besitzendung: **Burada bir kafe var.** (Hier gibt es ein Café.)`],
+ ["Du & Sie", `- **sen** (du): Freunde, Familie, Kinder.
+- **siz** (Sie / ihr): Fremde, ältere Menschen, formelle Situationen.
+- Höfliche Anrede mit Vornamen: **Ayşe Hanım** (Frau Ayşe), **Mehmet Bey** (Herr Mehmet).`]
+]
+};
+
+</script>
 <script>
 window.LEL_LANGS = [
   {code:"pt", flag:"🇵🇹", name:"Portugiesisch", sub:"Europäisches Portugiesisch (Portugal)"},
@@ -4909,15 +6678,17 @@ function renderPractice(){
 /* Grammatik */
 function renderGrammar(){
   const v = $("#lBody"); if(!v) return;
+  if(!VERBS[gVerb]) gVerb = Object.keys(VERBS)[0];
+  if(!TENSES.some(t => t[0] === gTense)) gTense = TENSES[0][0];
   const V = VERBS[gVerb], ti = TENSES.findIndex(t => t[0] === gTense), forms = V[ti + 1].split(",");
-  let html = `${vhead("pen","Grammatik")}<p class="lead">Zum Nachschlagen: die wichtigsten Verben in vier Zeiten und kurze Spickzettel zu den Grundlagen.</p>
+  let html = `${vhead("pen","Grammatik")}<p class="lead">Zum Nachschlagen: die wichtigsten Verben in ${TENSES.length} Zeiten und kurze Spickzettel zu den Grundlagen.</p>
     <div class="card"><h3>Verben konjugieren</h3>
       <div class="vchips">${Object.keys(VERBS).map(k => `<button class="chip ${k === gVerb ? "on" : ""}" data-verb="${k}">${k}</button>`).join("")}</div>
       <div class="seg" style="margin:12px 0 10px">${TENSES.map(([k,l]) => `<button data-tense="${k}" class="${k === gTense ? "active" : ""}">${l}</button>`).join("")}</div>
       <p class="vhead"><b class="vinf">${esc(gVerb)}</b> = ${esc(V[0])} ${sayBtn(gVerb)}</p>
-      <table class="conj">${PERSONS.map((p, i) => `<tr><td>${p}</td><td><b>${esc(forms[i])}</b></td><td style="width:34px">${sayBtn(p.split(" / ")[0] + " " + forms[i])}</td></tr>`).join("")}</table>
+      <table class="conj">${PERSONS.map((p, i) => `<tr><td>${p}</td><td><b>${esc(forms[i])}</b></td><td style="width:34px">${sayBtn(String(forms[i]).includes("'") ? forms[i] : p.split(" / ")[0] + " " + forms[i])}</td></tr>`).join("")}</table>
       <div class="note">${md(TENSES[ti][2])}${VERB_NOTES[gVerb] ? md(VERB_NOTES[gVerb]) : ""}</div>
-      <p class="hint">Für vocês nimmt man dieselbe Form wie für eles. Die Form für vós ist veraltet und fehlt deshalb.</p>
+      ${LANG.code === "pt" ? `<p class="hint">Für vocês nimmt man dieselbe Form wie für eles. Die Form für vós ist veraltet und fehlt deshalb.</p>` : ""}
     </div>
     <h3 class="lvl-title">Spickzettel</h3>
     ${CHEATS.map(([t, body]) => `<div class="card cheat"><details><summary>${esc(t)}</summary><div class="cbody">${md(body)}</div></details></div>`).join("")}`;
@@ -6436,7 +8207,7 @@ function renderLang(){
         <span class="lt"><b>${esc(L.name)}</b><small>${esc(L.sub)}</small><small class="ls">${esc(status)}</small></span>
         ${on ? `<span class="ck" aria-hidden="true">✓</span>` : ""}</button>`;
     }).join("")}</div>
-    <p class="hint lang-hint">Portugiesisch ist komplett. Spanisch startet mit dem ersten A1-Abschnitt. Die übrigen Sprachen kommen Schritt für Schritt dazu – jede mit eigener Grammatik und eigenem Wortschatz.</p>`;
+    <p class="hint lang-hint">Portugiesisch ist komplett. Spanisch, Französisch, Englisch, Italienisch, Polnisch und Türkisch starten mit dem ersten A1-Abschnitt und wachsen Schritt für Schritt – jede Sprache mit eigener Grammatik und eigenem Wortschatz.</p>`;
   v.querySelectorAll("[data-lang]").forEach(b => b.onclick = () => switchLang(b.dataset.lang));
 }
 async function switchLang(code){

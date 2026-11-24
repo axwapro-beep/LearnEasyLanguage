@@ -17,10 +17,27 @@ Für jede Sprache steht hier, an welcher Norm sich Rechtschreibung, Grammatik un
 - Niveaus und Themen: **Plan Curricular del Instituto Cervantes** (Niveles de referencia para el español A1–C2).
 - Regionale Unterschiede (vosotros, Aussprache von c/z, „vale“) sind in den Lektionen gekennzeichnet.
 
-## Weitere Sprachen (in Vorbereitung)
-- 🇫🇷 Französisch: Académie française, Le Robert/Larousse, Référentiels CECRL (France Éducation international).
-- 🇮🇹 Italienisch: Accademia della Crusca, Treccani, Profilo della lingua italiana (Spinelli & Parizzi).
-- 🇬🇧 Englisch: Cambridge Dictionary, Oxford Learner's Dictionaries, English Profile (Cambridge).
-- 🇵🇱 Polnisch: Rada Języka Polskiego, Słownik języka polskiego PWN, Standardy wymagań egzaminacyjnych (Państwowa Komisja do spraw Poświadczania Znajomości Języka Polskiego).
-- 🇹🇷 Türkisch: Türk Dil Kurumu (TDK) – Güncel Türkçe Sözlük und Yazım Kılavuzu, Yunus Emre Enstitüsü.
-- 🇩🇪 Deutsch: Duden, Goethe-Institut, Profile deutsch.
+## 🇫🇷 Französisch (Frankreich)
+- Académie française (Dictionnaire de l'Académie française), Le Robert, Larousse.
+- Niveaus: Référentiels pour le français (CECRL), France Éducation international.
+- Gekennzeichnet: Zahlen in Belgien/Schweiz (septante, nonante), Wegfall von „ne“ in der Umgangssprache.
+
+## 🇬🇧 Englisch (britisch)
+- Cambridge Dictionary, Oxford Learner's Dictionaries.
+- Niveaus: English Profile / English Vocabulary Profile (Cambridge University Press & Assessment).
+- Gekennzeichnet: Unterschiede britisch – amerikanisch (flat/apartment, have got/gotten).
+
+## 🇮🇹 Italienisch
+- Accademia della Crusca, Vocabolario Treccani.
+- Niveaus: Profilo della lingua italiana (Spinelli & Parizzi), Sillabi CELI/CILS.
+
+## 🇵🇱 Polnisch
+- Rada Języka Polskiego, Słownik języka polskiego PWN, Wielki słownik języka polskiego.
+- Niveaus: Standardy wymagań egzaminacyjnych der Państwowa Komisja do spraw Poświadczania Znajomości Języka Polskiego jako Obcego.
+
+## 🇹🇷 Türkisch
+- Türk Dil Kurumu (TDK): Güncel Türkçe Sözlük, Yazım Kılavuzu.
+- Niveaus: Lehrwerke und Rahmenplan des Yunus Emre Enstitüsü (Yedi İklim Türkçe).
+
+## 🇩🇪 Deutsch (noch offen)
+- Duden, Goethe-Institut, Profile deutsch. Braucht eine andere Erklärsprache als Deutsch – siehe FORTSCHRITT.md.

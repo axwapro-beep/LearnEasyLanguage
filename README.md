@@ -1,6 +1,6 @@
 # LearnEasyLanguage (LEL)
 
-Sprachen lernen – auf Deutsch erklärt. Portugiesisch (komplett), Spanisch (im Aufbau), weitere folgen.
+Sprachen lernen – auf Deutsch erklärt. Portugiesisch (komplett), dazu Spanisch, Französisch, Englisch, Italienisch, Polnisch und Türkisch (im Aufbau).
 
 App: https://axwapro-beep.github.io/LearnEasyLanguage/
 

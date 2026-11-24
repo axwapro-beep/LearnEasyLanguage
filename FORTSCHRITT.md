@@ -1,16 +1,18 @@
 # Ausbau auf 8 Sprachen – Stand
 
-## Etappe 1 – erledigt ✅
-- Reiter **Sprache** mit Flaggen, Namen und deutlicher Markierung der aktuellen Sprache.
-- Sprachwechsel lädt sofort Lernpfad, Wortschatz, Grammatik, Übungen und Wiederholungen der gewählten Sprache.
-- Fortschritt **pro Sprache getrennt** gespeichert – auf dem Gerät und im Konto (Datenbank-Update 1).
-- Portugiesisch unverändert, bestehender Fortschritt bleibt erhalten.
-- Gemeinsame Lernfunktionen werden für alle Sprachen wiederverwendet; jede Sprache ist ein eigenes Sprachpaket (`packs/<code>.js`).
-- **Spanisch (Spanien)**: A1-Abschnitt 1 mit 6 Einheiten (42 Stationen), Grundwortschatz in 6 Themen, 16 Verben in 4 Zeiten, 7 Grammatik-Spickzettel, Dialoge, Übungssätze. Komplett im Browser durchgespielt.
-- Quellenverwaltung: `QUELLEN.md`.
+## Fertig ✅
+- Reiter **Sprache** mit Flaggen; Fortschritt pro Sprache getrennt (Gerät + Konto).
+- 🇵🇹 **Portugiesisch**: kompletter Kurs (32 Einheiten, A1–C1), KI-Lehrer, KI-Wörterbuch.
+- 🇪🇸 Spanisch, 🇫🇷 Französisch, 🇬🇧 Englisch, 🇮🇹 Italienisch, 🇵🇱 Polnisch, 🇹🇷 Türkisch – je:
+  - A1-Abschnitt 1 „Erste Schritte“: 6 Einheiten, 42 Stationen (Lektionen, Hörübung, Geschichte/Sprechen, Wiederholung, Abschlusstest, Belohnung)
+  - 13 Übungsarten, Vokabeltrainer mit Spaced Repetition, Wörterbuch, Themen
+  - 12–16 Verben in 3–4 Zeiten, 6–7 Grammatik-Spickzettel, Dialoge, Übungssätze
+  - jede Sprache im Browser komplett durchgespielt (alle 42 Stationen)
 
 ## Offen
-- Etappe 2: Spanisch A1 Abschnitte 2–6 und A2, Französisch A1–A2, Englisch A1–A2.
-- Etappe 3: Italienisch, Polnisch, Türkisch, Deutsch (je A1–A2). Polnisch und Türkisch brauchen eigene Übungsarten (Fälle bzw. Vokalharmonie und Endungen).
-- Etappe 4+: B1–C2 für alle Sprachen.
-- KI-Lehrer und KI-Wörterbuch für die neuen Sprachen (aktuell nur Portugiesisch).
+- Abschnitte 2–6 (A1–C1) für die sechs neuen Sprachen, Wortschatz deutlich erweitern.
+- C2 für alle Sprachen (auch Portugiesisch).
+- KI-Lehrer und KI-Wörterbuch für die neuen Sprachen.
+- Eigene Übungsarten für Polnisch (Fallendungen) und Türkisch (Vokalharmonie, Endungen).
+- 🇩🇪 Deutsch: Ein Deutschkurs mit deutschen Erklärungen ergibt für deutsche Lernende keinen Sinn. Es braucht eine Entscheidung, für wen er ist (z. B. Erklärungen auf Portugiesisch, Englisch oder Türkisch).
+- Inhalte der neuen Sprachen: noch nicht von Muttersprachlern gegengelesen.
